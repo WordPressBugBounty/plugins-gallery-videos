@@ -281,7 +281,7 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function {
 			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/tsvg-admin.css', array(), time(), 'all' );
 		}
 		if ( $this->tsvg_page_slug == 'tsvg-builder' ) {
-			wp_enqueue_style( 'tsvg-toastr', plugin_dir_url( __FILE__ ) . 'css/toastr.min.css', array(), time(), 'all' );
+			wp_enqueue_style( 'tsvg-toastr', plugin_dir_url( __FILE__ ) . 'css/tsvg-toastr.min.css', array(), time(), 'all' );
 			wp_enqueue_style( 'tsvg-builder', plugin_dir_url( __FILE__ ) . 'css/tsvg-builder.css', array(), time(), 'all' );
 			if ( $this->tsvg_build == 'edit' ) {
 				wp_enqueue_style( 'tsvg-builder-edit', plugin_dir_url( __FILE__ ) . 'css/tsvg-edit.css', array(), time(), 'all' );
@@ -298,7 +298,7 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function {
 		}
 		if ( $this->tsvg_page_slug == 'tsvg-builder' ) {
 			wp_enqueue_media();
-			wp_register_script( 'tsvg-toastr', plugin_dir_url( __FILE__ ) . 'js/toastr.min.js', array(), time(), false );
+			wp_register_script( 'tsvg-toastr', plugin_dir_url( __FILE__ ) . 'js/tsvg-toastr.min.js', array(), time(), false );
 			wp_enqueue_script( 'tsvg-color-picker', plugin_dir_url( __FILE__ ) . 'js/tsvg-spectrum.js', array(), time(), false );
 			wp_enqueue_script( 'tsvg-builder', plugin_dir_url( __FILE__ ) . 'js/tsvg-builder.js', array( 'jquery', 'tsvg-toastr', 'jquery-ui-sortable', 'tsvg-color-picker' ), time(), true );
 			if ( $this->tsvg_build == 'edit' ) {

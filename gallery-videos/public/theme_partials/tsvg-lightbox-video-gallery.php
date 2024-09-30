@@ -77,6 +77,7 @@
 		top: 0px;
 		left: 0px;
 		width: 100%;
+		height: 100%;
 		max-width: none !important;
 	}
 	.tsvg-lightbox-block-inner-<?php echo esc_attr( $tsvg_shortcode_id ); ?> [data-tsvg-img='lImgZoom1'] {

@@ -1,10 +1,10 @@
-﻿=== Video Gallery - YouTube Gallery and Vimeo Gallery ===
+﻿=== Video Gallery - Best WordPress YouTube Gallery Plugin ===
 Contributors: totalsoft
-Donate link: https://total-soft.com/wp-video-gallery
+Donate link: https://total-soft.com/wp-video-gallery/
 Tags: gallery, image gallery, photo gallery, video gallery, wordpress gallery
 Requires at least: 4.0
 Tested up to: 6.6
-Stable tag: 2.3.7
+Stable tag: 2.2.8
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -20,7 +20,7 @@ Gallery is a user-friendly plugin to display user or hashtag-based gallery feeds
 * [Video Gallery User Manual](http://total-soft.pe.hu/gallery-video-user-manual/)
 * [Video Gallery Support](https://wordpress.org/support/plugin/gallery-videos)
 
-The software is responsive user friendly and can really enhance the reiting of your site when people search for related topics and videos whether on Youtube, Vimeo, Rumble and Wistia or search engines in general. Getting your Youtube, Vimeo, Rumble or Wistia extension working is straightforward with a few simple steps required to build this great video resources on your WordPress site. The benefits of the gallery plugin are already making a real difference for all kinds of sites from business oriented to hobby or entertainment pages. The great thing about the Gallery is that it allows users to express their creative editing skills when composing a video collection slideshow or even workshop and information content. Being able to engage with site visitors this way directly with gallery also helps to make your site much more reiting.
+The software is responsive user friendly and can really enhance the reiting of your site when people search for related topics and videos whether on Youtube, Vimeo and Wistia or search engines in general. Getting your Youtube, Vimeo or Wistia extension working is straightforward with a few simple steps required to build this great video resources on your WordPress site. The benefits of the gallery plugin are already making a real difference for all kinds of sites from business oriented to hobby or entertainment pages. The great thing about the Gallery is that it allows users to express their creative editing skills when composing a video collection slideshow or even workshop and information content. Being able to engage with site visitors this way directly with gallery also helps to make your site much more reiting.
 
 
 = Fully responsive =
@@ -45,8 +45,8 @@ Most powerful features
 * Edit galleries and add/edit/delete.
 * Support all major WordPress versions.
 * Supports multiple categories for viewing the Video.
-* Support YouTube, Vimeo, Wistia, MP4, Rumble.
-* Unlimited videos (YouTube, Vimeo, Wistia, Rumble & MP4).
+* Support YouTube, Vimeo, Wistia, MP4.
+* Unlimited videos (YouTube, Vimeo, Wistia & MP4).
 * Gallery animations that run smoothly on modern devices.
 * Video Gallery plugin plays nice with your existing HTML and CSS, making it a great choice for responsive layouts.
 * Add custom link on single videos in gallery views.
@@ -67,7 +67,6 @@ Most powerful features
 
 **Effects for gallery opening**
 
-* = Video Portfolio Theme - Coming Soon =
 
 * [Effect 1 - Demo](https://total-soft.com/wp-video-gallery-lightbox-2/)
 * [Effect 2 - Demo](https://total-soft.com/wp-video-gallery-fancy/)
@@ -199,7 +198,7 @@ After activating video gallery choose the type of version you wish to use.
 
 = 6). Why I can not add my video? =
 
-* The problem is that your video is not suitable for use or must be from Youtube, Vimeo, Rumble, Wistia or mp4 and most importantly the must be public and not private.
+* The problem is that your video is not suitable for use or must be from Youtube, Vimeo, Wistia or mp4 and most importantly the must be public and not private.
 
 = 7). How many Gallery may I create for WordPress website? =
 
@@ -232,43 +231,9 @@ After activating video gallery choose the type of version you wish to use.
 
 == Changelog ==
 
-= Version 2.3.7 =
+= Version 2.2.8 =
 
-* Fixed a bug in the space gallery. The video on the popup did not work correctly.
-
-= Version 2.3.6 =
-
-* Added functionality in the Thumbnail theme. To disable or enable the arrows on the lightbox.
-* Fixed problems on the lightbox theme. There was a problem with several emamas.
-
-= Version 2.3.5 =
-
-* Fixed problem with YouTube.
-
-= Version 2.3.4 =
-
-* Added the ability to add videos from Rumble.
-* Fixed an issue with Crio theme.
-
-= Version 2.3.3 =
-
-* Fixed a bug in Thumbnail gallery. The video did not open correctly in Lightbox.
-
-= Version 2.3.2 =
-
-* Fixed problem with Divi theme. The lightbox in the first video gallery did not open.
-
-= Version 2.3.1 =
-
-* Fixed a problem in the Thumbnails theme. In Android, the video from YouTube did not turn on.
-
-= Version 2.3.0 =
-
-* Problem solved. The plugin did not work with the Divi theme. All JS files in the Divi theme did not work.
-
-= Version 2.2.9 =
-
-* Fixed a small bug in the responsive.
+* Fixed bug with another topic. Image is not an indicator for YouTube video.
 
 = Version 2.2.7 =
 
