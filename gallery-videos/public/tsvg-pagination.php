@@ -545,21 +545,21 @@
 		if( jQuery('.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>').attr("data-pagination") == 'pagination'){
 			tsvgPaginationItemsLenth = Math.ceil(tsvgItemsLength / tsvgNumberItemsPerPage);
 			tsvgPaginationResultLength = tsvgPaginationItemsLenth = tsvgPaginationItemsLenth < 1 ? 1 : tsvgPaginationItemsLenth;
-			jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>  .tsvg-pagination-pages').append('<li class="tsvg-pagination-page-item tsvg-pagination-page-item-prev" data-item-number="prev"><a href="javascript:void(0)" class="tsvg-pagination-page-link"  ><span >'+tsvgPrevText+'</span> <i class="'+tsvgPrevIcon+'"></i></a></li>')
+			jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>  .tsvg-pagination-pages').append(`<li class="tsvg-pagination-page-item tsvg-pagination-page-item-prev" data-item-number="prev"><a href="javascript:void(0)" class="tsvg-pagination-page-link"  ><span >${tsvgPrevText}</span> <i class="${tsvgPrevIcon}"></i></a></li>`)
 			for (let i = 0; i < tsvgPaginationResultLength; i++) {
 				let tsvgItemNumber = i + 1;
-				jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?> .tsvg-pagination-pages').append('<li data-item-number="' + tsvgItemNumber + '" class="tsvg-pagination-page-item tsvg-pagination-page-number "><a class="tsvg-pagination-page-link" href="javascript:void(0)">' + tsvgItemNumber + '</a></li>')
+				jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?> .tsvg-pagination-pages').append(`<li data-item-number="${tsvgItemNumber}" class="tsvg-pagination-page-item tsvg-pagination-page-number "><a class="tsvg-pagination-page-link" href="javascript:void(0)">${tsvgItemNumber}</a></li>`)
 			}
 			if(tsvgPageView == 'vw-4'){ jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>  .tsvg-pagination-page-number').addClass('tsvg-pagination-disabled-item');}
 			if(tsvgPageView == 'vw-2' && tsvgPaginationItemsLenth > 7){
 				if((tsvgPaginationResultLength + 1) < tsvgPaginationItemsLenth) jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>  .tsvg-pagination-pages').append('<li data-item-number=" " class="tsvg-pagination-page-item page-null  "><a class="tsvg-pagination-page-link" href="javascript:void(0)">...</a></li>')
-				jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>  .tsvg-pagination-pages').append('<li data-item-number="' + tsvgPaginationItemsLenth + '" class="tsvg-pagination-page-item "><a class="tsvg-pagination-page-link" href="javascript:void(0)">' + tsvgPaginationItemsLenth + '</a></li>')
+				jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>  .tsvg-pagination-pages').append(`<li data-item-number="${tsvgPaginationItemsLenth}" class="tsvg-pagination-page-item "><a class="tsvg-pagination-page-link" href="javascript:void(0)">${tsvgPaginationItemsLenth}</a></li>`)
 			}
 			if(tsvgPageView=='vw-3'&& tsvgPaginationItemsLenth>4){
 				if((tsvgPaginationResultLength+1) < tsvgPaginationItemsLenth)jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>  .tsvg-pagination-pages').append('<li data-item-number=" " class="tsvg-pagination-page-item page-null  "><a class="tsvg-pagination-page-link" href="javascript:void(0)">...</a></li>')
-				jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?> .tsvg-pagination-pages').append('<li data-item-number="' + tsvgPaginationItemsLenth + '" class="tsvg-pagination-page-item "><a class="tsvg-pagination-page-link" href="javascript:void(0)">' + tsvgPaginationItemsLenth + '</a></li>')
+				jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?> .tsvg-pagination-pages').append(`<li data-item-number="${tsvgPaginationItemsLenth}" class="tsvg-pagination-page-item "><a class="tsvg-pagination-page-link" href="javascript:void(0)">${tsvgPaginationItemsLenth}</a></li>`)
 			}
-			jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>  .tsvg-pagination-pages').append('<li class="tsvg-pagination-page-item tsvg-pagination-page-item-next" data-item-number="next"><a href="javascript:void(0)" class="tsvg-pagination-page-link"  ><span>'+tsvgNextText+'</span><i class="'+tsvgNextIcon+'"></i></a></li>')
+			jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>  .tsvg-pagination-pages').append(`<li class="tsvg-pagination-page-item tsvg-pagination-page-item-next" data-item-number="next"><a href="javascript:void(0)" class="tsvg-pagination-page-link"  ><span>${tsvgNextText}</span><i class="${tsvgNextIcon}"></i></a></li>`)
 			jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>  ul.tsvg-pagination-pages li').not('.page-null').on("click",function (e) {
 				if( jQuery(this).hasClass('tsvg-pagination-page-active')){
 					return false;
@@ -633,7 +633,7 @@
 					}else{
 						jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>  .tsvg-pagination-page-item[data-item-number="next"]').removeClass('tsvg-pagination-disabled-item');
 					}
-					jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>  .tsvg-pagination-page-item[data-item-number="' + tsvgPrevPosition + '"]').click()
+					jQuery(`.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>  .tsvg-pagination-page-item[data-item-number="${tsvgPrevPosition}"]`).click()
 				})
 	  			jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>  .tsvg-pagination-page-item[data-item-number="next"]').unbind('click')
 	  			jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>  .tsvg-pagination-page-item[data-item-number="next"]').click(function () {
@@ -669,7 +669,7 @@
 	  				}else{
 						  jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>  .tsvg-pagination-page-item[data-item-number="next"]').removeClass('tsvg-pagination-disabled-item');
 	  				}
-	  				jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>  .tsvg-pagination-page-item[data-item-number="' + tsvgNextPosition + '"]').click();
+	  				jQuery(`.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>  .tsvg-pagination-page-item[data-item-number="${tsvgNextPosition}"]`).click();
 	  			})
 				tsvgPaginationCreate<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>(tsvgPaginationData<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>,tsvgShowFrom, tsvgShowTo)
 	  			if(tsvgEffectOpenType=='effect-1' && jQuery('.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?> figure>ul>li').length>1){
@@ -687,7 +687,7 @@
 			})
 			jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?> .tsvg-pagination-page-number:nth-child(2)').click();
 		}else if( jQuery('.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>').attr("data-pagination")=='load-more'){
-			jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>  .tsvg-pagination-pages-wrapper').append('<a href="javascript:void(0)" class="btn btn-lg"><span>'+tsvgLoadText+'</span><i class="'+tsvgLoadIcon+'"></i></a>');
+			jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>  .tsvg-pagination-pages-wrapper').append(`<a href="javascript:void(0)" class="btn btn-lg"><span>${tsvgLoadText}</span><i class="${tsvgLoadIcon}"></i></a>`);
 			jQuery('.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>  .btn-lg').click(function (e) {
 		 		let tsvgMaxHeight =jQuery('.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>').height(); 
 		 		let tsvgMainLength = jQuery('.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?> figure ul li').length;

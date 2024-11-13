@@ -448,7 +448,7 @@
                     keyboard_shortcuts: true,
                     changepicturecallback: function () {},
                     callback: function () {},
-                    markup: '<div class="tsvg_pp_pic_holder<?php echo esc_attr( $tsvg_shortcode_id ); ?>"> \
+                    markup: `<div class="tsvg_pp_pic_holder<?php echo esc_attr( $tsvg_shortcode_id ); ?>"> \
                             <div class="tsvg_pp_top<?php echo esc_attr( $tsvg_shortcode_id ); ?>"> \
                             <div class="tsvg_pp_left<?php echo esc_attr( $tsvg_shortcode_id ); ?>"></div> \
                             <div class="tsvg_pp_middle<?php echo esc_attr( $tsvg_shortcode_id ); ?>"></div> \
@@ -469,11 +469,11 @@
                                 <div id="tsvg_pp_full_res<?php echo esc_attr( $tsvg_shortcode_id ); ?>"></div> \
                                 <div class="tsvg_pp_details<?php echo esc_attr( $tsvg_shortcode_id ); ?> tsvg_clearfix<?php echo esc_attr( $tsvg_shortcode_id ); ?>"> \
                                 <p class="tsvg_pp_description<?php echo esc_attr( $tsvg_shortcode_id ); ?>"></p> \
-                                <i class="totalsoft-gv-lvg-close<?php echo esc_attr( $tsvg_shortcode_id ); ?> pp_close<?php echo esc_attr( $tsvg_shortcode_id ); ?> '+ tsvg_pp_settings.icon_close + '"><span>' + tsvg_pp_settings.icon_close_text + '</span></i> \
+                                <i class="totalsoft-gv-lvg-close<?php echo esc_attr( $tsvg_shortcode_id ); ?> pp_close<?php echo esc_attr( $tsvg_shortcode_id ); ?> ${tsvg_pp_settings.icon_close}"><span>${tsvg_pp_settings.icon_close_text}</span></i> \
                                 <div class="tsvg_pp_nav<?php echo esc_attr( $tsvg_shortcode_id ); ?>"> \
-                                    <i href="#" class="tsvg_pp_arrow_previous<?php echo esc_attr( $tsvg_shortcode_id ); ?> totalsoft-gv-lvg-nepr<?php echo esc_attr( $tsvg_shortcode_id ); ?> '+ tsvg_pp_settings.icon_prev + '"></i> \
+                                    <i href="#" class="tsvg_pp_arrow_previous<?php echo esc_attr( $tsvg_shortcode_id ); ?> totalsoft-gv-lvg-nepr<?php echo esc_attr( $tsvg_shortcode_id ); ?> ${tsvg_pp_settings.icon_prev}"></i> \
                                     <p class="tsvg_current_text_holder totalsoft-gv-lvg-text<?php echo esc_attr( $tsvg_shortcode_id ); ?>">0/0</p> \
-                                    <i href="#" class="tsvg_pp_arrow_next<?php echo esc_attr( $tsvg_shortcode_id ); ?> totalsoft-gv-lvg-nepr<?php echo esc_attr( $tsvg_shortcode_id ); ?> '+ tsvg_pp_settings.icon_next + '"></i> \
+                                    <i href="#" class="tsvg_pp_arrow_next<?php echo esc_attr( $tsvg_shortcode_id ); ?> totalsoft-gv-lvg-nepr<?php echo esc_attr( $tsvg_shortcode_id ); ?> ${tsvg_pp_settings.icon_next}"></i> \
                                 </div> \
                                 </div> \
                                 </div> \
@@ -487,7 +487,7 @@
                             <div class="tsvg_pp_right<?php echo esc_attr( $tsvg_shortcode_id ); ?>"></div> \
                             </div> \
                             </div> \
-                            <div class="tsvg_pp_overlay<?php echo esc_attr( $tsvg_shortcode_id ); ?>"></div>',
+                            <div class="tsvg_pp_overlay<?php echo esc_attr( $tsvg_shortcode_id ); ?>"></div>`,
                     gallery_markup: '<div class="tsvg_pp_gallery<?php echo esc_attr( $tsvg_shortcode_id ); ?>"> \
                                 <a href="#" class="tsvg_pp_arrow_previous<?php echo esc_attr( $tsvg_shortcode_id ); ?>">Previous</a> \
                                 <ul> \
@@ -925,7 +925,7 @@
                             $tsvg_pp_pic_holder<?php echo esc_attr( $tsvg_shortcode_id ); ?>.find('.tsvg_pp_gallery<?php echo esc_attr( $tsvg_shortcode_id ); ?>').hide().addClass('disabled');
                         }
                         $.prettyPhoto<?php echo esc_attr( $tsvg_shortcode_id ); ?>.changeGalleryPage(goToPage);
-                        $tsvg_pp_pic_holder<?php echo esc_attr( $tsvg_shortcode_id ); ?>.find('.tsvg_pp_gallery<?php echo esc_attr( $tsvg_shortcode_id ); ?> ul li:eq(' + set_position + ')').addClass('selected');
+                        $tsvg_pp_pic_holder<?php echo esc_attr( $tsvg_shortcode_id ); ?>.find(`.tsvg_pp_gallery<?php echo esc_attr( $tsvg_shortcode_id ); ?> ul li:eq( ${set_position} )`).addClass('selected');
                     }
                     else {
                         $tsvg_pp_pic_holder<?php echo esc_attr( $tsvg_shortcode_id ); ?>.find('.tsvg_pp_content<?php echo esc_attr( $tsvg_shortcode_id ); ?>').unbind('mouseenter mouseleave');
@@ -957,7 +957,7 @@
                             } else {
                                 classname = '';
                             }
-                            toInject += "<li class='" + classname + "'><a href='#'><img src='" + pp_images[i] + "' width='50' alt='' /></a></li>";
+                            toInject += `<li class='${classname}'><a href='#'><img src='${pp_images[i]}' width='50' alt='' /></a></li>`;
                         }
                         toInject = settings.gallery_markup.replace(/{gallery}/g, toInject);
                         $tsvg_pp_pic_holder<?php echo esc_attr( $tsvg_shortcode_id ); ?>.find('#tsvg_pp_full_res<?php echo esc_attr( $tsvg_shortcode_id ); ?>').after(toInject);
@@ -976,7 +976,7 @@
                         }, function () {
                             $tsvg_pp_pic_holder<?php echo esc_attr( $tsvg_shortcode_id ); ?>.find('.tsvg_pp_gallery<?php echo esc_attr( $tsvg_shortcode_id ); ?>:not(.disabled)').fadeOut();
                         });
-                        itemWidth = 52 + 5;
+                        itemWidth = 57;
                         $tsvg_pp_pic_holder<?php echo esc_attr( $tsvg_shortcode_id ); ?>.find('.tsvg_pp_gallery<?php echo esc_attr( $tsvg_shortcode_id ); ?> ul li').each(function (i) {
                             $(this).css({ 'position': 'absolute', 'left': i * itemWidth });
                             $(this).find('a').unbind('click').click(function () {
