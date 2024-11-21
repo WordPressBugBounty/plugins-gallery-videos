@@ -9,7 +9,7 @@ class TS_Video_Gallery {
 		if ( defined( 'TSVG_VERSION' ) ) {
 			$this->version = TSVG_VERSION;
 		} else {
-			$this->version = '2.3.9';
+			$this->version = '2.4.0';
 		}
 		$this->plugin_name = 'TS Video Gallery';
 		$this->theme_details = wp_get_theme();
