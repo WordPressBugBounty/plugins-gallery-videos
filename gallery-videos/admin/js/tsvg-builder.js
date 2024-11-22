@@ -401,7 +401,7 @@
 						}
 						tsvgNewBlock = `
 							<li class='tsvg-content-popup-block-${tsvgShortcodeId} tsvg-cp-block-view tsvg-cp-block-view-${tsvgShortcodeId} tsvg-cp-block-view-${tsvgContentMaskViewArr[tsvgContentMaskView]}'  data-tsvg-target='${tsvgContentLinkTarget}'  data-tsvg-link='${tsvgContentLinkUrl}'  data-tsvg-href='${tsvgBlockVideoUrl}'   data-tsvg-id='${tsvgNewBlockId}'  data-tsvg-shadow='${tsvgContentShadow}'  style='-moz-animation-delay: ${tsvgTransitionDelay}s;-webkit-animation-delay: ${tsvgTransitionDelay}s;animation-delay: ${tsvgTransitionDelay}s;' >
-								<figure class='tsvg-block-inner' >
+								<figure class='tsvg-block-inner'>
 									<img  width='' height='' src='${tsvgBlockImgUrl}' alt='${tsvgBlockTitle}'  title='${tsvgBlockTitle}' class='tsvg-thumbnails-block-img-${tsvgShortcodeId}' >
 									<div class='${tsvgContentMaskParent}' >
 										<div class='${tsvgContentMask}' ></div>
@@ -508,47 +508,48 @@
 					case 'Classic Gallery':
 						let tsvgClassicLink = tsvgAction == "add" ? '#' : $(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgCopiedId}']`).attr("data-tsvg-link"),
 							tsvgClassicBlockEffect = $(" .tsvg_position_select[data-tsvg-select='TotalSoft_GV_1_05'] .tsvg_active").attr('data-tsvg-pos'),
-							tsvgClassicBlockImgEffect = $(" .tsvg_position_select[data-tsvg-select='TotalSoft_GV_1_08'] .tsvg_active").attr('data-tsvg-pos'),
-							tsvgClassicBlockHover = $(" .tsvg_position_select[data-tsvg-select='TotalSoft_GV_1_14'] .tsvg_active").attr('data-tsvg-pos'),
-							tsvgClassicBlockHoverEffect = $(" .tsvg_position_select[data-tsvg-select='TotalSoft_GV_1_02'] .tsvg_active").attr('data-tsvg-pos'),
-							tsvgClassicBlockItemsEffect = $(" .tsvg_position_select[data-tsvg-select='TotalSoft_GV_1_04'] .tsvg_active").attr('data-tsvg-pos'),
+							tsvgClassicBlockItemsEffect = $(`#TotalSoft_GV_1_04`).val(),
+							tsvgClassicBlockImgEffect = $(`#TotalSoft_GV_1_08`).val(),
+							tsvgClassicBlockHover = $(`#TotalSoft_GV_1_14`).val(),
+							tsvgClassicBlockHoverEffect = $(".tsvg_position_select[data-tsvg-select='TotalSoft_GV_1_02'] .tsvg_active").attr('data-tsvg-pos'),
 							tsvgClassicIcon = $("#TotalSoft_GV_1_12-icon_value").val(),
 							tsvgClassicDesc = tsvgAction == "add" ? '' : $(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgCopiedId}'] .tsvg-classic-block-desc`).html(),
 							tsvgClassicLinkTarget = tsvgAction == "add" ? '_self' : $(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgCopiedId}']`).attr("data-tsvg-target");
 						tsvgBlockVideoUrl = tsvgAction == "add" ? tsvg_builder_object.tsvg_no_iframe : $(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgCopiedId}']`).attr("data-tsvg-src");
-						tsvgNewBlock = `
-							<li class='tsvg-classic-block-${tsvgShortcodeId}'  data-tsvg-id='${tsvgNewBlockId}' data-tsvg-effect='${tsvgClassicBlockEffect}' style='-moz-animation-delay: ${tsvgTransitionDelay}s;-webkit-animation-delay: ${tsvgTransitionDelay}s;animation-delay: ${tsvgTransitionDelay}s; '  data-tsvg-target='${tsvgClassicLinkTarget}'  data-tsvg-link='${tsvgClassicLink}' data-tsvg-src='${tsvgBlockVideoUrl}'>
-								<figure class='tsvg-classic-block-inner-${tsvgShortcodeId}' >
-									<div class='tsvg-classic-block-items-${tsvgShortcodeId}' data-tsvg-effect='${tsvgClassicBlockItemsEffect}' >
-										<img  width='' height='' src='${tsvgBlockImgUrl}' alt='img' class='tsvg-classic-block-img-${tsvgShortcodeId}' data-tsvg-img='${tsvgClassicBlockImgEffect}' >
-										<div class='tsvg-classic-block-desc' >
-											${tsvgClassicDesc}
-										</div>
-										<figcaption  data-tsvg-hover='${tsvgClassicBlockHover}' >
-											<div class='tsvg-classic-block-hover' data-tsvg-ef='${tsvgClassicBlockHoverEffect}' >
-												<div class='tsvg-classic-block-hover-div-${tsvgShortcodeId}' >
-													<div class='tsvg-classic-hover-field-one'></div>
-													<div class='tsvg-classic-hover-field-two'>
-														<div class='tsvg-classic-hover-field-three'></div>
+
+						
+						tsvgNewBlock = 
+						`
+							<li class="tsvg-classic-block-${tsvgShortcodeId}"  data-tsvg-id="${tsvgNewBlockId}" style="-moz-animation-delay:  ${tsvgTransitionDelay}s;-webkit-animation-delay:  ${tsvgTransitionDelay}s;animation-delay:  ${tsvgTransitionDelay}s;" data-tsvg-effect="${tsvgClassicBlockEffect}" data-tsvg-src="${tsvgBlockVideoUrl}" data-tsvg-link="${tsvgClassicLink}" data-tsvg-target="${tsvgClassicLinkTarget}">
+								<figure class="tsvg-classic-block-inner-${tsvgShortcodeId}">
+									<div class="tsvg-classic-block-items-${tsvgShortcodeId}" data-tsvg-effect="${tsvgClassicBlockItemsEffect}">
+										<img  width="" height="" src="${tsvgBlockImgUrl}" alt="img" class="tsvg-classic-block-img-${tsvgShortcodeId}" data-tsvg-img="${tsvgClassicBlockImgEffect}">
+										<div class="tsvg-classic-block-desc">${tsvgClassicDesc}</div>
+										<figcaption data-tsvg-hover="${tsvgClassicBlockHover}">
+											<div class="tsvg-classic-block-hover" data-tsvg-ef="${tsvgClassicBlockHoverEffect}">
+												<div class="tsvg-classic-block-hover-div-${tsvgShortcodeId}">
+													<div class="tsvg-classic-hover-field-one"></div>
+													<div class="tsvg-classic-hover-field-two">
+														<div class="tsvg-classic-hover-field-three"></div>
 													</div>
 												</div>
-												<div class='tsvg-classic-title-hover-div-${tsvgShortcodeId}' >
-													<div class='tsvg-classic-title-hover-div-inner-${tsvgShortcodeId}' >
-														<span class='tsvg-classic-title-hover-span-${tsvgShortcodeId}' >
+												<div class="tsvg-classic-title-hover-div-${tsvgShortcodeId}" >
+													<div class="tsvg-classic-title-hover-div-inner-${tsvgShortcodeId}">
+														<span class="tsvg-classic-title-hover-span-${tsvgShortcodeId}">
 															${tsvgBlockTitle}
 														</span>
 													</div>
 												</div>
-												<div class='tsvg-classic-icon-hover-div-${tsvgShortcodeId}' >
+												<div class="tsvg-classic-icon-hover-div-${tsvgShortcodeId}">
 													<span>
-														<i class='tsvg-classic-icon-hover-${tsvgShortcodeId} ${tsvgClassicIcon}' > </i>
+														<i class="tsvg-classic-icon-hover-${tsvgShortcodeId} ${tsvgClassicIcon}"></i>
 													</span>
 												</div>
 											</div>
 										</figcaption>
-									 </div>
+									</div>
 								</figure>
-							</li> 
+							</li>
 						`;
 						break;
 					case 'Space Gallery':
@@ -1188,6 +1189,7 @@
 					if (tsvgVideos[`${tsvgEditId}`].hasOwnProperty(`TS_VG_SetName`)) {
 						tsvgVideos[`${tsvgEditId}`].TS_VG_SetName = $(this).val();
 					}
+
 					switch (tsvgShortcodeTheme) {
 						case 'Grid Video Gallery':
 							let tsvgOldHeight = $("li.tsvg-grid-layout-item[data-tsvg-id='"+tsvgEditId+"']").height(),

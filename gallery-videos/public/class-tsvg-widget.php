@@ -10,8 +10,7 @@ class TS_Video_Gallery_Widget extends WP_Widget {
 	public function tsvg_get_all_records( $tsvg_return = false, $tsvg_id = '' ) {
 		global $wpdb;
 		$tsvg_db_manager_table = esc_sql( $wpdb->prefix . 'ts_galleryv_manager' );
-		$tsvg_sql = $wpdb->prepare("SELECT `id`,`TS_VG_Title` FROM {$tsvg_db_manager_table}");
-		$tsvg_all_records   = $wpdb->get_results(  $tsvg_sql, ARRAY_A );
+		$tsvg_all_records   = $wpdb->get_results( $wpdb->prepare("SELECT `id`,`TS_VG_Title` FROM %s",$tsvg_db_manager_table ), ARRAY_A );
 		if ( $tsvg_return == true ) {
 			$tsvg_return_options = '';
 			array_unshift(
@@ -37,7 +36,7 @@ class TS_Video_Gallery_Widget extends WP_Widget {
 		}
 	}
 	public function widget( $args, $instance ) {
-		echo $args['before_widget'];
+		echo esc_html($args['before_widget']);
 		$tsvg_id = empty( $instance['tsvg_id'] ) ? '' : $instance['tsvg_id'];
 		if ( $tsvg_id ) {
 			$tsvg_get_records = array_column( $this->tsvg_get_all_records(), 'TS_VG_Title', 'id' );
@@ -47,7 +46,7 @@ class TS_Video_Gallery_Widget extends WP_Widget {
 				echo '<p>Selected gallery is not defined.</p>';
 			}
 		}
-		echo $args['after_widget'];
+		echo esc_html($args['after_widget']);
 	}
 	public function form( $instance ) {
 		$tsvg_id = ! empty( $instance['tsvg_id'] ) ? $instance['tsvg_id'] : '';
@@ -61,7 +60,7 @@ class TS_Video_Gallery_Widget extends WP_Widget {
 			',
 			esc_attr( $this->get_field_id( 'ts-video-gallery' ) ),
 			esc_attr( $this->get_field_name( 'tsvg_id' ) ),
-			$this->tsvg_get_all_records( true, $tsvg_id )
+			esc_attr( $this->tsvg_get_all_records( true, esc_attr($tsvg_id) ) )
 		);
 	}
 	public function update( $new_instance, $old_instance ) {

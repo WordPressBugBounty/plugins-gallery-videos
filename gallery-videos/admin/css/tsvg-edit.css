@@ -371,8 +371,7 @@ div.tsvg_position_select-ef {
 	width: 100%;
 	max-width: 100%;
 	background-color: #ffffff;
-	margin-top: .45rem;
-	margin-bottom: 1.45rem;
+	padding: .45rem 0;
 }
 #tsvg-add_video {
 	background-color: #a188e2;

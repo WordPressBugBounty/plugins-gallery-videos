@@ -9,7 +9,7 @@ class TS_Video_Gallery {
 		if ( defined( 'TSVG_VERSION' ) ) {
 			$this->version = TSVG_VERSION;
 		} else {
-			$this->version = '2.4.0';
+			$this->version = '2.4.1';
 		}
 		$this->plugin_name = 'TS Video Gallery';
 		$this->theme_details = wp_get_theme();
@@ -19,7 +19,7 @@ class TS_Video_Gallery {
 		$this->tsvg_update_plugin();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-		new TS_Video_Gallery_Block();
+		new TS_Video_Gallery_Block($this->version);
 		global $pagenow;
 		if( in_array($pagenow,["post-new.php","edit.php","post.php"])){
 			add_action( 'admin_enqueue_scripts', [$this,'tsvg_activate_scripts'] );
@@ -57,14 +57,11 @@ class TS_Video_Gallery {
 			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 			dbDelta( $tsvg_galleries_table_create );
 			dbDelta( $tsvg_videoes_table_create );
-			$tsvg_galleries_table_convert = 'ALTER TABLE ' . $tsvg_db_manager_table . ' CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
-			$tsvg_videoes_table_convert   = 'ALTER TABLE ' . $tsvg_db_videos_table . ' CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
-			$wpdb->query( $tsvg_galleries_table_convert );
-			$wpdb->query( $tsvg_videoes_table_convert );
+			$wpdb->query( $wpdb->prepare('ALTER TABLE %s CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci', $tsvg_db_manager_table) );
+			$wpdb->query( $wpdb->prepare('ALTER TABLE %s CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci', $tsvg_db_videos_table) );
 			$tsvg_old_table_check = $wpdb->get_results( $wpdb->prepare( "SELECT  table_name FROM information_schema.TABLES WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s", esc_sql( $wpdb->dbname ), esc_sql( $wpdb->prefix . 'totalsoft_galleryv_manager' ) ) );
 			if ( ! empty( $tsvg_old_table_check ) ) {
-				$tsvg_sql = $wpdb->prepare("SELECT * FROM " . esc_sql( $wpdb->prefix . "totalsoft_galleryv_manager" ) );
-				$tsvg_old_records = $wpdb->get_results(  $tsvg_sql , ARRAY_A );
+				$tsvg_old_records = $wpdb->get_results(  $wpdb->prepare("SELECT * FROM %s", esc_sql( $wpdb->prefix . "totalsoft_galleryv_manager" ) ) , ARRAY_A );
 				$tsvg_pagination_options        = array(
 					'TotalSoft_VGallery_Sty_01' => 'Next',
 					'TotalSoft_VGallery_Sty_02' => 'Prev',
@@ -424,8 +421,8 @@ class TS_Video_Gallery {
 							'TS_VG_Option_Style' => json_encode( $tsvg_pagination_options ),
 							'TS_VG_Sort'         => implode( ',', $tsvg_old_record_sort ),
 							'TS_VG_Old_User'     => 'yes',
-							'created_at'         => date( 'd.m.Y h:i:sa' ),
-							'updated_at'         => date( 'd.m.Y h:i:sa' )
+							'created_at'         => gmdate( 'd.m.Y h:i:sa' ),
+							'updated_at'         => gmdate( 'd.m.Y h:i:sa' )
 						),
 						array( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
 					);
@@ -516,8 +513,8 @@ class TS_Video_Gallery {
 					'TS_VG_Style'        => (object) $tsvg_theme_default_data,
 					'TS_VG_Sort'         => $tsvg_default_data['TS_VG_Sort'],
 					'TS_VG_Old_User'     => 'no',
-					'created_at'         => date( 'd.m.Y h:i:sa' ),
-					'updated_at'         => date( 'd.m.Y h:i:sa' ),
+					'created_at'         => gmdate( 'd.m.Y h:i:sa' ),
+					'updated_at'         => gmdate( 'd.m.Y h:i:sa' ),
 				);
 				$tsvg_default_data['Videos'] = array_values( $tsvg_default_data['Videos'] );
 				foreach ( $tsvg_default_data['Videos'] as $key => $value ) {
@@ -647,7 +644,7 @@ class TS_Video_Gallery {
 				'tsvg_fontface_' . $tsvg_shortcode_id,
 				$tsvg_font_families_css
 			);
-			$tsvg_shortcode_id = rand( 100000, 999999 );
+			$tsvg_shortcode_id = wp_rand( 100000, 999999 );
 		}
 		$tsvg_js_shortcode_id = $tsvg_shortcode_id;
 		wp_enqueue_script("jquery");
@@ -761,7 +758,14 @@ class TS_Video_Gallery {
 		}
 		echo sprintf(
 			' %1$s </section> ',
-			$tsvg_stylesheet_ff
+			wp_kses( $tsvg_stylesheet_ff, 
+				array( 
+					'style' => array(
+						'id' => true,
+						'class' => true,
+					),
+				)
+			)
 		);
 	}
 	public function ts_video_gallery_shortcode( $atts ) {
@@ -773,7 +777,7 @@ class TS_Video_Gallery {
 			$atts
 		);
 		\ob_start();
-		echo $this->tsvg_shortcode_content( sanitize_text_field($atts['id']), sanitize_text_field($atts['edit']) );
+		echo esc_attr( $this->tsvg_shortcode_content( esc_attr($atts['id']), esc_attr($atts['edit']) ) );
 		return \ob_get_clean();
 	}
 	public function get_version() {

@@ -65,25 +65,25 @@
 		}
 	<?php } ?>
 	:root{
-		--tsvg_s_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_pagination_options->TotalSoft_VGallery_Sty_04 ) ); ?>;
-		--tsvg_s_bc_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_pagination_options->TotalSoft_VGallery_Sty_03 ) ); ?>;
-		--tsvg_s_h_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_pagination_options->TotalSoft_VGallery_Sty_10 ) ); ?>;
-		--tsvg_s_h_bc_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_pagination_options->TotalSoft_VGallery_Sty_09 ) ); ?>;
-		--tsvg_s_ac_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_pagination_options->TotalSoft_VGallery_Sty_08 ) ); ?>;
-		--tsvg_s_ac_bc_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_pagination_options->TotalSoft_VGallery_Sty_07 ) ); ?>;
+		--tsvg_s_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_pagination_options->TotalSoft_VGallery_Sty_04 ) ); ?>;
+		--tsvg_s_bc_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_pagination_options->TotalSoft_VGallery_Sty_03 ) ); ?>;
+		--tsvg_s_h_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_pagination_options->TotalSoft_VGallery_Sty_10 ) ); ?>;
+		--tsvg_s_h_bc_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_pagination_options->TotalSoft_VGallery_Sty_09 ) ); ?>;
+		--tsvg_s_ac_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_pagination_options->TotalSoft_VGallery_Sty_08 ) ); ?>;
+		--tsvg_s_ac_bc_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_pagination_options->TotalSoft_VGallery_Sty_07 ) ); ?>;
 		--tsvg_s_fs_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo filter_var( esc_html( $tsvg_pagination_options->TotalSoft_VGallery_Sty_05 ), FILTER_VALIDATE_INT ); ?>px;
-		--tsvg_s_ff_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_pagination_options->TotalSoft_VGallery_Sty_06 ) ); ?>;
-		--tsvg_s_b_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_pagination_options->TotalSoft_VGallery_Sty_11 ) ); ?>;
+		--tsvg_s_ff_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_pagination_options->TotalSoft_VGallery_Sty_06 ) ); ?>;
+		--tsvg_s_b_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_pagination_options->TotalSoft_VGallery_Sty_11 ) ); ?>;
 		--tsvg_s_b_s_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo filter_var( esc_html( $tsvg_pagination_options->TotalSoft_VGallery_Sty_12 ), FILTER_VALIDATE_INT ); ?>px;
 		--tsvg_s_pl_fs_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo filter_var( esc_html( $tsvg_pagination_options->TotalSoft_VGallery_Sty_13 ), FILTER_VALIDATE_INT ); ?>px;
-		--tsvg_s_l_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_pagination_options->TotalSoft_VGallery_Sty_19 ) ); ?>;
-		--tsvg_s_l_bc_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_pagination_options->TotalSoft_VGallery_Sty_20 ) ); ?>;
+		--tsvg_s_l_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_pagination_options->TotalSoft_VGallery_Sty_19 ) ); ?>;
+		--tsvg_s_l_bc_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_pagination_options->TotalSoft_VGallery_Sty_20 ) ); ?>;
 		--tsvg_s_l_fs_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo filter_var( esc_html( $tsvg_pagination_options->TotalSoft_VGallery_Sty_21 ), FILTER_VALIDATE_INT ); ?>px;
-		--tsvg_s_l_ff_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_pagination_options->TotalSoft_VGallery_Sty_22 ) ); ?>;
-		--tsvg_s_l_bc_2_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_pagination_options->TotalSoft_VGallery_Sty_23 ) ); ?>;
-		--tsvg_s_l_h_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_pagination_options->TotalSoft_VGallery_Sty_25 ) ); ?>;
-		--tsvg_s_l_h_bc_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_pagination_options->TotalSoft_VGallery_Sty_26 ) ); ?>;
-		--tsvg_s_l_h_bc_2_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_pagination_options->TotalSoft_VGallery_Sty_27 ) ); ?>;
+		--tsvg_s_l_ff_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_pagination_options->TotalSoft_VGallery_Sty_22 ) ); ?>;
+		--tsvg_s_l_bc_2_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_pagination_options->TotalSoft_VGallery_Sty_23 ) ); ?>;
+		--tsvg_s_l_h_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_pagination_options->TotalSoft_VGallery_Sty_25 ) ); ?>;
+		--tsvg_s_l_h_bc_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_pagination_options->TotalSoft_VGallery_Sty_26 ) ); ?>;
+		--tsvg_s_l_h_bc_2_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_pagination_options->TotalSoft_VGallery_Sty_27 ) ); ?>;
 	}
 	.tsvg-pagination-pages-wrapper{
 	   display: flex;

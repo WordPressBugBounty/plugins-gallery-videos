@@ -65,16 +65,16 @@
         }
     <?php }?>
     :root{
-        --tsvg_p_lm_bc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo htmlspecialchars(esc_html($tsvg_style_options->TotalSoft_GV_1_31));?>;
-        --tsvg_p_lm_c_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo htmlspecialchars(esc_html($tsvg_style_options->TotalSoft_GV_1_32));?>;
+        --tsvg_p_lm_bc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo esc_html( htmlspecialchars($tsvg_style_options->TotalSoft_GV_1_31));?>;
+        --tsvg_p_lm_c_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo esc_html( htmlspecialchars($tsvg_style_options->TotalSoft_GV_1_32));?>;
         --tsvg_p_lm_fs_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo filter_var(esc_html($tsvg_style_options->TotalSoft_GV_1_33), FILTER_VALIDATE_INT);?>px;
-        --tsvg_p_lm_ff_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo htmlspecialchars(esc_html($tsvg_style_options->TotalSoft_GV_1_34));?>;
-        --tsvg_p_lm_cbc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo htmlspecialchars(esc_html($tsvg_style_options->TotalSoft_GV_1_35));?>;
-        --tsvg_p_lm_cc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo htmlspecialchars(esc_html($tsvg_style_options->TotalSoft_GV_1_36));?>;
-        --tsvg_p_lm_hbc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo htmlspecialchars(esc_html($tsvg_style_options->TotalSoft_GV_1_37));?>;
-        --tsvg_p_lm_hc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo htmlspecialchars(esc_html($tsvg_style_options->TotalSoft_GV_1_38));?>;
-        --tsvg_p_lm_bs_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo htmlspecialchars(esc_html($tsvg_style_options->TotalSoft_GV_1_39));?>;
-        --tsvg_p_lm__bdc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo htmlspecialchars(esc_html($tsvg_style_options->TotalSoft_GV_2_01));?>;
+        --tsvg_p_lm_ff_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo esc_html( htmlspecialchars($tsvg_style_options->TotalSoft_GV_1_34));?>;
+        --tsvg_p_lm_cbc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo esc_html( htmlspecialchars($tsvg_style_options->TotalSoft_GV_1_35));?>;
+        --tsvg_p_lm_cc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo esc_html( htmlspecialchars($tsvg_style_options->TotalSoft_GV_1_36));?>;
+        --tsvg_p_lm_hbc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo esc_html( htmlspecialchars($tsvg_style_options->TotalSoft_GV_1_37));?>;
+        --tsvg_p_lm_hc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo esc_html( htmlspecialchars($tsvg_style_options->TotalSoft_GV_1_38));?>;
+        --tsvg_p_lm_bs_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo esc_html( htmlspecialchars($tsvg_style_options->TotalSoft_GV_1_39));?>;
+        --tsvg_p_lm__bdc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo esc_html( htmlspecialchars($tsvg_style_options->TotalSoft_GV_2_01));?>;
     }
     #tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?> .tsvg-pagination-pages-wrapper{
     text-align: center;

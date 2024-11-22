@@ -65,14 +65,14 @@
     }
 <?php }?>
 :root{
-    --tsvg_p_lm_bc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo htmlspecialchars(esc_html($tsvg_style_options->TotalSoft_GV_2_24));?>;
-    --tsvg_p_lm_c_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo htmlspecialchars(esc_html($tsvg_style_options->TotalSoft_GV_2_25));?>;
+    --tsvg_p_lm_bc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo esc_html( htmlspecialchars($tsvg_style_options->TotalSoft_GV_2_24));?>;
+    --tsvg_p_lm_c_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo esc_html( htmlspecialchars($tsvg_style_options->TotalSoft_GV_2_25));?>;
     --tsvg_p_lm_fs_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo filter_var(esc_html($tsvg_style_options->TotalSoft_GV_2_23), FILTER_VALIDATE_INT);?>px;
-    --tsvg_p_lm_cbc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo htmlspecialchars(esc_html($tsvg_style_options->TotalSoft_GV_2_26));?>;
-    --tsvg_p_lm_cc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo htmlspecialchars(esc_html($tsvg_style_options->TotalSoft_GV_2_27));?>;
-    --tsvg_p_lm_hbc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo htmlspecialchars(esc_html($tsvg_style_options->TotalSoft_GV_2_28));?>;
-    --tsvg_p_lm_hc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo htmlspecialchars(esc_html($tsvg_style_options->TotalSoft_GV_2_29));?>;
-    --tsvg_p_lm__bdc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo htmlspecialchars(esc_html($tsvg_style_options->TotalSoft_GV_2_30));?>;
+    --tsvg_p_lm_cbc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo esc_html( htmlspecialchars($tsvg_style_options->TotalSoft_GV_2_26));?>;
+    --tsvg_p_lm_cc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo esc_html( htmlspecialchars($tsvg_style_options->TotalSoft_GV_2_27));?>;
+    --tsvg_p_lm_hbc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo esc_html( htmlspecialchars($tsvg_style_options->TotalSoft_GV_2_28));?>;
+    --tsvg_p_lm_hc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo esc_html( htmlspecialchars($tsvg_style_options->TotalSoft_GV_2_29));?>;
+    --tsvg_p_lm__bdc_<?php echo esc_attr($tsvg_shortcode_id);?>:<?php echo esc_html( htmlspecialchars($tsvg_style_options->TotalSoft_GV_2_30));?>;
 }
 #tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper[data-pagination='load-more'][data-item-type='After']  .btn-lg{
     display: flex!important;

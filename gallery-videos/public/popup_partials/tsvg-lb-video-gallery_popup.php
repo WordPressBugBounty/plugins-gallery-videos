@@ -1,23 +1,23 @@
 <style type="text/css">
   	:root{
-        --tsvg_popup_po_bc_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_style_options->TotalSoft_GV_1_09 ) ); ?>;
+        --tsvg_popup_po_bc_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_style_options->TotalSoft_GV_1_09 ) ); ?>;
 	  	--tsvg_popup_po_bw_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo filter_var( esc_html( $tsvg_style_options->TotalSoft_GV_1_10 ), FILTER_VALIDATE_INT ); ?>px;
-        --tsvg_popup_po_bc_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_style_options->TotalSoft_GV_1_12 ) ); ?>;
+        --tsvg_popup_po_bc_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_style_options->TotalSoft_GV_1_12 ) ); ?>;
 	  	--tsvg_popup_po_br_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo filter_var( esc_html( $tsvg_style_options->TotalSoft_GV_1_13 ), FILTER_VALIDATE_INT ); ?>px;
-        --tsvg_popup_st_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_style_options->TotalSoft_GV_1_11 ) ); ?>;
+        --tsvg_popup_st_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_style_options->TotalSoft_GV_1_11 ) ); ?>;
 	  	--tsvg_popup_tip_fs_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo filter_var( esc_html( $tsvg_style_options->TotalSoft_GV_1_16 ), FILTER_VALIDATE_INT ); ?>px;
-        --tsvg_popup_tip_ff_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_style_options->TotalSoft_GV_1_17 ) ); ?>;
-        --tsvg_popup_tip_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_style_options->TotalSoft_GV_1_18 ) ); ?>;
+        --tsvg_popup_tip_ff_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_style_options->TotalSoft_GV_1_17 ) ); ?>;
+        --tsvg_popup_tip_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_style_options->TotalSoft_GV_1_18 ) ); ?>;
 	  	--tsvg_popup_no_s_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo filter_var( esc_html( $tsvg_style_options->TotalSoft_GV_1_35 ), FILTER_VALIDATE_INT ); ?>px;
-        --tsvg_popup_no_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_style_options->TotalSoft_GV_1_36 ) ); ?>;
+        --tsvg_popup_no_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_style_options->TotalSoft_GV_1_36 ) ); ?>;
 	  	--tsvg_popup_pio_s_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo filter_var( esc_html( $tsvg_style_options->TotalSoft_GV_1_22 ), FILTER_VALIDATE_INT ); ?>px;
-        --tsvg_popup_pio_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_style_options->TotalSoft_GV_1_23 ) ); ?>;
+        --tsvg_popup_pio_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_style_options->TotalSoft_GV_1_23 ) ); ?>;
 	  	--tsvg_popup_cio_s_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo filter_var( esc_html( $tsvg_style_options->TotalSoft_GV_1_26 ), FILTER_VALIDATE_INT ); ?>px;
-        --tsvg_popup_cio_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_style_options->TotalSoft_GV_1_27 ) ); ?>;
-        --tsvg_popup_cio_ff_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_style_options->TotalSoft_GV_1_29 ) ); ?>;
-        --tsvg_popup_c_t_a_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_style_options->TotalSoft_GV_1_28 ) ); ?>;
+        --tsvg_popup_cio_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_style_options->TotalSoft_GV_1_27 ) ); ?>;
+        --tsvg_popup_cio_ff_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_style_options->TotalSoft_GV_1_29 ) ); ?>;
+        --tsvg_popup_c_t_a_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_style_options->TotalSoft_GV_1_28 ) ); ?>;
 	  	--tsvg_popup_ao_s_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo filter_var( esc_html( $tsvg_style_options->TotalSoft_GV_1_33 ), FILTER_VALIDATE_INT ); ?>px;
-        --tsvg_popup_ao_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo htmlspecialchars( esc_html( $tsvg_style_options->TotalSoft_GV_1_34 ) ); ?>;
+        --tsvg_popup_ao_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_style_options->TotalSoft_GV_1_34 ) ); ?>;
         --tsvg_pic_holder_mw_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:600px;
         --tsvg_pic_holder_w_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:60%;
         --tsvg_pic_holder_mh_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:500px;
@@ -658,7 +658,7 @@
                                 toInject = settings.custom_markup;
                                 break;
                             case 'inline':
-                                myClone = $(pp_images[set_position]).clone().css({ 'width': settings.default_width }).wrapInner('<div id="tsvg_pp_full_res<?php echo esc_attr( $tsvg_shortcode_id ); ?>"><div class="pp_inline<?php echo esc_attr( $tsvg_shortcode_id ); ?> tsvg_clearfix<?php echo esc_attr( $tsvg_shortcode_id ); ?>"></div></div>').appendTo($('body'));
+                                myClone = $(pp_images[set_position]).clone().css({ 'width': settings.default_width }).wrapInner(`<div id="tsvg_pp_full_res<?php echo esc_attr( $tsvg_shortcode_id ); ?>"><div class="pp_inline<?php echo esc_attr( $tsvg_shortcode_id ); ?> tsvg_clearfix<?php echo esc_attr( $tsvg_shortcode_id ); ?>"></div></div>`).appendTo($('body'));
                                 correctSizes = _fitToViewport<?php echo esc_attr( $tsvg_shortcode_id ); ?>($(myClone).width(), $(myClone).height());
                                 $(myClone).remove();
                                 toInject = settings.inline_markup.replace(/{content}/g, $(pp_images[set_position]).html());

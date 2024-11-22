@@ -2,60 +2,117 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/tsvg-loader.php';
 echo sprintf(
-	'
-  	<section id="tsvg_loader" class="tsvg_flex_col">
-  		<div id="tsvg_load_circle"></div>
-  		<img src="%1$s" class="tsvg_load_img">
-  	</section>
-  	',
-	esc_url( plugin_dir_url( __FILE__ ) . 'img/ts-video-gallery-logo.png' )
+    '
+    <section id="tsvg_builder_section" class="tsvg_flex_row" style="display:none;">
+        <aside id="tsvg_sidebar" class="tsvg_flex_col tsvg_sidebar" data-tsvg-use="%1$s" data-tsvg-open="open">
+            <div class="ts_video_gallery_logo tsvg_flex_col">
+                <img src="%2$s"  alt="TS Video Gallery Logo">
+            </div>
+            <div class="tsvg_sidebar_item %3$s" data-tsvg-item="theme">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" width="20" height="20" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 20 20" xml:space="preserve"><g><path xmlns="http://www.w3.org/2000/svg" d="m24 10h-24v-5a5.006 5.006 0 0 1 5-5h5v3a1 1 0 0 0 2 0v-3h2v5a1 1 0 0 0 2 0v-5h2v7a1 1 0 0 0 2 0v-6.9a5.009 5.009 0 0 1 4 4.9zm-23.7 2a7.011 7.011 0 0 0 6.7 5h2v4a3 3 0 0 0 6 0v-4h2a7.011 7.011 0 0 0 6.7-5z" fill="#8c8c8c" data-original="#000000"/></g></svg>
+                <span class="tsvg_sidebar_item_title">Theme</span>  
+            </div>
+            <div class="tsvg_sidebar_item %4$s" data-tsvg-item="field">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" width="20" height="20" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 20 20" xml:space="preserve"><g><path xmlns="http://www.w3.org/2000/svg" d="m21 17h-11v2a1 1 0 0 1 -2 0v-2h-2v2a1 1 0 0 1 -2 0v-2h-1a3 3 0 0 0 0 6h18a3 3 0 0 0 0-6z" fill="#8c8c8c" data-original="#000000"/><path xmlns="http://www.w3.org/2000/svg" d="m21 9h-11v2a1 1 0 0 1 -2 0v-2h-2v2a1 1 0 0 1 -2 0v-2h-1a3 3 0 0 0 0 6h18a3 3 0 0 0 0-6z" fill="#8c8c8c" data-original="#000000"/><path xmlns="http://www.w3.org/2000/svg" d="m21 1h-11v2a1 1 0 0 1 -2 0v-2h-2v2a1 1 0 0 1 -2 0v-2h-1a3 3 0 0 0 0 6h18a3 3 0 0 0 0-6z" fill="#8c8c8c" data-original="#000000"/></g></svg>
+                <span class="tsvg_sidebar_item_title">Fields</span>  
+            </div>
+            <div class="tsvg_sidebar_item" data-tsvg-item="style">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" width="20" height="20" x="0" y="0" viewBox="0 0 512.051 512.051" style="enable-background:new 0 0 512 512" xml:space="preserve"><g><g xmlns="http://www.w3.org/2000/svg">	<path d="M21.359,101.359h58.368c11.52,42.386,55.219,67.408,97.605,55.888c27.223-7.399,48.489-28.665,55.888-55.888h257.472   c11.782,0,21.333-9.551,21.333-21.333s-9.551-21.333-21.333-21.333H233.22C221.7,16.306,178.001-8.716,135.615,2.804   c-27.223,7.399-48.489,28.665-55.888,55.888H21.359c-11.782,0-21.333,9.551-21.333,21.333S9.577,101.359,21.359,101.359z" fill="#8c8c8c" data-original="#000000"/>	<path d="M490.692,234.692h-58.368c-11.497-42.38-55.172-67.416-97.552-55.92c-27.245,7.391-48.529,28.674-55.92,55.92H21.359   c-11.782,0-21.333,9.551-21.333,21.333c0,11.782,9.551,21.333,21.333,21.333h257.493c11.497,42.38,55.172,67.416,97.552,55.92   c27.245-7.391,48.529-28.674,55.92-55.92h58.368c11.782,0,21.333-9.551,21.333-21.333   C512.025,244.243,502.474,234.692,490.692,234.692z" fill="#8c8c8c" data-original="#000000"/>	<path d="M490.692,410.692H233.22c-11.52-42.386-55.219-67.408-97.605-55.888c-27.223,7.399-48.489,28.665-55.888,55.888H21.359   c-11.782,0-21.333,9.551-21.333,21.333c0,11.782,9.551,21.333,21.333,21.333h58.368c11.52,42.386,55.219,67.408,97.605,55.888   c27.223-7.399,48.489-28.665,55.888-55.888h257.472c11.782,0,21.333-9.551,21.333-21.333   C512.025,420.243,502.474,410.692,490.692,410.692z" fill="#8c8c8c" data-original="#000000"/></g></g></svg>
+                <span class="tsvg_sidebar_item_title">Styles</span>  
+            </div>
+            <div class="tsvg_sidebar_item" data-tsvg-item="pagination">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1"><path style=" stroke:none;fill-rule:nonzero;fill:rgb(54.901961%%,54.901961%%,54.901961%%);fill-opacity:1;" d="M 18.789062 5.910156 C 18.421875 5.652344 17.945312 6.152344 18.222656 6.507812 C 19.011719 7.566406 20.015625 8.390625 20.925781 9.289062 C 21.734375 10.121094 22.722656 10.984375 22.808594 12.171875 C 22.816406 14.019531 20.660156 15.046875 19.4375 16.128906 C 19.117188 16.390625 18.792969 16.675781 18.5 16.972656 C 18.25 17.285156 17.601562 17.707031 18.023438 18.125 C 18.324219 18.386719 18.621094 18.109375 18.800781 17.859375 C 18.945312 17.699219 19.121094 17.519531 19.28125 17.375 C 20.359375 16.394531 21.683594 15.695312 22.742188 14.679688 C 26.210938 11.179688 21.714844 7.703125 18.789062 5.910156 Z M 18.789062 5.910156 "/><path style=" stroke:none;fill-rule:nonzero;fill:rgb(54.901961%%,54.901961%%,54.901961%%);fill-opacity:1;" d="M 5.539062 17.421875 L 5.5 17.386719 C 5.5 17.386719 4.101562 16.089844 4.101562 16.089844 C 3.070312 15.015625 1.160156 13.648438 1.164062 12.054688 C 1.464844 10.335938 4.339844 8.050781 5.425781 6.441406 C 5.707031 6.097656 5.253906 5.589844 4.875 5.832031 C 3.5625 6.664062 2.390625 7.683594 1.378906 8.863281 C -2.269531 13.09375 2.164062 15.257812 4.980469 18.027344 C 5.367188 18.394531 5.933594 17.773438 5.539062 17.421875 Z M 5.539062 17.421875 "/><path style=" stroke:none;fill-rule:nonzero;fill:rgb(54.901961%%,54.901961%%,54.901961%%);fill-opacity:1;" d="M 12.667969 11.226562 C 11.398438 10.285156 9.703125 11.632812 10.9375 12.917969 C 11.242188 13.203125 11.675781 13.289062 12.078125 13.238281 C 13.117188 13.179688 13.460938 11.839844 12.667969 11.226562 Z M 12.667969 11.226562 "/><path style=" stroke:none;fill-rule:nonzero;fill:rgb(54.901961%%,54.901961%%,54.901961%%);fill-opacity:1;" d="M 14.636719 12.476562 C 15.167969 13.890625 17.238281 13.25 17.058594 11.789062 C 16.804688 9.984375 14.121094 10.839844 14.636719 12.476562 Z M 14.636719 12.476562 "/><path style=" stroke:none;fill-rule:nonzero;fill:rgb(54.901961%%,54.901961%%,54.901961%%);fill-opacity:1;" d="M 6.839844 12.777344 C 7.8125 13.617188 9.339844 12.660156 8.769531 11.410156 C 7.828125 9.640625 5.417969 11.21875 6.839844 12.777344 Z M 6.839844 12.777344 "/></g></g></svg>
+                <span class="tsvg_sidebar_item_title">Pagination & Load More</span>  
+            </div>
+            <div class="tsvg_sidebar_item" data-tsvg-item="shortcode">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1"><g id="surface1"><path style="fill-rule:nonzero;fill:rgb(54.901961%%,54.901961%%,54.901961%%);fill-opacity:1;stroke-width:25;stroke-linecap:butt;stroke-linejoin:round;stroke:rgb(54.901961%%,54.901961%%,54.901961%%);stroke-opacity:1;stroke-miterlimit:10;" d="M 42.368475 56.519248 L 42.368475 169.480752 C 42.368475 177.310574 48.689426 183.631525 56.519248 183.631525 L 84.739234 183.631525 C 87.349175 183.631525 89.469752 185.752102 89.469752 188.321262 C 89.469752 190.931203 87.349175 193.05178 84.739234 193.05178 L 56.519248 193.05178 C 43.510324 193.011 32.989 182.489676 32.94822 169.480752 L 32.94822 56.519248 C 32.989 43.510324 43.510324 32.989 56.519248 32.94822 L 84.739234 32.94822 C 87.349175 32.94822 89.469752 35.068797 89.469752 37.678738 C 89.469752 40.247898 87.349175 42.368475 84.739234 42.368475 L 56.519248 42.368475 C 48.689426 42.368475 42.368475 48.689426 42.368475 56.519248 Z M 183.631525 169.480752 L 183.631525 56.519248 C 183.631525 48.689426 177.310574 42.368475 169.480752 42.368475 L 141.260766 42.368475 C 138.650825 42.368475 136.530248 40.247898 136.530248 37.678738 C 136.530248 35.068797 138.650825 32.94822 141.260766 32.94822 L 169.480752 32.94822 C 182.489676 32.989 193.011 43.510324 193.05178 56.519248 L 193.05178 169.480752 C 193.011 182.489676 182.489676 193.011 169.480752 193.05178 L 141.260766 193.05178 C 138.650825 193.05178 136.530248 190.931203 136.530248 188.321262 C 136.530248 185.752102 138.650825 183.631525 141.260766 183.631525 L 169.480752 183.631525 C 177.310574 183.631525 183.631525 177.310574 183.631525 169.480752 Z M 183.631525 169.480752 " transform="matrix(0.0957876,0,0,0.0957876,1.176,1.176)"/><path style=" stroke:none;fill-rule:nonzero;fill:rgb(54.901961%%,54.901961%%,54.901961%%);fill-opacity:1;" d="M 5.234375 6.589844 L 5.234375 17.410156 C 5.234375 18.160156 5.839844 18.765625 6.589844 18.765625 L 9.292969 18.765625 C 9.542969 18.765625 9.746094 18.96875 9.746094 19.214844 C 9.746094 19.464844 9.542969 19.667969 9.292969 19.667969 L 6.589844 19.667969 C 5.34375 19.664062 4.335938 18.65625 4.332031 17.410156 L 4.332031 6.589844 C 4.335938 5.34375 5.34375 4.335938 6.589844 4.332031 L 9.292969 4.332031 C 9.542969 4.332031 9.746094 4.535156 9.746094 4.785156 C 9.746094 5.03125 9.542969 5.234375 9.292969 5.234375 L 6.589844 5.234375 C 5.839844 5.234375 5.234375 5.839844 5.234375 6.589844 Z M 17.410156 18.765625 L 14.707031 18.765625 C 14.457031 18.765625 14.253906 18.96875 14.253906 19.214844 C 14.253906 19.464844 14.457031 19.667969 14.707031 19.667969 L 17.410156 19.667969 C 18.65625 19.664062 19.664062 18.65625 19.667969 17.410156 L 19.667969 6.589844 C 19.664062 5.34375 18.65625 4.335938 17.410156 4.332031 L 14.707031 4.332031 C 14.457031 4.332031 14.253906 4.535156 14.253906 4.785156 C 14.253906 5.03125 14.457031 5.234375 14.707031 5.234375 L 17.410156 5.234375 C 18.160156 5.234375 18.765625 5.839844 18.765625 6.589844 L 18.765625 17.410156 C 18.765625 18.160156 18.160156 18.765625 17.410156 18.765625 Z M 17.410156 18.765625 "/></g></svg>
+                <span class="tsvg_sidebar_item_title">Shortcode</span>  
+            </div>
+            <a href="%5$s" class="tsvg_sidebar_item"  target="_blank">
+                <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" width="20" height="20" viewBox="0 0 576 512" ><path fill="#8c8c8c" d="M576 216v16c0 13.255-10.745 24-24 24h-8l-26.113 182.788C514.509 462.435 494.257 480 470.37 480H105.63c-23.887 0-44.139-17.565-47.518-41.212L32 256h-8c-13.255 0-24-10.745-24-24v-16c0-13.255 10.745-24 24-24h67.341l106.78-146.821c10.395-14.292 30.407-17.453 44.701-7.058 14.293 10.395 17.453 30.408 7.058 44.701L170.477 192h235.046L326.12 82.821c-10.395-14.292-7.234-34.306 7.059-44.701 14.291-10.395 34.306-7.235 44.701 7.058L484.659 192H552c13.255 0 24 10.745 24 24zM312 392V280c0-13.255-10.745-24-24-24s-24 10.745-24 24v112c0 13.255 10.745 24 24 24s24-10.745 24-24zm112 0V280c0-13.255-10.745-24-24-24s-24 10.745-24 24v112c0 13.255 10.745 24 24 24s24-10.745 24-24zm-224 0V280c0-13.255-10.745-24-24-24s-24 10.745-24 24v112c0 13.255 10.745 24 24 24s24-10.745 24-24z"></path></svg>      
+                <span class="tsvg_sidebar_item_title">Go pro</span>  
+            </a>
+            <a href="%6$s" class="tsvg_sidebar_item" data-tsvg-item="contactus" target="_blank">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30px" height="30px" viewBox="0 0 30 30" version="1.1"><g id="surface1"><path style="fill-rule:nonzero;fill:#8c8c8c;fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:#8c8c8c;stroke-opacity:1;stroke-miterlimit:4;" d="M 18 3.375 C 15.7 3.375 13.76875 4.975 13.2625 7.125 L 3 7.125 C 1.965625 7.125 1.125 7.965625 1.125 9 L 1.125 18.75 C 1.125 19.784375 1.965625 20.625 3 20.625 L 16.5 20.625 C 17.534375 20.625 18.375 19.784375 18.375 18.75 L 18.375 13.125 L 19.125 13.125 L 19.125 12.375 L 18 12.375 C 15.725 12.375 13.875 10.525 13.875 8.25 C 13.875 5.975 15.725 4.125 18 4.125 C 20.275 4.125 22.125 5.975 22.125 8.25 L 22.125 9.375 C 22.125 9.7875 21.7875 10.125 21.375 10.125 C 20.9625 10.125 20.625 9.7875 20.625 9.375 L 20.625 8.25 C 20.625 6.80625 19.44375 5.625 18 5.625 C 16.55625 5.625 15.375 6.80625 15.375 8.25 C 15.375 9.69375 16.55625 10.875 18 10.875 C 18.796875 10.875 19.5125 10.51875 19.99375 9.95625 C 20.21875 10.49375 20.753125 10.875 21.375 10.875 C 22.203125 10.875 22.875 10.203125 22.875 9.375 L 22.875 8.25 C 22.875 5.5625 20.6875 3.375 18 3.375 Z M 1.875 9.0375 L 6.40625 12.75 L 1.875 16.4625 Z M 17.625 18.75 C 17.625 19.371875 17.121875 19.875 16.5 19.875 L 3 19.875 C 2.378125 19.875 1.875 19.371875 1.875 18.75 L 1.875 17.425 L 7 13.234375 L 8.5625 14.5125 C 8.90625 14.79375 9.328125 14.934375 9.75 14.934375 C 10.171875 14.934375 10.59375 14.79375 10.9375 14.5125 L 12.5 13.234375 L 17.625 17.425 Z M 17.625 13.10625 L 17.625 16.45625 L 13.09375 12.75 L 14.45 11.578125 C 15.25625 12.440625 16.375 13.0125 17.625 13.10625 Z M 13.971875 10.99375 L 10.4625 13.934375 C 10.05 14.26875 9.45 14.26875 9.034375 13.934375 L 2.1375 8.284375 C 2.34375 8.0375 2.653125 7.875 3 7.875 L 13.14375 7.875 C 13.13125 8 13.125 8.125 13.125 8.25 C 13.125 9.265625 13.4375 10.2125 13.971875 10.99375 Z M 18 10.125 C 16.965625 10.125 16.125 9.284375 16.125 8.25 C 16.125 7.215625 16.965625 6.375 18 6.375 C 19.034375 6.375 19.875 7.215625 19.875 8.25 C 19.875 9.284375 19.034375 10.125 18 10.125 Z M 18 10.125 " transform="matrix(1.25,0,0,1.25,0,0)"/></g></svg>
+                <span class="tsvg_sidebar_item_title">Contact Us</span>  
+            </a>
+        </aside>
+		<main id="tsvg_builder_main" class="tsvg_flex_col">
+            <header id="tsvg_builder_head" class="tsvg_flex_item"> 
+                <div id="tsvg_switch_sidebar" class="tsvg_switch_sidebar tsvg_flex_col">
+                    <div id="tsvg-toggle-btn">
+                        <span class="bar-top"></span>
+                        <span class="bar-mid"></span>
+                        <span class="bar-bot"></span>
+                    </div>
+                </div>     
+                <div class="tsvg_buttons tsvg_flex_row">
+    ',
+    $this->tsvg_build == "new" ? esc_attr( "false" ) : "",
+    esc_url( plugin_dir_url( __FILE__ ) . "img/ts-video-gallery-logo.png" ),
+    $this->tsvg_build == "new" ? esc_attr( "tsvg_active" ) : "",
+    $this->tsvg_build == "edit" ? esc_attr( "tsvg_active" ) : "",
+    esc_url( "https://total-soft.com/wp-video-gallery/" ),
+    esc_url( "https://total-soft.com/contact-us/" )
 );
-ob_start();
-if ( $this->tsvg_build == 'new' ) {
-	$tsvg_theme_blocks = "";
-	foreach ( $this->tsvg_themes as $key => $value ) {
-		$tsvg_is_pro_theme = $key === "effective_gallery" || $key === "gallery_album";
-		$tsvg_theme_blocks .= sprintf(
-			'
-			<div class="tsvg_theme tsvg_flex_col">
-				<div class="tsvg_theme_header">
-                    <a class="tsvg_theme_demo tsvg_flex_col %1$s" href="%2$s" target="_blank">
-                        <i class="ts-vgallery ts-vgallery-eye"></i>
-                    </a>
-				    <div class="tsvg_theme_version %3$s">%4$s</div>
-				    <img src="%5$s" alt="%6$s"/>
-				</div>
-				<div class="tsvg_theme_main">
-				    <h1 class="tsvg_theme_name">%7$s</h1>
-				    <div class="tsvg_theme_choose tsvg_flex_col">
-				    	<a href="%8$s" %9$s class="tsvg_theme_use %10$s"><span><i class="ts-vgallery ts-vgallery-magic"></i>%11$s</span></a>
-				    </div>
-				</div>
-			</div>
-        	',
-			$tsvg_is_pro_theme ? 'tsvg_theme_demo_pro' : '',
-			esc_url( "https://total-soft.com/" . $this->tsvg_themes_links[$key] ),
-			$tsvg_is_pro_theme ? 'tsvg_theme_version_pro' : '',
-			$tsvg_is_pro_theme ? esc_html('PRO THEME') : esc_html('FREE THEME'),
-			esc_url(plugin_dir_url( __FILE__ ) ."img/".$key.".png"),
-			esc_attr($key),
-			esc_html($value),
-			$tsvg_is_pro_theme ? esc_url("https://total-soft.com/wp-video-gallery/") : esc_url(add_query_arg('tsvg-theme',$key)),
-			$tsvg_is_pro_theme ? 'target="_blank"' : '',
-			$tsvg_is_pro_theme ? 'tsvg_theme_use_pro' : '',
-			$tsvg_is_pro_theme ? esc_html('Pro Theme') : esc_html('Use Theme')
-        );
-	}
+if ( $this->tsvg_build != 'new' ) {
 	echo sprintf(
 		'
-		<div class="tsvg_content active" data-tsvg-section="theme" >
+		<span id="tsvg_TS_VG_Title_e">
 			%1$s
-		</div>
+		</span>
 		',
-		$tsvg_theme_blocks
+		esc_html( $this->tsvg_build_proporties["TS_VG_Title"] )
 	);
-} else {
+}
+echo sprintf(
+	'
+	<a href="%1$s" class="tsvg_support tsvg_flex_item"  target="_blank" title="%2$s">
+        <div class="tsvg_support-inner">
+            <div class="tsvg_support-icon">
+                <i class="ts-vgallery ts-vgallery-fw ts-vgallery-comments"></i>
+            </div>
+            <div>%2$s</div>
+        </div>
+    </a>
+	',
+	esc_url( "https://wordpress.org/support/plugin/gallery-videos/" ),
+	esc_html__( 'Support Forum','gallery-videos' ),
+);
+if ( $this->tsvg_build != 'new' ) {
+	echo sprintf(
+		'
+ 		<div class="tsvg_save_btn tsvg_flex_item">
+            <div class="tsvg_save_btn-inner">
+                <div class="tsvg_save_btn-icon">
+                    <i class="ts-vgallery ts-vgallery-folder-open ts-vgallery-fw"></i>
+                </div>
+                <div>%1$s</div>
+            </div>
+        </div>
+		',
+		isset( $_GET["tsvg-theme"] ) ? esc_html__( 'Save','gallery-videos' ) : esc_html__( 'Update','gallery-videos' )
+	);
+}
+echo sprintf(
+	'
+	    </div>
+        <div class="tsvg_back_wp tsvg_flex_col">
+            <a href="%1$s" id="TS_vgallery_Back_Manager" class="tsvg_flex_col" title="%2$s">
+                <i class="ts-vgallery ts-vgallery-times"></i>
+            </a>
+        </div>
+    </header>
+	<section id="tsvg_builder_content">
+	',
+	esc_url( admin_url( "admin.php?page=tsvg-admin" ) ),
+	esc_html__( 'Back to Manager','gallery-videos' )
+);
+if ( $this->tsvg_build == 'new' ) {
+	require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/tsvg-theme.php';
+}else{
 	global $wp_embed;
 	$tsvg_get_all             = new TS_Video_Gallery_Function();
 	$tsvg_all_fonts_arr       = $tsvg_get_all->tsvg_get_all_fonts();
@@ -315,8 +372,8 @@ if ( $this->tsvg_build == 'new' ) {
 			)
 		);
 	}
-	$tsvg_builder_styles_base         = $this->tsvg_build_proporties['TS_VG_Style'];
-	$tsvg_builder_settings_base       = json_decode( $this->tsvg_build_proporties['TS_VG_Settings'], true );
+	$tsvg_builder_styles_base = $this->tsvg_build_proporties['TS_VG_Style'];
+	$tsvg_builder_settings_base = json_decode( $this->tsvg_build_proporties['TS_VG_Settings'], true );
 	$tsvg_builder_pagination_base = json_decode( $this->tsvg_build_proporties['TS_VG_Option_Style'], true );
 	switch ( $tsvg_builder_param_base['TS_vgallery_Q_Theme'] ) {
 		case 'Grid Video Gallery':
@@ -3506,12 +3563,6 @@ if ( $this->tsvg_build == 'new' ) {
 					'change_elem' => '.tsvg-parallax-blocks-container-' . $this->tsvg_build_id,
 					'change_attr' => 'data-item-close'
 				)
-				// 'TotalSoft_GV_2_05' => array(
-				// 	'label'       => 'Loading Type',
-				// 	'type'        => 'select-icon',
-				// 	'change_elem' => '.TotalsofthLIcon2' . $this->tsvg_build_id,
-				// 	'change_attr' => 'class',
-				// )
 			);
 			if($this->tsvg_build_proporties['TS_VG_Old_User']=='yes'){
 				unset($tsvg_builder_arr['General options']['TotalSoft_VGallery_Set_07']);
@@ -4343,459 +4394,9 @@ if ( $this->tsvg_build == 'new' ) {
 				unset($tsvg_builder_arr['General options']['TotalSoft_GV_1_01']);
 			}
 			break;
-	} ?>
-	<div class="tsvg_content tsvg_flex_row active" data-tsvg-section="field_style">
-		<div class="tsvg_preview_content">
-			<div class="tsvg_preview_content_sizes tsvg_flex_row">
-				<div data-tsvg-size="desktop" class="tsvg_flex_col tsvg_preview_content_size tsvg_preview_content_size_active ">
-					<img data-tsvg-size="desktop" src="<?php echo esc_url( plugin_dir_url( __FILE__ ) . 'img/desktop.svg' ); ?>" alt="desktop">
-				</div>
-				<div data-tsvg-size="tablet" class="tsvg_flex_col tsvg_preview_content_size ">
-					<img data-tsvg-size="tablet" src="<?php echo esc_url( plugin_dir_url( __FILE__ ) . 'img/tablet.svg' ); ?>" alt="tablet">
-				</div>
-				<div data-tsvg-size="mobile" class="tsvg_flex_col tsvg_preview_content_size ">
-					<img data-tsvg-size="mobile" src="<?php echo esc_url( plugin_dir_url( __FILE__ ) . 'img/mobile.svg' ); ?>" alt="mobile">
-				</div>
-			</div>
-			<div class="tsvg_preview_content_shortcode">
-				<div class="tsvg_preview_content_shortcode_inner">
-					<?php
-						echo do_shortcode( sprintf( '[TS_Video_Gallery id="%s" edit="true"]', esc_attr( $this->tsvg_build_id ) ) );
-						$tsvg_builder_params = $this->tsvg_build_proporties;
-					?>
-				</div>
-			</div>
-		</div> 
-		<div class="tsvg_flex_col tsvg_content_subsection active" data-tsvg-subsection="field">
-			<main class="tsvg_content_fields_menu">
-				<div aria-tsvg-use="field" class="tsvg_flex_col active">
-					<div class="tsvg-list tsvg_flex_col" id="tsvg-list" >
-					<?php
-						$tsvg_sort_order = explode( ',', $tsvg_builder_params['TS_VG_Sort'] );
-						uksort(
-							$tsvg_builder_params['tsvg_video_records'],
-							function( $x, $y ) use ( $tsvg_sort_order ) {
-								if ( (int) array_search( $x, $tsvg_sort_order ) == (int) array_search( $y, $tsvg_sort_order ) ) {
-									return 0;
-								}
-								return ( (int) array_search( $x, $tsvg_sort_order ) < (int) array_search( $y, $tsvg_sort_order ) ) ? -1 : 1;
-							}
-						);
-						foreach ( $tsvg_builder_params['tsvg_video_records'] as $key => $value ) :
-								?>
-							<div class="tsvg-list-item" aria-tsvg-video="<?php esc_attr_e( $value['id'] ); ?>">
-								<div class="tsvg_handle_list tsvg_list_action flex-center">
-									<img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) . 'img/move.svg' ); ?>">
-								</div>
-								<div class="details tsvg_analytics_flex_r">
-									<h2><?php esc_attr_e( $value['TS_VG_SetName'] ); ?></h2>
-								</div>
-								<div class="tsvg_list_action flex-center" data-tsvg-action="edit">
-									<img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) . 'img/edit.svg' ); ?>">
-								</div>
-								<div class="tsvg_list_action flex-center" data-tsvg-action="copy">
-									<img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) . 'img/copy.svg' ); ?>">
-								</div>
-								<div class="tsvg_list_action flex-center" data-tsvg-action="delete">
-									<img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) . 'img/recycle.svg' ); ?>">
-								</div>
-							</div>
-						<?php endforeach; ?>
-					</div>
-					<div class="tsvg-add_video-div tsvg_flex_row">
-						<div id="tsvg-add_video">
-							<span class="tsvg-add_video_text">
-								<span></span>
-								Add video
-							</span>
-							<span class="right ts-vgallery ts-vgallery-plus"></span>
-						</div>
-					</div>
-				</div>
-			</main>
-			<main class="tsvg_content_fields_edit " style="display:none;" >
-				<div class="tsvg_back_to_videos tsvg_flex_row ts-vgallery ts-vgallery-home">
-					Back to video
-				</div>
-				<div class="tsvg_TS_VG_Optionss">
-					<div class="tsvg_select_div_edit">
-						<span class="tsvg_select_div_title tsvg_field_title">
-							Add title
-						</span>
-						<input id="tsvg_TS_VG_SetName" name="tsvg_TS_VG_SetName" type="text"  value="" placeholder="Add title"/>
-					</div>
-					<?php
-						$tsvg_elem    = 'tsvg_content_area';
-						$tsvg_content = '';
-						$tsvg_args    = array(
-							'tinymce'       => array(
-								'toolbar1'         => 'formatselect, fontselect, fontsizeselect, image, media, code,  bold, italic, underline, blockquote, bullist, numlist, alignleft ,aligncenter, alignright, wp_more, fullscreen, strikethrough, hr, forecolor,backcolor , pastetext, removeformat, charmap, outdent, indent, undo, redo',
-								'fontsize_formats' => '8px 10px 12px 14px 16px 18px 20px 22px 24px 26px 28px 30px 32px 34px 36px 38px 40px 42px 44px 46px 48px',
-								'font_formats'     => 'Arial = arial; Arial Black = arial black; alibri = calibri; alibri Light = calibri light; Calisto MT = calisto mt; Cambria = cambria; Century Gothic = century gothic; Comic Sans MS = comic sans ms; onsolas = consolas; Constantia = constantia; Copperplate Gothic = copperplate gothic; Copperplate Gothic Light = copperplate gothic light; orbel = corbel; Courier New = courier new; Ebrima = ebrima; abriola = gabriola; adugi = gadugi; Georgia = georgia; mpact = impact; Leelawadee = leelawadee; ucida Console = lucida console; Microsoft Himalaya = microsoft himalaya; icrosoft JhengHei = microsoft jhenghei; Microsoft New Tai Lue = microsoft new tai lue; icrosoft PhagsPa = microsoft phagspa; Microsoft Sans Serif = microsoft sans serif; icrosoft Tai Le = microsoft tai le; icrosoft Uighur = microsoft uighur; icrosoft YaHei = microsoft yahei; icrosoft YaHei UI = microsoft yahei ui; Microsoft Yi Baiti = microsoft yi baiti; iriam = miriam; Mongolian Baiti = mongolian baiti; MS UI Gothic = ms ui gothic; V Boli = mv boli; yanmar Text = myanmar text; arkisim = narkisim; SimSun = nsimsun; yala = nyala; alatino Linotype = palatino linotype; egoe Print = segoe print; egoe Script = segoe script; egoe UI Symbol = segoe ui symbol; SimSun = simsun; ylfaen = sylfaen; ahoma = tahoma; rebuchet MS = trebuchet ms '
-							),
-							'quicktags'     => false,
-							'media_buttons' => false
-						);
-						wp_editor( $tsvg_content, $tsvg_elem, $tsvg_args );
-					?>
-					<div class="tsvg_select_div_edit">
-						<span class="tsvg_select_div_link tsvg_field_link">
-							Target link
-						</span>
-						<input id="tsvg_video_link" name="tsvg_video_link" type="text"  value="" placeholder="Target link"/>
-					</div>
-					<div class="tsvg_color_div_edit">
-						<label class="tsvg_color_label" for="tsvg_video_Video_ONT">New Tab</label>
-						<input  type="checkbox" id="tsvg_video_Video_ONT" name="tsvg_video_Video_ONT"  value=""  data-tsvg-change=""/>
-					</div> 
-					<?php
-						echo sprintf(
-							'
-							<div class="tsvg_video_div_edit">
-								<span class="tsvg_field_title">Add video</span>
-								<div class="tsvg_vd_change">
-									<img src="%1$s" style="display:none;">
-									<div class="tsvg_vd_hover_div">
-										<span>Choose video</span>
-										<input type="text"  id="tsvg_video_video_attachment_id" style="display:none;">
-									</div>
-									<div class="tsvg_vd_loading_div tsvg_flex_col"  style="display:none;">
-										<img src="%2$s" >
-									</div>
-								</div>
-							</div>
-							<div class="tsvg_img_div_edit">
-								<span class="tsvg_field_title">Add Image</span>
-								<div class="tsvg_img_change">
-									<img src="%3$s">
-									<div class="tsvg_img_hover_div">
-										<span>Choose image</span>
-										<input type="text"  id="tsvg_video_attachment_id" style="display:none;">
-									</div>
-									<div class="tsvg_img_loading_div tsvg_flex_col"  style="display:none;">
-										<img src="%4$s" >
-									</div>
-								</div>
-							</div>
-							',
-							esc_url( plugin_dir_url( __DIR__ ) . 'public/img/tsvg_no_video.png' ),
-							esc_url( plugin_dir_url( __DIR__ ) . 'public/img/tsvg_loading.gif' ),
-							esc_url( plugin_dir_url( __DIR__ ) . 'public/img/tsvg_no_img.jpg' ),
-							esc_url( plugin_dir_url( __DIR__ ) . 'public/img/tsvg_loading.gif' )
-						);
-					?>
-				</div>
-			</main>
-		</div>
-		<div class="tsvg_flex_col tsvg_content_subsection" data-tsvg-subsection="style">
-			<div class="tsvg_styles_sidebar">
-				<?php
-					$tsvg_builder_styles_base_keys  = array_keys( $tsvg_builder_styles_base );
-					$tsvg_builder_styles_base_count = count( $tsvg_builder_styles_base_keys );
-					$tsvg_builder_styles_base       = array_merge( $tsvg_builder_styles_base, $tsvg_builder_settings_base );
-					foreach ( $tsvg_builder_arr as $fields_key => $fields_value ) {
-						if ( count( array_diff( $tsvg_builder_styles_base_keys, array_keys( $tsvg_builder_arr[ $fields_key ] ) ) ) == $tsvg_builder_styles_base_count ) {
-							continue;
-						}
-						$tsvg_get_fields_html = "";
-						foreach ( $fields_value as $key => $value ) {
-							if ( array_key_exists( $key, $tsvg_builder_styles_base ) ) {
-								$tsvg_get_fields_html .= $this->tsvg_get_field_html( $key, $value, strval( $tsvg_builder_styles_base[ $key ] ) );
-							} elseif ( $key == 'TotalSoftvgallery_Q_Im' || $key == 'TotalSoftvgallery_Q_Vd' ) {
-								$tsvg_get_fields_html .= $this->tsvg_get_field_html( $key, $value, $tsvg_builder_param_base[ $key ] );
-							}
-						}
-						echo sprintf(
-							'
-							<div class="tsvg_accordion_item %1$s">
-								<header class="tsvg_accordion_header ">
-									<i class="ts-vgallery ts-vgallery-angle-right tsvg_accordion_header_icon"></i>
-									<h3 class="tsvg_accordion_header_title">%2$s</h3>
-								</header>
-								<div class="tsvg_accordion_item_content">
-									<div class="tsvg_accordion_items tsvg_analytics_flex_c">
-										%3$s
-									</div>
-								</div>
-							</div>	
-							',
-							esc_attr( str_replace( ' ', '-', strtolower( $fields_key ) ) ),
-							esc_attr( $fields_key ),
-							$tsvg_get_fields_html
-						);
-					}
-				?>
-			</div>
-		</div>
-		<div class="tsvg_flex_col  tsvg_content_subsection" data-tsvg-subsection="pagination">
-			<div class="tsvg_styles_sidebar">
-				<?php
-					foreach ( $tsvg_pagination_arr as $fields_key => $fields_value ) {
-						$tsvg_get_fields_html = "";
-						foreach ( $fields_value as $key => $value ) {
-							if ( array_key_exists( $key, $tsvg_builder_settings_base ) ) {
-								$tsvg_get_fields_html .= $this->tsvg_get_field_html( $key, $value, $tsvg_builder_settings_base[ $key ] );
-							}
-						}
-						foreach ( $fields_value as $key => $value ) {
-							if ( array_key_exists( $key, $tsvg_builder_pagination_base ) ) {
-								$tsvg_get_fields_html .= $this->tsvg_get_field_html( $key, $value, $tsvg_builder_pagination_base[ $key ] );
-							}
-						}
-						echo sprintf(
-							'
-							<div class="tsvg_accordion_item %1$s">
-								<header class="tsvg_accordion_header ">
-									<i class="ts-vgallery ts-vgallery-angle-right tsvg_accordion_header_icon"></i>
-									<h3 class="tsvg_accordion_header_title">%2$s</h3>
-								</header>
-								<div class="tsvg_accordion_item_content">
-									<div class="tsvg_accordion_items tsvg_analytics_flex_c">
-										%3$s
-									</div>
-								</div>
-							</div>	
-							',
-							esc_attr( str_replace( ' ', '-', strtolower( $fields_key ) ) ),
-							esc_attr( $fields_key ),
-							$tsvg_get_fields_html
-						);
-					}
-				?>
-			</div>
-		</div>
-		<div class="tsvg_flex_col tsvg_content_subsection" data-tsvg-subsection="shortcode">
-			<div class="tsvg_flex_col" data-tsvg-field="shortcode" >
-				<p>Copy & paste the shortcode directly into any WordPress post or page.</p>
-				<div class="tsvg_flex_row tsvg_shortcode_div">
-					<input type="text" id="tsvg_global_shortcode" disabled="">
-					<span class="ts-vgallery ts-vgallery-files-o" data-tsvg-copy="tsvg_global_shortcode"></span>
-				</div>
-			</div>
-			<div class="tsvg_flex_col" data-tsvg-field="shortcode" >
-				<p>Copy & paste this code into a template file to include the video gallery within your theme.</p>
-				<div class="tsvg_flex_row tsvg_shortcode_div">
-					<input type="text" id="tsvg_global_theme_shortcode" disabled="">
-					<span class="ts-vgallery ts-vgallery-files-o" data-tsvg-copy="tsvg_global_theme_shortcode"></span>
-				</div>
-			</div>
-			<div class="tsvg_flex_col" data-tsvg-field="notice" >
-				<div class="tsvg_notice_div">
-					<p>Please save gallery for getting shortcode.</p>
-				</div>
-			</div>
-			<div class="tsvg_flex_col" data-tsvg-field="title" >
-				<p>Video gallery title</p>
-				<div class="tsvg_flex_row tsvg_shortcode_div">
-					<input type="text" id="tsvg_global_title" value="<?php echo esc_html( html_entity_decode( htmlspecialchars_decode( $this->tsvg_build_proporties['TS_VG_Title'] ), ENT_QUOTES ) ); ?>">
-				</div>
-			</div>
-		</div>
-	</div>   
-	<?php 
-}
-$tsvg_content_builder = ob_get_clean();
-$tsvg_icons_html = $tsvg_icon_picker_html = '';
-if ( $this->tsvg_build == 'edit' ) {
-	foreach ( $tsvg_all_fonts_arr['tsvg_fonts'] as $key => $value ) {
-		foreach ( $value as $icon_key => $icon_value ) {
-			$tsvg_icons_html .= sprintf(
-				'
-        		<div class="ts-vgallery-aim-icon-item" data-library-id="%1$s" data-filter="%2$s">
-        		  	<div class="ts-vgallery-aim-icon-item-inner">
-        		  	  	<i class="%3$s"></i>
-        		  	  	<div class="ts-vgallery-aim-icon-item-name" title="%4$s">%4$s</div>
-        		  	</div>
-        		</div>
-        		',
-				$key == 'tsvg_emojies' ? esc_attr( 'ts-vgallery-emoji-regular' ) : esc_attr( 'ts-vgallery-regular' ),
-				$key == 'tsvg_emojies' ? esc_attr( str_replace( 'ts-vgallery-emoji ts-vgallery-emoji-', '', $icon_value ) ) : esc_attr( str_replace( 'ts-vgallery ts-vgallery-', '', $icon_value ) ),
-				esc_attr( $icon_value ),
-				$key == 'tsvg_emojies' ? esc_attr( str_replace( '-', ' ', str_replace( 'ts-vgallery-emoji ts-vgallery-emoji-', '', $icon_value ) ) ) : esc_attr( str_replace( '-', ' ', str_replace( 'ts-vgallery ts-vgallery-', '', $icon_value ) ) )
-			);
-		}
 	}
-	$tsvg_icon_picker_html  = sprintf(
-		'
-		<div class="ts-vgallery-aim-modal" id="ts-vgallery-aim-modal" style="display:none;">
-			<div class="ts-vgallery-aim-modal--content">
-				<div class="ts-vgallery-aim-modal--header">
-					<div class="ts-vgallery-aim-modal--header-logo-area">
-						<span class="ts-vgallery-aim-modal--header-logo-title">
-							Aesthetic Icon Picker
-						</span>
-					</div>
-					<div class="ts-vgallery-aim-modal--header-close-btn">
-						<i class="ts-vgallery-fas ts-vgallery-times" title="Close"></i>
-					</div>
-				</div>
-				<div class="ts-vgallery-aim-modal--body">
-					<div id="ts-vgallery-aim-modal--sidebar" class="ts-vgallery-aim-modal--sidebar">
-						<div class="ts-vgallery-aim-modal--sidebar-tabs">
-							<div class="ts-vgallery-aim-modal--sidebar-tab-item aesthetic-active" data-library-id="all">
-								<i class="ts-vgallery ts-vgallery-star"></i>
-								all
-							</div>
-							<div class="ts-vgallery-aim-modal--sidebar-tab-item" data-library-id="ts-vgallery-regular">
-								<i class="ts-vgallery ts-vgallery-font-awesome"></i>
-								font awesome
-							</div>
-							<div class="ts-vgallery-aim-modal--sidebar-tab-item" data-library-id="ts-vgallery-emoji-regular">
-								<i class="ts-vgallery-emoji ts-vgallery-emoji-grinning"></i>
-								emojies
-							</div>
-						</div>
-					</div>
-					<div id="ts-vgallery-aim-modal--icon-preview-wrap" class="ts-vgallery-aim-modal--icon-preview-wrap">
-						<div class="ts-vgallery-aim-modal--icon-search">
-							<input type="text" id="ts-vgallery-aim-modal--search_input"  placeholder="Filter by name...">
-							<i class="ts-vgallery-fas ts-vgallery-search"></i>
-						</div>
-						<div class="ts-vgallery-aim-modal--icon-preview-inner">
-							<div id="ts-vgallery-aim-modal--icon-preview">
-								%s
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="ts-vgallery-aim-modal--footer">
-					<button class="ts-vgallery-aim-insert-icon-button" id="ts-vgallery-aim-insert-icon-button">
-						Select
-					</button>
-				</div>
-			</div>
-		</div>
-		',
-		$tsvg_icons_html
-	);
-	$tsvg_font_families_css = '';
-	foreach ( $tsvg_all_fonts_arr['tsvg_font_families'] as $key => $value ) {
-		$tsvg_font_params = $value;
-		$tsvg_font_families_css .= sprintf(
-			'
-        	@font-face {
-        	  font-family: "%1$s";
-        	  font-style: normal;
-        	  font-weight: 400;
-        	  src: url("%2$s"); 
-        	  src: url("%3$s") format("embedded-opentype"), 
-        	       url("%4$s") format("woff2"), 
-        	       url("%5$s") format("woff"), 
-        	       url("%6$s") format("truetype"), 
-        	       url("%7$s") format("svg");
-        	}
-      		',
-			esc_attr( $key ),
-			array_key_exists( 'eot', $tsvg_font_params ) ? esc_url( $tsvg_font_params['eot'] ) : '',
-			array_key_exists( 'eot', $tsvg_font_params ) ? esc_url( $tsvg_font_params['eot'] ) : '',
-			array_key_exists( 'woff2', $tsvg_font_params ) ? esc_url( $tsvg_font_params['woff2'] ) : '',
-			array_key_exists( 'woff', $tsvg_font_params ) ? esc_url( $tsvg_font_params['woff'] ) : '',
-			array_key_exists( 'ttf', $tsvg_font_params ) ? esc_url( $tsvg_font_params['ttf'] ) : '',
-			array_key_exists( 'svg', $tsvg_font_params ) ? esc_url( $tsvg_font_params['svg'] ) : ''
-		);
-	}
-	echo sprintf(
-		'
-    	<style id="tsvg_all_styles">
-    	   %1$s 
-    	</style>
-  		',
-		$tsvg_font_families_css
-	);
+	require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/tsvg-edit.php';
+	require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/tsvg-icon.php';
+	require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/tsvg-font.php';
 }
-echo sprintf(
-    '
-    <section id="tsvg_builder_section" class="tsvg_flex_row" style="display:none;">
-        <aside id="tsvg_sidebar" class="tsvg_flex_col tsvg_sidebar" data-tsvg-use="%1$s" data-tsvg-open="open">
-            <div class="ts_video_gallery_logo tsvg_flex_col">
-                <img src="%2$s"  alt="TS Video Gallery Logo">
-            </div>
-            <div class="tsvg_sidebar_item %3$s" data-tsvg-item="theme">
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" width="20" height="20" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 20 20" xml:space="preserve"><g><path xmlns="http://www.w3.org/2000/svg" d="m24 10h-24v-5a5.006 5.006 0 0 1 5-5h5v3a1 1 0 0 0 2 0v-3h2v5a1 1 0 0 0 2 0v-5h2v7a1 1 0 0 0 2 0v-6.9a5.009 5.009 0 0 1 4 4.9zm-23.7 2a7.011 7.011 0 0 0 6.7 5h2v4a3 3 0 0 0 6 0v-4h2a7.011 7.011 0 0 0 6.7-5z" fill="#8c8c8c" data-original="#000000"/></g></svg>
-                <span class="tsvg_sidebar_item_title">Theme</span>  
-            </div>
-            <div class="tsvg_sidebar_item %4$s" data-tsvg-item="field">
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" width="20" height="20" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 20 20" xml:space="preserve"><g><path xmlns="http://www.w3.org/2000/svg" d="m21 17h-11v2a1 1 0 0 1 -2 0v-2h-2v2a1 1 0 0 1 -2 0v-2h-1a3 3 0 0 0 0 6h18a3 3 0 0 0 0-6z" fill="#8c8c8c" data-original="#000000"/><path xmlns="http://www.w3.org/2000/svg" d="m21 9h-11v2a1 1 0 0 1 -2 0v-2h-2v2a1 1 0 0 1 -2 0v-2h-1a3 3 0 0 0 0 6h18a3 3 0 0 0 0-6z" fill="#8c8c8c" data-original="#000000"/><path xmlns="http://www.w3.org/2000/svg" d="m21 1h-11v2a1 1 0 0 1 -2 0v-2h-2v2a1 1 0 0 1 -2 0v-2h-1a3 3 0 0 0 0 6h18a3 3 0 0 0 0-6z" fill="#8c8c8c" data-original="#000000"/></g></svg>
-                <span class="tsvg_sidebar_item_title">Fields</span>  
-            </div>
-            <div class="tsvg_sidebar_item" data-tsvg-item="style">
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" width="20" height="20" x="0" y="0" viewBox="0 0 512.051 512.051" style="enable-background:new 0 0 512 512" xml:space="preserve"><g><g xmlns="http://www.w3.org/2000/svg">	<path d="M21.359,101.359h58.368c11.52,42.386,55.219,67.408,97.605,55.888c27.223-7.399,48.489-28.665,55.888-55.888h257.472   c11.782,0,21.333-9.551,21.333-21.333s-9.551-21.333-21.333-21.333H233.22C221.7,16.306,178.001-8.716,135.615,2.804   c-27.223,7.399-48.489,28.665-55.888,55.888H21.359c-11.782,0-21.333,9.551-21.333,21.333S9.577,101.359,21.359,101.359z" fill="#8c8c8c" data-original="#000000"/>	<path d="M490.692,234.692h-58.368c-11.497-42.38-55.172-67.416-97.552-55.92c-27.245,7.391-48.529,28.674-55.92,55.92H21.359   c-11.782,0-21.333,9.551-21.333,21.333c0,11.782,9.551,21.333,21.333,21.333h257.493c11.497,42.38,55.172,67.416,97.552,55.92   c27.245-7.391,48.529-28.674,55.92-55.92h58.368c11.782,0,21.333-9.551,21.333-21.333   C512.025,244.243,502.474,234.692,490.692,234.692z" fill="#8c8c8c" data-original="#000000"/>	<path d="M490.692,410.692H233.22c-11.52-42.386-55.219-67.408-97.605-55.888c-27.223,7.399-48.489,28.665-55.888,55.888H21.359   c-11.782,0-21.333,9.551-21.333,21.333c0,11.782,9.551,21.333,21.333,21.333h58.368c11.52,42.386,55.219,67.408,97.605,55.888   c27.223-7.399,48.489-28.665,55.888-55.888h257.472c11.782,0,21.333-9.551,21.333-21.333   C512.025,420.243,502.474,410.692,490.692,410.692z" fill="#8c8c8c" data-original="#000000"/></g></g></svg>
-                <span class="tsvg_sidebar_item_title">Styles</span>  
-            </div>
-            <div class="tsvg_sidebar_item" data-tsvg-item="pagination">
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1"><path style=" stroke:none;fill-rule:nonzero;fill:rgb(54.901961%%,54.901961%%,54.901961%%);fill-opacity:1;" d="M 18.789062 5.910156 C 18.421875 5.652344 17.945312 6.152344 18.222656 6.507812 C 19.011719 7.566406 20.015625 8.390625 20.925781 9.289062 C 21.734375 10.121094 22.722656 10.984375 22.808594 12.171875 C 22.816406 14.019531 20.660156 15.046875 19.4375 16.128906 C 19.117188 16.390625 18.792969 16.675781 18.5 16.972656 C 18.25 17.285156 17.601562 17.707031 18.023438 18.125 C 18.324219 18.386719 18.621094 18.109375 18.800781 17.859375 C 18.945312 17.699219 19.121094 17.519531 19.28125 17.375 C 20.359375 16.394531 21.683594 15.695312 22.742188 14.679688 C 26.210938 11.179688 21.714844 7.703125 18.789062 5.910156 Z M 18.789062 5.910156 "/><path style=" stroke:none;fill-rule:nonzero;fill:rgb(54.901961%%,54.901961%%,54.901961%%);fill-opacity:1;" d="M 5.539062 17.421875 L 5.5 17.386719 C 5.5 17.386719 4.101562 16.089844 4.101562 16.089844 C 3.070312 15.015625 1.160156 13.648438 1.164062 12.054688 C 1.464844 10.335938 4.339844 8.050781 5.425781 6.441406 C 5.707031 6.097656 5.253906 5.589844 4.875 5.832031 C 3.5625 6.664062 2.390625 7.683594 1.378906 8.863281 C -2.269531 13.09375 2.164062 15.257812 4.980469 18.027344 C 5.367188 18.394531 5.933594 17.773438 5.539062 17.421875 Z M 5.539062 17.421875 "/><path style=" stroke:none;fill-rule:nonzero;fill:rgb(54.901961%%,54.901961%%,54.901961%%);fill-opacity:1;" d="M 12.667969 11.226562 C 11.398438 10.285156 9.703125 11.632812 10.9375 12.917969 C 11.242188 13.203125 11.675781 13.289062 12.078125 13.238281 C 13.117188 13.179688 13.460938 11.839844 12.667969 11.226562 Z M 12.667969 11.226562 "/><path style=" stroke:none;fill-rule:nonzero;fill:rgb(54.901961%%,54.901961%%,54.901961%%);fill-opacity:1;" d="M 14.636719 12.476562 C 15.167969 13.890625 17.238281 13.25 17.058594 11.789062 C 16.804688 9.984375 14.121094 10.839844 14.636719 12.476562 Z M 14.636719 12.476562 "/><path style=" stroke:none;fill-rule:nonzero;fill:rgb(54.901961%%,54.901961%%,54.901961%%);fill-opacity:1;" d="M 6.839844 12.777344 C 7.8125 13.617188 9.339844 12.660156 8.769531 11.410156 C 7.828125 9.640625 5.417969 11.21875 6.839844 12.777344 Z M 6.839844 12.777344 "/></g></g></svg>
-                <span class="tsvg_sidebar_item_title">Pagination & Load More</span>  
-            </div>
-            <div class="tsvg_sidebar_item" data-tsvg-item="shortcode">
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1"><g id="surface1"><path style="fill-rule:nonzero;fill:rgb(54.901961%%,54.901961%%,54.901961%%);fill-opacity:1;stroke-width:25;stroke-linecap:butt;stroke-linejoin:round;stroke:rgb(54.901961%%,54.901961%%,54.901961%%);stroke-opacity:1;stroke-miterlimit:10;" d="M 42.368475 56.519248 L 42.368475 169.480752 C 42.368475 177.310574 48.689426 183.631525 56.519248 183.631525 L 84.739234 183.631525 C 87.349175 183.631525 89.469752 185.752102 89.469752 188.321262 C 89.469752 190.931203 87.349175 193.05178 84.739234 193.05178 L 56.519248 193.05178 C 43.510324 193.011 32.989 182.489676 32.94822 169.480752 L 32.94822 56.519248 C 32.989 43.510324 43.510324 32.989 56.519248 32.94822 L 84.739234 32.94822 C 87.349175 32.94822 89.469752 35.068797 89.469752 37.678738 C 89.469752 40.247898 87.349175 42.368475 84.739234 42.368475 L 56.519248 42.368475 C 48.689426 42.368475 42.368475 48.689426 42.368475 56.519248 Z M 183.631525 169.480752 L 183.631525 56.519248 C 183.631525 48.689426 177.310574 42.368475 169.480752 42.368475 L 141.260766 42.368475 C 138.650825 42.368475 136.530248 40.247898 136.530248 37.678738 C 136.530248 35.068797 138.650825 32.94822 141.260766 32.94822 L 169.480752 32.94822 C 182.489676 32.989 193.011 43.510324 193.05178 56.519248 L 193.05178 169.480752 C 193.011 182.489676 182.489676 193.011 169.480752 193.05178 L 141.260766 193.05178 C 138.650825 193.05178 136.530248 190.931203 136.530248 188.321262 C 136.530248 185.752102 138.650825 183.631525 141.260766 183.631525 L 169.480752 183.631525 C 177.310574 183.631525 183.631525 177.310574 183.631525 169.480752 Z M 183.631525 169.480752 " transform="matrix(0.0957876,0,0,0.0957876,1.176,1.176)"/><path style=" stroke:none;fill-rule:nonzero;fill:rgb(54.901961%%,54.901961%%,54.901961%%);fill-opacity:1;" d="M 5.234375 6.589844 L 5.234375 17.410156 C 5.234375 18.160156 5.839844 18.765625 6.589844 18.765625 L 9.292969 18.765625 C 9.542969 18.765625 9.746094 18.96875 9.746094 19.214844 C 9.746094 19.464844 9.542969 19.667969 9.292969 19.667969 L 6.589844 19.667969 C 5.34375 19.664062 4.335938 18.65625 4.332031 17.410156 L 4.332031 6.589844 C 4.335938 5.34375 5.34375 4.335938 6.589844 4.332031 L 9.292969 4.332031 C 9.542969 4.332031 9.746094 4.535156 9.746094 4.785156 C 9.746094 5.03125 9.542969 5.234375 9.292969 5.234375 L 6.589844 5.234375 C 5.839844 5.234375 5.234375 5.839844 5.234375 6.589844 Z M 17.410156 18.765625 L 14.707031 18.765625 C 14.457031 18.765625 14.253906 18.96875 14.253906 19.214844 C 14.253906 19.464844 14.457031 19.667969 14.707031 19.667969 L 17.410156 19.667969 C 18.65625 19.664062 19.664062 18.65625 19.667969 17.410156 L 19.667969 6.589844 C 19.664062 5.34375 18.65625 4.335938 17.410156 4.332031 L 14.707031 4.332031 C 14.457031 4.332031 14.253906 4.535156 14.253906 4.785156 C 14.253906 5.03125 14.457031 5.234375 14.707031 5.234375 L 17.410156 5.234375 C 18.160156 5.234375 18.765625 5.839844 18.765625 6.589844 L 18.765625 17.410156 C 18.765625 18.160156 18.160156 18.765625 17.410156 18.765625 Z M 17.410156 18.765625 "/></g></svg>
-                <span class="tsvg_sidebar_item_title">Shortcode</span>  
-            </div>
-            <a href="%5$s" class="tsvg_sidebar_item"  target="_blank">
-                <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" width="20" height="20" viewBox="0 0 576 512" ><path fill="#8c8c8c" d="M576 216v16c0 13.255-10.745 24-24 24h-8l-26.113 182.788C514.509 462.435 494.257 480 470.37 480H105.63c-23.887 0-44.139-17.565-47.518-41.212L32 256h-8c-13.255 0-24-10.745-24-24v-16c0-13.255 10.745-24 24-24h67.341l106.78-146.821c10.395-14.292 30.407-17.453 44.701-7.058 14.293 10.395 17.453 30.408 7.058 44.701L170.477 192h235.046L326.12 82.821c-10.395-14.292-7.234-34.306 7.059-44.701 14.291-10.395 34.306-7.235 44.701 7.058L484.659 192H552c13.255 0 24 10.745 24 24zM312 392V280c0-13.255-10.745-24-24-24s-24 10.745-24 24v112c0 13.255 10.745 24 24 24s24-10.745 24-24zm112 0V280c0-13.255-10.745-24-24-24s-24 10.745-24 24v112c0 13.255 10.745 24 24 24s24-10.745 24-24zm-224 0V280c0-13.255-10.745-24-24-24s-24 10.745-24 24v112c0 13.255 10.745 24 24 24s24-10.745 24-24z"></path></svg>      
-                <span class="tsvg_sidebar_item_title">Go pro</span>  
-            </a>
-            <a href="%6$s" class="tsvg_sidebar_item" data-tsvg-item="contactus" target="_blank">
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30px" height="30px" viewBox="0 0 30 30" version="1.1"><g id="surface1"><path style="fill-rule:nonzero;fill:#8c8c8c;fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:#8c8c8c;stroke-opacity:1;stroke-miterlimit:4;" d="M 18 3.375 C 15.7 3.375 13.76875 4.975 13.2625 7.125 L 3 7.125 C 1.965625 7.125 1.125 7.965625 1.125 9 L 1.125 18.75 C 1.125 19.784375 1.965625 20.625 3 20.625 L 16.5 20.625 C 17.534375 20.625 18.375 19.784375 18.375 18.75 L 18.375 13.125 L 19.125 13.125 L 19.125 12.375 L 18 12.375 C 15.725 12.375 13.875 10.525 13.875 8.25 C 13.875 5.975 15.725 4.125 18 4.125 C 20.275 4.125 22.125 5.975 22.125 8.25 L 22.125 9.375 C 22.125 9.7875 21.7875 10.125 21.375 10.125 C 20.9625 10.125 20.625 9.7875 20.625 9.375 L 20.625 8.25 C 20.625 6.80625 19.44375 5.625 18 5.625 C 16.55625 5.625 15.375 6.80625 15.375 8.25 C 15.375 9.69375 16.55625 10.875 18 10.875 C 18.796875 10.875 19.5125 10.51875 19.99375 9.95625 C 20.21875 10.49375 20.753125 10.875 21.375 10.875 C 22.203125 10.875 22.875 10.203125 22.875 9.375 L 22.875 8.25 C 22.875 5.5625 20.6875 3.375 18 3.375 Z M 1.875 9.0375 L 6.40625 12.75 L 1.875 16.4625 Z M 17.625 18.75 C 17.625 19.371875 17.121875 19.875 16.5 19.875 L 3 19.875 C 2.378125 19.875 1.875 19.371875 1.875 18.75 L 1.875 17.425 L 7 13.234375 L 8.5625 14.5125 C 8.90625 14.79375 9.328125 14.934375 9.75 14.934375 C 10.171875 14.934375 10.59375 14.79375 10.9375 14.5125 L 12.5 13.234375 L 17.625 17.425 Z M 17.625 13.10625 L 17.625 16.45625 L 13.09375 12.75 L 14.45 11.578125 C 15.25625 12.440625 16.375 13.0125 17.625 13.10625 Z M 13.971875 10.99375 L 10.4625 13.934375 C 10.05 14.26875 9.45 14.26875 9.034375 13.934375 L 2.1375 8.284375 C 2.34375 8.0375 2.653125 7.875 3 7.875 L 13.14375 7.875 C 13.13125 8 13.125 8.125 13.125 8.25 C 13.125 9.265625 13.4375 10.2125 13.971875 10.99375 Z M 18 10.125 C 16.965625 10.125 16.125 9.284375 16.125 8.25 C 16.125 7.215625 16.965625 6.375 18 6.375 C 19.034375 6.375 19.875 7.215625 19.875 8.25 C 19.875 9.284375 19.034375 10.125 18 10.125 Z M 18 10.125 " transform="matrix(1.25,0,0,1.25,0,0)"/></g></svg>
-                <span class="tsvg_sidebar_item_title">Contact Us</span>  
-            </a>
-        </aside>
-        <main id="tsvg_builder_main" class="tsvg_flex_col">
-            <header id="tsvg_builder_head" class="tsvg_flex_item"> 
-                <div id="tsvg_switch_sidebar" class="tsvg_switch_sidebar tsvg_flex_col">
-                    <div id="tsvg-toggle-btn">
-                        <span class="bar-top"></span>
-                        <span class="bar-mid"></span>
-                        <span class="bar-bot"></span>
-                    </div>
-                </div>     
-                <div class="tsvg_buttons tsvg_flex_row">
-                    %7$s
-                    <a href="%8$s" class="tsvg_support tsvg_flex_item"  target="_blank" title="TS Video Gallery support forum">
-                        <div class="tsvg_support-inner">
-                            <div class="tsvg_support-icon">
-                                <i class="ts-vgallery ts-vgallery-fw ts-vgallery-comments"></i>
-                            </div>
-                            <div>Support Forum</div>
-                        </div>
-                    </a>
-                    %9$s
-                </div>
-                <div class="tsvg_back_wp tsvg_flex_col">
-                    <a href="%10$s" id="TS_vgallery_Back_Manager" class="tsvg_flex_col" title="Back to Manager">
-                        <i class="ts-vgallery ts-vgallery-times"></i>
-                    </a>
-                </div>
-            </header>
-            <section id="tsvg_builder_content">
-                %11$s
-                %12$s
-            </section>
-        </main>
-    </section>
-    ',
-    $this->tsvg_build == "new" ? esc_attr( "false" ) : "",
-    esc_url( plugin_dir_url( __FILE__ ) . "img/ts-video-gallery-logo.png" ),
-    $this->tsvg_build == "new" ? esc_attr( "tsvg_active" ) : "",
-    $this->tsvg_build == "edit" ? esc_attr( "tsvg_active" ) : "",
-    esc_url( "https://total-soft.com/wp-video-gallery/" ),
-    esc_url( "https://total-soft.com/contact-us/" ),
-    $this->tsvg_build == "new" ? "" : sprintf('<span id="tsvg_TS_VG_Title_e">%1$s</span>',esc_html( $this->tsvg_build_proporties["TS_VG_Title"] )),
-    esc_url( "https://wordpress.org/support/plugin/gallery-videos/" ),
-    $this->tsvg_build == "new" ? "" : sprintf(
-        '
-        <div class="tsvg_save_btn tsvg_flex_item">
-            <div class="tsvg_save_btn-inner">
-                <div class="tsvg_save_btn-icon">
-                    <i class="ts-vgallery ts-vgallery-folder-open ts-vgallery-fw"></i>
-                </div>
-                <div>%1$s</div>
-            </div>
-        </div>
-        ',
-        isset( $_GET["tsvg-theme"] ) ? esc_html( "Save" ) : esc_html( "Update" )
-    ),
-    esc_url( admin_url( "admin.php?page=tsvg-admin" ) ),
-    $tsvg_content_builder,
-    $tsvg_icon_picker_html
-);
-?>
+echo '</section></main></section>';

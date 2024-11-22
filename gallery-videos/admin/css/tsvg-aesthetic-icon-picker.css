@@ -44,7 +44,7 @@ button.ts-vgallery-select-icon {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
-	display: flex;
+	display: none;
 	align-items: center;
 	transition: all 0.4s ease-in-out;
 }

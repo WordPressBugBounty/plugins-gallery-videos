@@ -1,18 +1,22 @@
 <?php
 class TS_Video_Gallery_Block {
-	public function __construct() {
+	protected $version;
+	public function __construct($version) {
         if (function_exists("register_block_type")) {
             add_action( 'enqueue_block_editor_assets', [ $this, 'tsvg_editor_scripts' ] );
             add_action( 'init', [ $this, 'tsvg_register_block' ] );
         }
+        $this->version = $version;
 	}
 	public function tsvg_register_block() {
         wp_register_script(
             'tsvg-block-script',
 			plugin_dir_url( __FILE__ ) . 'js/tsvg-block.js',
-            array( 'jquery', 'wp-blocks', 'wp-element', 'wp-editor','wp-components')
+            array( 'jquery', 'wp-blocks', 'wp-element', 'wp-editor','wp-components'),
+            $this->version,
+            false
         );
-        wp_register_style( 'tsvg-block-css', plugin_dir_url( __FILE__ ) . 'css/tsvg-block.css');
+        wp_register_style( 'tsvg-block-css', plugin_dir_url( __FILE__ ) . 'css/tsvg-block.css', array(), $this->version, 'all');
         wp_enqueue_style('tsvg-block-css');
         register_block_type( 'tsvideogallery/gallery-block',
             array(
@@ -33,8 +37,7 @@ class TS_Video_Gallery_Block {
 	public function tsvg_get_all_records() {
         global $wpdb;
 		$tsvg_db_manager_table = esc_sql( $wpdb->prefix . 'ts_galleryv_manager' );
-        $tsvg_sql = $wpdb->prepare("SELECT `id`,`TS_VG_Title` FROM {$tsvg_db_manager_table} WHERE id > %d ", 0);
-        $tsvg_all_records = $wpdb->get_results( $tsvg_sql , ARRAY_A);
+        $tsvg_all_records = $wpdb->get_results( $wpdb->prepare("SELECT `id`,`TS_VG_Title` FROM {$tsvg_db_manager_table} WHERE id > %d ",0) , ARRAY_A);
         return $tsvg_all_records;
     }
 	public function tsvg_editor_scripts() {
@@ -77,7 +80,7 @@ class TS_Video_Gallery_Block {
                         <div class="notice notice-error is-dismissible"><p>%2$s</p></br>[TS_Video_Gallery id="%1$d"] </div>
                         </br>
                         ', absint( $tsvg_id ),
-                        esc_html__("In the preview of page you can see result of shortcode.")
+                        esc_html__("In the preview of page you can see result of shortcode.",'gallery-videos')
                     );
 				}else{
 					return  sprintf( '[TS_Video_Gallery id="%d"]', absint( $tsvg_id ) );
