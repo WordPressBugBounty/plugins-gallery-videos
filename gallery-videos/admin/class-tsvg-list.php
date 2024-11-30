@@ -18,10 +18,10 @@ class TS_Video_Gallery_List_Table extends WP_List_Table {
 			$wpdb->prepare(
 				'SELECT `id`,`TS_VG_Title`,`TS_VG_Option`,`TS_VG_Sort`,`created_at` FROM %1$s %2$s %3$s ORDER BY %4$s %5$s LIMIT %6$d OFFSET %7$d',
 				esc_sql( $wpdb->prefix . 'ts_galleryv_manager' ),
-				isset( $_REQUEST['s'] ) && ! empty( sanitize_text_field( $_REQUEST['s'] ) ) ? "WHERE TS_VG_Title like " : " ",
-				isset( $_REQUEST['s'] ) && ! empty( sanitize_text_field( $_REQUEST['s'] ) ) ? '%' . $wpdb->esc_like( $_REQUEST['s'] ) . '%' : " ",
-				isset( $_REQUEST['orderby'] ) && ! empty( sanitize_text_field( $_REQUEST['orderby'] ) ) ? sanitize_text_field( $_REQUEST['orderby'] ) : "id",
-				isset( $_REQUEST['order'] ) && ! empty( sanitize_text_field($_REQUEST['order']) ) ? ' ' . sanitize_text_field( $_REQUEST['order'] ) : "ASC",
+				isset( $_REQUEST['s'] ) && ! empty( sanitize_text_field( wp_unslash($_REQUEST['s'] )) ) ? "WHERE TS_VG_Title like " : " ",
+				isset( $_REQUEST['s'] ) && ! empty( sanitize_text_field( wp_unslash($_REQUEST['s'] )) ) ? '%' . $wpdb->esc_like( sanitize_text_field(wp_unslash($_REQUEST['s'])) ) . '%' : " ",
+				isset( $_REQUEST['orderby'] ) && ! empty( sanitize_text_field( wp_unslash($_REQUEST['orderby'] )) ) ? sanitize_text_field( wp_unslash($_REQUEST['orderby']) ) : "id",
+				isset( $_REQUEST['order'] ) && ! empty( sanitize_text_field(wp_unslash($_REQUEST['order'])) ) ? ' ' . sanitize_text_field( wp_unslash($_REQUEST['order']) ) : "ASC",
 				(int) $tsvg_per_page,
 				(int) ( $tsvg_page_number - 1 ) * $tsvg_per_page,
 			),
@@ -224,13 +224,13 @@ class TS_Video_Gallery_List_Table extends WP_List_Table {
 				),
 				'p' => [],
 			); 
-			if ( ! isset( $_POST['tsvg_action_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( $_POST['tsvg_action_nonce'] ), 'tsvg_action' ) ) {
+			if ( ! isset( $_POST['tsvg_action_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash($_POST['tsvg_action_nonce'] )), 'tsvg_action' ) ) {
 				echo wp_kses( self::tsvg_admin_notice( 'notice notice-error', "Sorry, your nonce did not verify." ), $tsvgBulkNotices );
 				exit;
 			} else {
-				$tsvg_post_action = isset( $_POST['action'] ) ? sanitize_text_field( $_POST['action'] ) : sanitize_text_field( $_POST['action2'] );
+				$tsvg_post_action = isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash($_POST['action'])) : sanitize_text_field( wp_unslash($_POST['action2']));
 				if ( isset( $_POST['tsvg_record_ids'] ) ) {
-					$tsvg_record_ids = array_map( 'sanitize_text_field', esc_sql( $_POST['tsvg_record_ids'] ) );
+					$tsvg_record_ids = array_map( 'sanitize_text_field', esc_sql( sanitize_text_field(wp_unslash($_POST['tsvg_record_ids']))) );
 					$tsvg_count = count( $tsvg_record_ids );
 					if ( $tsvg_post_action == 'bulk-delete' ) {
 						foreach ( $tsvg_record_ids as $id ) {
@@ -243,7 +243,7 @@ class TS_Video_Gallery_List_Table extends WP_List_Table {
 						}
 						echo wp_kses( self::tsvg_admin_notice( 'notice notice-success', "{$tsvg_count} galleries was successfully copied." ), $tsvgBulkNotices );
 					} elseif ( $tsvg_post_action == 'copy_with_change_theme' ) {
-						$tsvg_change_to = sanitize_text_field( $_POST['tsvg_theme_input'] );
+						$tsvg_change_to = sanitize_text_field( wp_unslash($_POST['tsvg_theme_input'] ));
 						foreach ( $tsvg_record_ids as $id ) {
 							self::tsvg_copy_record_change_theme( $id, $tsvg_change_to );
 						}

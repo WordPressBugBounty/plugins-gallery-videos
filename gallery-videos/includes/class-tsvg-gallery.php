@@ -9,7 +9,7 @@ class TS_Video_Gallery {
 		if ( defined( 'TSVG_VERSION' ) ) {
 			$this->version = TSVG_VERSION;
 		} else {
-			$this->version = '2.4.1';
+			$this->version = '2.4.2';
 		}
 		$this->plugin_name = 'TS Video Gallery';
 		$this->theme_details = wp_get_theme();
@@ -24,7 +24,7 @@ class TS_Video_Gallery {
 		if( in_array($pagenow,["post-new.php","edit.php","post.php"])){
 			add_action( 'admin_enqueue_scripts', [$this,'tsvg_activate_scripts'] );
 		}
-		if (strpos($_SERVER['REQUEST_URI'], "elementor-preview") !== false){
+		if (strpos(sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI'])), "elementor-preview") !== false){
 			add_action( 'wp_enqueue_scripts', [$this,'tsvg_activate_scripts'] );
 		}
 	}

@@ -1,6 +1,5 @@
 <?php
-class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function
-{
+class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function{
 	private $plugin_name;
 	private $version;
 	public $tsvg_admin_manager;
@@ -9,6 +8,9 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function
 	public $tsvg_build_id;
 	private $tsvg_page_slug;
 	private $tsvg_themes;
+	private $tsvg_styles_array;
+	private $tsvg_settings_array;
+	private $tsvg_option_styles_array;
 	private $tsvg_themes_links;
 	protected $tsvg_function_class;
 	public function __construct($plugin_name, $version){
@@ -33,182 +35,155 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function
 		global $wp_filesystem;
 		WP_Filesystem();
 	}
-	public function tsvg_process_requests()
-	{
-		$this->tsvg_themes = array(
-			'grid_video_gallery'     => 'Grid Video Gallery',
-			'lightbox_video_gallery' => 'LightBox Video Gallery',
-			'thumbnails_video'       => 'Thumbnails Video',
-			'content_popup'          => 'Content Popup',
-			'elastic_gallery'        => 'Elastic Gallery',
-			'fancy_gallery'          => 'Fancy Gallery',
-			'parallax_engine'        => 'Parallax Engine',
-			'classic_gallery'        => 'Classic Gallery',
-			'space_gallery'          => 'Space Gallery',
-			'effective_gallery'      => 'Effective Gallery',
-			'gallery_album'          => 'Gallery Album'
-		);
-		if (isset($_POST) && isset($_POST["tsvg_nonce"])) {
+	public function tsvg_process_requests(){
+		$this->tsvg_themes = array('grid_video_gallery'=>'Grid Video Gallery','lightbox_video_gallery'=>'LightBox Video Gallery','thumbnails_video'=>'Thumbnails Video','content_popup'=>'Content Popup','elastic_gallery'=>'Elastic Gallery','fancy_gallery'=>'Fancy Gallery','parallax_engine'=>'Parallax Engine','classic_gallery'=>'Classic Gallery','space_gallery'=>'Space Gallery','effective_gallery'=>'Effective Gallery','gallery_album'=>'Gallery Album');
+		$this->tsvg_styles_array = array('TotalSoft_GV_1_01','TotalSoft_GV_1_02','TotalSoft_GV_1_03','TotalSoft_GV_1_04','TotalSoft_GV_1_05','TotalSoft_GV_1_06','TotalSoft_GV_1_07','TotalSoft_GV_1_08','TotalSoft_GV_1_09','TotalSoft_GV_1_10','TotalSoft_GV_1_11','TotalSoft_GV_1_12','TotalSoft_GV_1_13','TotalSoft_GV_1_14','TotalSoft_GV_1_15','TotalSoft_GV_1_16','TotalSoft_GV_1_PT','TotalSoft_GV_1_17','TotalSoft_GV_1_18','TotalSoft_GV_1_19','TotalSoft_GV_1_20','TotalSoft_GV_1_21','TotalSoft_GV_1_22','TotalSoft_GV_1_23','TotalSoft_GV_1_24','TotalSoft_GV_1_25','TotalSoft_GV_1_26','TotalSoft_GV_1_27','TotalSoft_GV_1_28','TotalSoft_GV_1_29','TotalSoft_GV_1_30','TotalSoft_GV_1_31','TotalSoft_GV_1_32','TotalSoft_GV_1_33','TotalSoft_GV_1_34','TotalSoft_GV_1_35','TotalSoft_GV_1_36','TotalSoft_GV_1_37','TotalSoft_GV_1_38','TotalSoft_GV_1_39','TotalSoft_GV_1_40','TotalSoft_GV_2_01','TotalSoft_GV_2_02','TotalSoft_GV_2_03','TotalSoft_GV_2_04','TotalSoft_GV_2_05','TotalSoft_GV_2_06','TotalSoft_GV_2_07','TotalSoft_GV_2_08','TotalSoft_GV_2_09','TotalSoft_GV_2_10','TotalSoft_GV_2_11','TotalSoft_GV_FG_PT','TotalSoft_GV_FG_PD','TotalSoft_GV_2_12','TotalSoft_GV_2_13','TotalSoft_GV_2_14','TotalSoft_GV_2_15','TotalSoft_GV_2_16','TotalSoft_GV_2_17','TotalSoft_GV_2_18','TotalSoft_GV_2_19','TotalSoft_GV_2_20','TotalSoft_GV_2_21','TotalSoft_GV_2_22','TotalSoft_GV_2_23','TotalSoft_GV_2_24','TotalSoft_GV_2_25','TotalSoft_GV_2_26','TotalSoft_GV_2_27','TotalSoft_GV_2_28','TotalSoft_GV_2_29','TotalSoft_GV_2_30','TotalSoft_GV_2_31','TotalSoft_GV_2_32','TotalSoft_GV_2_33','TotalSoft_GV_2_34','TotalSoft_GV_2_35','TotalSoft_GV_2_36','TotalSoft_GV_2_37','TotalSoft_GV_2_38','TotalSoft_GV_2_39');
+		$this->tsvg_settings_array = array('TotalSoft_VGallery_Set_01','TotalSoft_VGallery_Set_02','TotalSoft_VGallery_Set_03','TotalSoft_VGallery_Set_04','TotalSoft_VGallery_Set_05','TotalSoft_VGallery_Set_06','TotalSoft_VGallery_Set_07','TotalSoft_VGallery_Set_08');
+		$this->tsvg_option_styles_array = array('TotalSoft_VGallery_Sty_01','TotalSoft_VGallery_Sty_02','TotalSoft_VGallery_Sty_03','TotalSoft_VGallery_Sty_04','TotalSoft_VGallery_Sty_05','TotalSoft_VGallery_Sty_06','TotalSoft_VGallery_Sty_07','TotalSoft_VGallery_Sty_08','TotalSoft_VGallery_Sty_09','TotalSoft_VGallery_Sty_10','TotalSoft_VGallery_Sty_11','TotalSoft_VGallery_Sty_12','TotalSoft_VGallery_Sty_13','TotalSoft_VGallery_Sty_14','TotalSoft_VGallery_Sty_15','TotalSoft_VGallery_Sty_16','TotalSoft_VGallery_Sty_17','TotalSoft_VGallery_Sty_18','TotalSoft_VGallery_Sty_19','TotalSoft_VGallery_Sty_20','TotalSoft_VGallery_Sty_21','TotalSoft_VGallery_Sty_22','TotalSoft_VGallery_Sty_23','TotalSoft_VGallery_Sty_24','TotalSoft_VGallery_Sty_25','TotalSoft_VGallery_Sty_26','TotalSoft_VGallery_Sty_27');
+		if ( isset($_POST) && isset($_POST["tsvg_nonce"]) && isset($_POST['tsvg_videos_order']) && isset($_POST['tsvg_theme']) && isset($_POST['tsvg_deleted_videos']) && isset($_POST["tsvg_id"]) && isset($_POST["tsvg_title"]) ) {
 			if (sanitize_text_field(wp_unslash($_POST['tsvg_nonce'])) === '' || ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['tsvg_nonce'])), 'tsvg_builder_nonce_field')) {
-				echo ('TS Video Gallery nonce error.');
+				echo 'TS Video Gallery - nonce error.';
 				die();
 			}
-			if(isset($_POST["tsvg_id"]) && isset($_POST["tsvg_title"]))
-			{
-				$tsvg_id = sanitize_text_field(wp_unslash($_POST['tsvg_id']));
+			$tsvg_id = sanitize_text_field(wp_unslash($_POST['tsvg_id']));
+			$tsvg_styles = $tsvg_settings = $tsvg_option_styles = $tsvg_options = $tsvg_order_array = $tsvg_videos = [];
+			if (is_numeric($tsvg_id) || array_key_exists($tsvg_id, $this->tsvg_themes)) {
+				global $wpdb;
+				$tsvg_db_manager_table = esc_sql($wpdb->prefix . 'ts_galleryv_manager');
+				$tsvg_db_videos_table = esc_sql($wpdb->prefix . 'ts_galleryv_videos');
+				foreach ($this->tsvg_styles_array as $key) {
+					$tsvg_styles[$key] = isset($_POST[$key]) ? sanitize_text_field(wp_unslash($_POST[$key])) : '';
+				}
+				foreach ($this->tsvg_settings_array as $key) {
+					$tsvg_settings[$key] = isset($_POST[$key]) ? sanitize_text_field(wp_unslash($_POST[$key])) : '';
+				}
+				foreach ($this->tsvg_option_styles_array as $key) {
+					$tsvg_option_styles[$key] = isset($_POST[$key]) ? sanitize_text_field(wp_unslash($_POST[$key])) : '';
+				}
 				$tsvg_title = sanitize_text_field(wp_unslash($_POST['tsvg_title']));
-				if (is_numeric($tsvg_id) || array_key_exists($tsvg_id, $this->tsvg_themes)) {
-					global $wpdb;
-					$tsvg_db_manager_table = esc_sql($wpdb->prefix . 'ts_galleryv_manager');
-					$tsvg_db_videos_table = esc_sql($wpdb->prefix . 'ts_galleryv_videos');
-					$tsvg_videos = json_decode(stripslashes(sanitize_text_field(wp_unslash($_POST['tsvg_videos']))), true);
-					$tsvg_videos_order = json_decode(stripslashes(sanitize_text_field(wp_unslash($_POST['tsvg_videos_order']))), true);
-					$tsvg_styles = json_decode(stripslashes(sanitize_text_field(wp_unslash($_POST['tsvg_styles']))), true);
-					$tsvg_options = json_decode(stripslashes(sanitize_text_field(wp_unslash($_POST['tsvg_options']))), true);
-					$tsvg_settings = json_decode(stripslashes(sanitize_text_field(wp_unslash($_POST['tsvg_settings']))), true);
-					$tsvg_option_styles = json_decode(stripslashes(sanitize_text_field(wp_unslash($_POST['tsvg_option_styles']))), true);
-					$tsvg_deleted_videos = sanitize_text_field(wp_unslash(isset($_POST['tsvg_deleted_videos']))) ? json_decode(stripslashes(sanitize_text_field(wp_unslash($_POST['tsvg_deleted_videos']))), true) : "";
-					$tsvg_order_array = array();
-					foreach ($tsvg_styles as $key => $value) {
-						$tsvg_styles[$key] = sanitize_text_field(htmlentities(stripslashes($value), ENT_QUOTES));
-					}
-					foreach ($tsvg_settings as $key => $value) {
-						$tsvg_settings[$key] = sanitize_text_field(htmlentities(stripslashes($value), ENT_QUOTES));
-					}
-					foreach ($tsvg_option_styles as $key => $value) {
-						$tsvg_option_styles[$key] = sanitize_text_field(htmlentities(stripslashes($value), ENT_QUOTES));
-					}
-					if (array_key_exists($tsvg_id, $this->tsvg_themes)) {
+				$tsvg_videos_order = explode("|", sanitize_text_field(wp_unslash($_POST['tsvg_videos_order'])));
+				$tsvg_deleted_videos = sanitize_text_field(wp_unslash($_POST['tsvg_deleted_videos']));
+				$tsvg_deleted_videos = $tsvg_deleted_videos == '' ? [] : explode("|", $tsvg_deleted_videos);
+				$tsvg_theme = sanitize_text_field(wp_unslash($_POST['tsvg_theme']));
+				$tsvg_options['TS_vgallery_Q_Theme'] = $tsvg_theme;
+				foreach ($tsvg_videos_order as $video_id) {
+					$tsvg_videos[] = [
+						'id'            => $video_id,
+						'TS_VG_SetType' => isset($_POST['TS_VG_SetType-' . $video_id]) ? sanitize_text_field(wp_unslash($_POST['TS_VG_SetType-' . $video_id])) : '',
+						'TS_VG_SetName' => isset($_POST['TS_VG_SetName-' . $video_id]) ? htmlentities(sanitize_text_field(wp_unslash($_POST['TS_VG_SetName-' . $video_id])), ENT_QUOTES) : '',
+						'TS_VG_Options' => [
+							'TotalSoftVGallery_Vid_Im'    => isset($_POST['TotalSoftVGallery_Vid_Im-' . $video_id]) ? sanitize_url(wp_unslash($_POST['TotalSoftVGallery_Vid_Im-' . $video_id])) : '',
+							'TotalSoftVGallery_Vid_Vd'    => isset($_POST['TotalSoftVGallery_Vid_Vd-' . $video_id]) ? sanitize_url(wp_unslash($_POST['TotalSoftVGallery_Vid_Vd-' . $video_id])) : '',
+							'TotalSoftVGallery_Vid_vont'  => isset($_POST['TotalSoftVGallery_Vid_vont-' . $video_id]) ? sanitize_text_field(wp_unslash($_POST['TotalSoftVGallery_Vid_vont-' . $video_id])) : '',
+							'TotalSoftVGallery_Vid_vd_em' => '',
+							'TotalSoftVGallery_Vid_desc'  => isset($_POST['TotalSoftVGallery_Vid_desc-' . $video_id]) ? wp_kses_post(wp_unslash($_POST['TotalSoftVGallery_Vid_desc-' . $video_id])) : '',
+							'TotalSoftVGallery_Vid_link'  => isset($_POST['TotalSoftVGallery_Vid_link-' . $video_id]) ? sanitize_url(wp_unslash($_POST['TotalSoftVGallery_Vid_link-' . $video_id])) : '',
+							'TotalSoftVGallery_Vid_Cl'    => isset($_POST['TotalSoftVGallery_Vid_Cl-' . $video_id]) ? sanitize_text_field(wp_unslash($_POST['TotalSoftVGallery_Vid_Cl-' . $video_id])) : ''
+						]
+					];
+				}
+				if (array_key_exists($tsvg_id, $this->tsvg_themes)) {
+					$wpdb->insert(
+						$tsvg_db_manager_table,
+						array(
+							'id'                 => '',
+							'TS_VG_Title'        => $tsvg_title,
+							'TS_VG_Option'       => json_encode( $tsvg_options ),
+							'TS_VG_Style'        => json_encode( $tsvg_styles ),
+							'TS_VG_Settings'     => json_encode( $tsvg_settings ),
+							'TS_VG_Option_Style' => json_encode( $tsvg_option_styles ),
+							'TS_VG_Sort'         => '',
+							'TS_VG_Old_User'     => 'no',
+							'created_at'         => gmdate( 'd.m.Y h:i:sa' ),
+							'updated_at'         => gmdate( 'd.m.Y h:i:sa' )
+						),
+						array( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
+					);
+					$tsvg_insert_id = $wpdb->insert_id;
+					foreach ($tsvg_videos as $tsvg_video) {
 						$wpdb->insert(
-							$tsvg_db_manager_table,
+							$tsvg_db_videos_table,
 							array(
-								'id'                 => '',
-								'TS_VG_Title'        => $tsvg_title,
-								'TS_VG_Option'       => json_encode( $tsvg_options ),
-								'TS_VG_Style'        => json_encode( $tsvg_styles ),
-								'TS_VG_Settings'     => json_encode( $tsvg_settings ),
-								'TS_VG_Option_Style' => json_encode( $tsvg_option_styles ),
-								'TS_VG_Sort'         => '',
-								'TS_VG_Old_User'     => 'no',
-								'created_at'         => gmdate( 'd.m.Y h:i:sa' ),
-								'updated_at'         => gmdate( 'd.m.Y h:i:sa' ),
+								'id'            => '',
+								'TS_VG_SetType' => (int) $tsvg_insert_id,
+								'TS_VG_SetName' => $tsvg_video['TS_VG_SetName'],
+								'TS_VG_Options' => json_encode($tsvg_video['TS_VG_Options'])
 							),
-							array( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
+							array('%d', '%d', '%s', '%s')
 						);
-						$tsvg_insert_id = $wpdb->insert_id;
-						foreach ($tsvg_videos_order as $key => $value) {
-							$tsvg_arr_key = sanitize_text_field($value);
-							$tsvg_video_title = htmlentities(sanitize_text_field(stripslashes($tsvg_videos[$tsvg_arr_key]['TS_VG_SetName'])), ENT_QUOTES);
-							foreach ($tsvg_videos[$tsvg_arr_key]['TS_VG_Options'] as $tsvg_param_key => $tsvg_param_value) {
-								if ($tsvg_param_key == 'TotalSoftVGallery_Vid_Vd' || $tsvg_param_key == 'TotalSoftVGallery_Vid_Im' || $tsvg_param_key == 'TotalSoftVGallery_Vid_link') {
-									$tsvg_videos[$tsvg_arr_key]['TS_VG_Options'][$tsvg_param_key] = sanitize_url($tsvg_param_value);
-								} elseif ($tsvg_param_key == 'TotalSoftVGallery_Vid_desc') {
-									$tsvg_videos[$tsvg_arr_key]['TS_VG_Options'][$tsvg_param_key] = sanitize_text_field(htmlentities(stripslashes($tsvg_param_value)));
-								} else {
-									$tsvg_videos[$tsvg_arr_key]['TS_VG_Options'][$tsvg_param_key] = sanitize_text_field($tsvg_param_value);
-								}
-							}
+						$tsvg_order_array[] = $wpdb->insert_id;
+					}
+					$wpdb->update($tsvg_db_manager_table, array('TS_VG_Sort' => implode(',', $tsvg_order_array)), array('id' => (int) $tsvg_insert_id), array('%s'), array('%d'));
+					if (wp_safe_redirect(add_query_arg('tsvg-id', $tsvg_insert_id, admin_url('admin.php?page=tsvg-builder')))) exit();
+				} else {
+					foreach ($tsvg_videos as $tsvg_video) {
+						if (strpos($tsvg_video['id'], 'new') !== false) {
 							$wpdb->insert(
 								$tsvg_db_videos_table,
 								array(
 									'id'            => '',
-									'TS_VG_SetType' => (int) $tsvg_insert_id,
-									'TS_VG_SetName' => $tsvg_video_title,
-									'TS_VG_Options' => json_encode($tsvg_videos[$tsvg_arr_key]['TS_VG_Options']),
+									'TS_VG_SetType' => (int) $tsvg_id,
+									'TS_VG_SetName' => $tsvg_video['TS_VG_SetName'],
+									'TS_VG_Options' => json_encode($tsvg_video['TS_VG_Options'])
 								),
 								array('%d', '%d', '%s', '%s')
 							);
 							$tsvg_order_array[] = $wpdb->insert_id;
+						} else {
+							$wpdb->update(
+								$tsvg_db_videos_table,
+								array(
+									'TS_VG_SetName' => $tsvg_video['TS_VG_SetName'],
+									'TS_VG_Options' => json_encode($tsvg_video['TS_VG_Options'])
+								),
+								array('id' => (int) $tsvg_video['id']),
+								array('%s', '%s'),
+								array('%d')
+							);
+							$tsvg_order_array[] = (int) $tsvg_video['id'];
 						}
-						$wpdb->update($tsvg_db_manager_table, array('TS_VG_Sort' => implode(',', $tsvg_order_array)), array('id' => (int) $tsvg_insert_id), array('%s'), array('%d'));
-						if (wp_safe_redirect(add_query_arg('tsvg-id', $tsvg_insert_id, admin_url('admin.php?page=tsvg-builder'))))
-							exit();
-					} else {
-						foreach ($tsvg_videos_order as $key => $value) {
-							$tsvg_arr_key       = sanitize_text_field($value);
-							$tsvg_video_title = sanitize_text_field(htmlentities(stripslashes($tsvg_videos[$tsvg_arr_key]['TS_VG_SetName']), ENT_QUOTES));
-							foreach ($tsvg_videos[$tsvg_arr_key]['TS_VG_Options'] as $tsvg_param_key => $tsvg_param_value) {
-								if ($tsvg_param_key == 'TotalSoftVGallery_Vid_Im' || $tsvg_param_key == 'TotalSoftVGallery_Vid_Vd' || $tsvg_param_key == 'TotalSoftVGallery_Vid_link') {
-									$tsvg_videos[$tsvg_arr_key]['TS_VG_Options'][$tsvg_param_key] = sanitize_url($tsvg_param_value);
-								} elseif ($tsvg_param_key == 'TotalSoftVGallery_Vid_desc') {
-									$tsvg_videos[$tsvg_arr_key]['TS_VG_Options'][$tsvg_param_key] = sanitize_text_field(htmlentities(stripslashes($tsvg_param_value)));
-								} else {
-									$tsvg_videos[$tsvg_arr_key]['TS_VG_Options'][$tsvg_param_key] = sanitize_text_field($tsvg_param_value);
-								}
-							}
-							if (strpos($value, 'new') !== false) {
-								$wpdb->insert(
+					}
+					if (is_array($tsvg_deleted_videos) && count($tsvg_deleted_videos) > 0) {
+						foreach ($tsvg_deleted_videos as $deleted_video) {
+							if (strpos($deleted_video, 'new') === false) {
+								$wpdb->delete(
 									$tsvg_db_videos_table,
-									array(
-										'id'            => '',
-										'TS_VG_SetType' => (int) $tsvg_id,
-										'TS_VG_SetName' => $tsvg_video_title,
-										'TS_VG_Options' => json_encode($tsvg_videos[$tsvg_arr_key]['TS_VG_Options']),
-									),
-									array('%d', '%d', '%s', '%s')
-								);
-								$tsvg_order_array[] = $wpdb->insert_id;
-							} else {
-								$wpdb->update(
-									$tsvg_db_videos_table,
-									array(
-										'TS_VG_SetName' => $tsvg_video_title,
-										'TS_VG_Options' => json_encode($tsvg_videos[$tsvg_arr_key]['TS_VG_Options']),
-									),
-									array('id' => (int) $tsvg_arr_key),
-									array('%s', '%s'),
+									array('id' => (int) $deleted_video),
 									array('%d')
 								);
-								$tsvg_order_array[] = (int) $tsvg_arr_key;
 							}
 						}
-						if (is_array($tsvg_deleted_videos) && count($tsvg_deleted_videos) != 0) {
-							foreach ($tsvg_deleted_videos as $key => $value) {
-								if (strpos(sanitize_text_field($value), 'new') === false) {
-									$wpdb->delete(
-										$tsvg_db_videos_table,
-										array('id' => (int) sanitize_text_field($value)),
-										array('%d')
-									);
-								}
-							}
-						}
-						$wpdb->update(
-							$tsvg_db_manager_table,
-							array(
-								'TS_VG_Title'        => $tsvg_title,
-								'TS_VG_Option'       => json_encode($tsvg_options),
-								'TS_VG_Style'        => json_encode($tsvg_styles),
-								'TS_VG_Settings'     => json_encode($tsvg_settings),
-								'TS_VG_Option_Style' => json_encode($tsvg_option_styles),
-								'TS_VG_Sort'         => implode(',', $tsvg_order_array),
-								'updated_at'         => gmdate('d.m.Y h:i:sa'),
-							),
-							array('id' => (int) $tsvg_id),
-							array('%s', '%s', '%s', '%s', '%s', '%s'),
-							array('%d')
-						);
-						if (wp_safe_redirect(add_query_arg('tsvg-id', $tsvg_id, admin_url('admin.php?page=tsvg-builder'))))
-							exit();
 					}
-				} else {
-					echo 'TS Video Gallery - unexpected error.';
-					die();
+					$wpdb->update(
+						$tsvg_db_manager_table,
+						array(
+							'TS_VG_Title'        => $tsvg_title,
+							'TS_VG_Option'       => json_encode($tsvg_options),
+							'TS_VG_Style'        => json_encode($tsvg_styles),
+							'TS_VG_Settings'     => json_encode($tsvg_settings),
+							'TS_VG_Option_Style' => json_encode($tsvg_option_styles),
+							'TS_VG_Sort'         => implode(',', $tsvg_order_array),
+							'updated_at'         => gmdate('d.m.Y h:i:sa'),
+						),
+						array('id' => (int) $tsvg_id),
+						array('%s', '%s', '%s', '%s', '%s', '%s'),
+						array('%d')
+					);
+					if (wp_safe_redirect(add_query_arg('tsvg-id', $tsvg_id, admin_url('admin.php?page=tsvg-builder')))) exit();
 				}
-			}else {
+			} else {
 				echo 'TS Video Gallery - unexpected error.';
 				die();
 			}
-
 		}
 		if (isset($_GET['tsvg-id']) || isset($_GET['tsvg-theme'])) {
 			$this->tsvg_function_class = new TS_Video_Gallery_Function();
-			if (wp_unslash(isset($_GET['tsvg-id'])) && is_numeric(sanitize_text_field(wp_unslash($_GET['tsvg-id']))) && is_int((int) sanitize_text_field(wp_unslash($_GET['tsvg-id']))) && (int) sanitize_text_field(wp_unslash($_GET['tsvg-id'])) > 0) {
+			$tsvg_get_id = sanitize_text_field(wp_unslash($_GET['tsvg-id']));
+			if (isset($_GET['tsvg-id']) && is_numeric($tsvg_get_id) && is_int((int) $tsvg_get_id) && (int) $tsvg_get_id > 0) {
 				global $wpdb;
-				$tsvg_get_record = false;
 				$tsvg_db_manager_table = esc_sql($wpdb->prefix . 'ts_galleryv_manager');
 				$tsvg_db_videos_table = esc_sql($wpdb->prefix . 'ts_galleryv_videos');
-				$tsvg_get_record = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$tsvg_db_manager_table} WHERE id = %d ", sanitize_text_field(wp_unslash($_GET['tsvg-id']))), ARRAY_A);
+				$tsvg_get_record = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$tsvg_db_manager_table} WHERE id = %d ", $tsvg_get_id), ARRAY_A);
 				if (is_array($tsvg_get_record)) {
 					$tsvg_get_record['TS_VG_Title'] = html_entity_decode(htmlspecialchars_decode($tsvg_get_record['TS_VG_Title']), ENT_QUOTES);
 					$tsvg_record_style = json_decode($tsvg_get_record['TS_VG_Style'], true);
@@ -227,7 +202,7 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function
 					$tsvg_get_record['TS_VG_Option_Style'] = json_encode($tsvg_record_option_style, true);
 					$tsvg_get_record['TS_VG_Old_User'] = html_entity_decode(htmlspecialchars_decode($tsvg_get_record['TS_VG_Old_User']), ENT_QUOTES);
 					$tsvg_get_record['TS_VG_Settings'] = json_encode($tsvg_record_settings, true);
-					$tsvg_get_video_records = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$tsvg_db_videos_table} WHERE TS_VG_SetType = %d ", (int) sanitize_text_field(wp_unslash($_GET['tsvg-id']))) , ARRAY_A);
+					$tsvg_get_video_records = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$tsvg_db_videos_table} WHERE TS_VG_SetType = %d ", (int) $tsvg_get_id) , ARRAY_A);
 					foreach ($tsvg_get_video_records as $key => $value) {
 						$tsvg_get_video_records[$key]['TS_VG_SetName'] = html_entity_decode(htmlspecialchars_decode($value['TS_VG_SetName']), ENT_QUOTES);
 					}
@@ -235,7 +210,7 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function
 					$tsvg_get_record['TS_VG_Style'] = json_decode($tsvg_get_record['TS_VG_Style'], true);
 					$this->tsvg_build = 'edit';
 					$this->tsvg_build_proporties = $tsvg_get_record;
-					$this->tsvg_build_id = sanitize_text_field(wp_unslash($_GET['tsvg-id']));
+					$this->tsvg_build_id = $tsvg_get_id;
 				} else {
 					$this->tsvg_build = 'not';
 				}
@@ -261,7 +236,7 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function
 					'TS_VG_Old_User'     => 'no',
 					'created_at'         => gmdate('d.m.Y h:i:sa'),
 					'updated_at'         => gmdate('d.m.Y h:i:sa'),
-					'tsvg_video_records' => $tsvg_default_data['Videos'],
+					'tsvg_video_records' => $tsvg_default_data['Videos']
 				);
 			} else {
 				$this->tsvg_build = '404';
@@ -269,28 +244,26 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function
 		} else {
 			$this->tsvg_build = 'new';
 			$this->tsvg_themes_links = array(
-				'grid_video_gallery'     => 'wp-video-gallery-grid/',
-				'lightbox_video_gallery' => 'wp-video-gallery-lightbox/',
-				'thumbnails_video'       => 'wp-video-gallery-thumbnails/',
-				'content_popup'          => 'wp-video-gallery-content-popup/',
-				'elastic_gallery'        => 'wp-video-gallery-elastic/',
-				'fancy_gallery'          => 'wp-video-gallery-fancy/',
-				'parallax_engine'        => 'wp-video-gallery-parallax/',
-				'classic_gallery'        => 'wp-video-gallery-classic/',
-				'space_gallery'          => 'wp-video-gallery-space/',
-				'effective_gallery'		 => 'wp-video-gallery-effective/',
-				'gallery_album'			 => 'wp-video-gallery-album/'
+				'grid_video_gallery'     => 'wp-video-gallery-grid',
+				'lightbox_video_gallery' => 'wp-video-gallery-lightbox',
+				'thumbnails_video'       => 'wp-video-gallery-thumbnails',
+				'content_popup'          => 'wp-video-gallery-content-popup',
+				'elastic_gallery'        => 'wp-video-gallery-elastic',
+				'fancy_gallery'          => 'wp-video-gallery-fancy',
+				'parallax_engine'        => 'wp-video-gallery-parallax',
+				'classic_gallery'        => 'wp-video-gallery-classic',
+				'space_gallery'          => 'wp-video-gallery-space',
+				'effective_gallery'		 => 'wp-video-gallery-effective',
+				'gallery_album'			 => 'wp-video-gallery-album'
 			);
 		}
 	}
-	public function tsvg_add_action_link($links)
-	{
+	public function tsvg_add_action_link($links){
 		$links['tsvgallery_support'] = sprintf('<a href="%1$s" style="color: #8bc34a;font-weight: bold;" target="_blank">Support</a>', esc_url('https://wordpress.org/support/plugin/gallery-videos/'));
 		$links['tsvgallery_go_pro']  = sprintf('<a href="%1$s" style="color: #ff0000;font-weight: bold;" target="_blank">Go Pro</a>', esc_url('https://total-soft.com/wp-video-gallery/'));
 		return $links;
 	}
-	public function enqueue_styles()
-	{
+	public function enqueue_styles(){
 		wp_enqueue_style('tsvg-fonts', plugin_dir_url(__DIR__) . 'public/css/tsvg-fonts.css', array(), time(), 'all');
 		if ($this->tsvg_page_slug == 'tsvg-admin') {
 			wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/tsvg-admin.css', array(), time(), 'all');
@@ -307,8 +280,7 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function
 			}
 		}
 	}
-	public function enqueue_scripts()
-	{
+	public function enqueue_scripts(){
 		if ($this->tsvg_page_slug == 'tsvg-admin') {
 			wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/tsvg-admin.js', array('jquery'), time(), false);
 		}
@@ -322,7 +294,7 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function
 				$this->tsvg_build_proporties['tsvg_video_records'] = array_column($this->tsvg_build_proporties['tsvg_video_records'], null, 'id');
 				foreach ($this->tsvg_build_proporties['tsvg_video_records'] as $key => $value) :
 					$this->tsvg_build_proporties['tsvg_video_records'][$key]['TS_VG_Options'] = json_decode($value['TS_VG_Options']);
-					$this->tsvg_build_proporties['tsvg_video_records'][$key]['TS_VG_Options']->TotalSoftVGallery_Vid_desc = wp_unslash(html_entity_decode($this->tsvg_build_proporties['tsvg_video_records'][$key]['TS_VG_Options']->TotalSoftVGallery_Vid_desc));
+					$this->tsvg_build_proporties['tsvg_video_records'][$key]['TS_VG_Options']->TotalSoftVGallery_Vid_desc = wp_unslash(htmlspecialchars_decode($this->tsvg_build_proporties['tsvg_video_records'][$key]['TS_VG_Options']->TotalSoftVGallery_Vid_desc));
 				endforeach;
 				wp_localize_script(
 					'tsvg-builder',
@@ -332,7 +304,7 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function
 						'tsvg_nonce'      => wp_create_nonce('tsvg_builder_nonce_field'),
 						'tsvg_proporties' => $this->tsvg_build_proporties,
 						'tsvg_id'         => $this->tsvg_build_id,
-						'tsvg_creation'   => wp_unslash(isset($_GET['tsvg-theme'])) ? 'save' : 'update',
+						'tsvg_creation'   => isset($_GET['tsvg-theme']) ? 'save' : 'update',
 						'fonts'           => $this->tsvg_function_class->tsvg_get_all_fonts(),
 						'tsvg_svg_move'   => esc_url(plugin_dir_url(__FILE__) . 'img/move.svg'),
 						'tsvg_svg_remove' => esc_url(plugin_dir_url(__FILE__) . 'img/recycle.svg'),
@@ -347,12 +319,10 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function
 			}
 		}
 	}
-	public static function tsvg_set_screen($status, $option, $value)
-	{
+	public static function tsvg_set_screen($status, $option, $value){
 		return $value;
 	}
-	function tsvg_get_attachment_callback()
-	{
+	function tsvg_get_attachment_callback(){
 		if (! wp_unslash(isset($_POST['tsvg_nonce'])) || sanitize_text_field(wp_unslash($_POST['tsvg_nonce'])) === '' || ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['tsvg_nonce'])), 'tsvg_builder_nonce_field')) {
 			wp_send_json_error();
 		}
@@ -363,13 +333,12 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function
 			wp_send_json_error();
 		}
 	}
-	function tsvg_get_attachment_id_callback()
-	{
-		if (! wp_unslash(isset($_POST['tsvg_nonce'])) || sanitize_text_field(wp_unslash($_POST['tsvg_nonce'])) === '' || ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['tsvg_nonce'])), 'tsvg_builder_nonce_field')) {
+	function tsvg_get_attachment_id_callback(){
+		if (! isset($_POST['tsvg_nonce']) || sanitize_text_field(wp_unslash($_POST['tsvg_nonce'])) === '' || ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['tsvg_nonce'])), 'tsvg_builder_nonce_field')) {
 			wp_send_json_error();
 		}
+		global $wp_filesystem;
 		$tsvg_attachment_url = sanitize_text_field(wp_unslash($_POST['attachment_url']));
-		
 		$tsvg_attachment_fopen = $wp_filesystem->get_contents( $tsvg_attachment_url );
 		if ($tsvg_attachment_fopen) {
 			list($width, $height) = getimagesize($tsvg_attachment_url);
@@ -386,8 +355,7 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function
 			wp_send_json_error();
 		}
 	}
-	public function tsvg_screen_option()
-	{
+	public function tsvg_screen_option(){
 		$option = 'per_page';
 		$args   = array(
 			'label'   => 'Galleries per page',
@@ -397,8 +365,7 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function
 		add_screen_option($option, $args);
 		$this->tsvg_admin_manager = new TS_Video_Gallery_List_Table();
 	}
-	public function tsvg_admin_menu()
-	{
+	public function tsvg_admin_menu(){
 		$hook = add_menu_page(
 			$this->plugin_name,
 			esc_html('TS Video Gallery'),
@@ -409,8 +376,7 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function
 		);
 		add_action("load-$hook", array($this, 'tsvg_screen_option'));
 	}
-	public function tsvg_admin_submenu()
-	{
+	public function tsvg_admin_submenu(){
 		$hooks = add_submenu_page(
 			'tsvg-admin',
 			esc_html('TS Video Gallery'),
@@ -421,8 +387,7 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function
 		);
 		add_action("load-$hooks", array($this, 'tsvg_screen_option'));
 	}
-	public function tsvg_admin_builder_submenu()
-	{
+	public function tsvg_admin_builder_submenu(){
 		add_submenu_page(
 			'tsvg-admin',
 			esc_html('TS Video Gallery Builder'),
@@ -432,12 +397,10 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function
 			array($this, 'tsvg_get_builder')
 		);
 	}
-	public function tsvg_get_admin()
-	{
+	public function tsvg_get_admin(){
 		include_once 'tsvg-admin.php';
 	}
-	public function tsvg_get_builder()
-	{
+	public function tsvg_get_builder(){
 		include_once 'tsvg-builder.php';
 	}
 }

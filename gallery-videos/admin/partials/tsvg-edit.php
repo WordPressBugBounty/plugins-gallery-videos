@@ -107,9 +107,9 @@ $tsvg_elem    = 'tsvg_content_area';
 $tsvg_content = '';
 $tsvg_args    = array(
     'tinymce'       => array(
-        'toolbar1'         => 'formatselect, fontselect, fontsizeselect, image, media, code,  bold, italic, underline, blockquote, bullist, numlist, alignleft ,aligncenter, alignright, wp_more, fullscreen, strikethrough, hr, forecolor,backcolor , pastetext, removeformat, charmap, outdent, indent, undo, redo',
+        'toolbar1'         => 'formatselect, fontselect, fontsizeselect, alignleft, aligncenter, alignright, pastetext, bold, italic, underline, strikethrough, removeformat, link, code, hr, forecolor, backcolor, charmap, outdent, indent, undo, redo',
         'fontsize_formats' => '8px 10px 12px 14px 16px 18px 20px 22px 24px 26px 28px 30px 32px 34px 36px 38px 40px 42px 44px 46px 48px',
-        'font_formats'     => 'Arial = arial; Arial Black = arial black; alibri = calibri; alibri Light = calibri light; Calisto MT = calisto mt; Cambria = cambria; Century Gothic = century gothic; Comic Sans MS = comic sans ms; onsolas = consolas; Constantia = constantia; Copperplate Gothic = copperplate gothic; Copperplate Gothic Light = copperplate gothic light; orbel = corbel; Courier New = courier new; Ebrima = ebrima; abriola = gabriola; adugi = gadugi; Georgia = georgia; mpact = impact; Leelawadee = leelawadee; ucida Console = lucida console; Microsoft Himalaya = microsoft himalaya; icrosoft JhengHei = microsoft jhenghei; Microsoft New Tai Lue = microsoft new tai lue; icrosoft PhagsPa = microsoft phagspa; Microsoft Sans Serif = microsoft sans serif; icrosoft Tai Le = microsoft tai le; icrosoft Uighur = microsoft uighur; icrosoft YaHei = microsoft yahei; icrosoft YaHei UI = microsoft yahei ui; Microsoft Yi Baiti = microsoft yi baiti; iriam = miriam; Mongolian Baiti = mongolian baiti; MS UI Gothic = ms ui gothic; V Boli = mv boli; yanmar Text = myanmar text; arkisim = narkisim; SimSun = nsimsun; yala = nyala; alatino Linotype = palatino linotype; egoe Print = segoe print; egoe Script = segoe script; egoe UI Symbol = segoe ui symbol; SimSun = simsun; ylfaen = sylfaen; ahoma = tahoma; rebuchet MS = trebuchet ms '
+        'font_formats'     => 'Arial = arial; Arial Black = arial black; alibri = calibri; alibri Light = calibri light; Calisto MT = calisto mt; Cambria = cambria; Century Gothic = century gothic; Comic Sans MS = comic sans ms; onsolas = consolas; Constantia = constantia; Copperplate Gothic = copperplate gothic; Copperplate Gothic Light = copperplate gothic light; orbel = corbel; Courier New = courier new; Ebrima = ebrima; abriola = gabriola; adugi = gadugi; Georgia = georgia; mpact = impact; Leelawadee = leelawadee; ucida Console = lucida console; Microsoft Himalaya = microsoft himalaya; icrosoft JhengHei = microsoft jhenghei; Microsoft New Tai Lue = microsoft new tai lue; icrosoft PhagsPa = microsoft phagspa; Microsoft Sans Serif = microsoft sans serif; icrosoft Tai Le = microsoft tai le; icrosoft Uighur = microsoft uighur; icrosoft YaHei = microsoft yahei; icrosoft YaHei UI = microsoft yahei ui; Microsoft Yi Baiti = microsoft yi baiti; iriam = miriam; Mongolian Baiti = mongolian baiti; MS UI Gothic = ms ui gothic; V Boli = mv boli; yanmar Text = myanmar text; arkisim = narkisim; SimSun = nsimsun; yala = nyala; alatino Linotype = palatino linotype; egoe Print = segoe print; egoe Script = segoe script; egoe UI Symbol = segoe ui symbol; SimSun = simsun; ylfaen = sylfaen; ahoma = tahoma; rebuchet MS = trebuchet ms'
     ),
     'quicktags'     => false,
     'media_buttons' => false
@@ -440,7 +440,6 @@ echo sprintf(
 	esc_html__( 'Pagination','gallery-videos' )
 );
 foreach ( $tsvg_pagination_arr as $fields_key => $fields_value ) {
-
     echo sprintf(
         '
         <div class="tsvg_accordion_item %1$s">

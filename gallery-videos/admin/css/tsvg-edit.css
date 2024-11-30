@@ -511,6 +511,10 @@ div.tsvg_position_select-ef {
 	color: #8d8a8a;
 	padding: 0 0 0 .3125rem;
 	margin: 0;
+	max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 .tsvg-list .tsvg-list-item .details p {
 	color: #555;

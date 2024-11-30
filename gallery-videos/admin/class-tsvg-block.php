@@ -75,7 +75,7 @@ class TS_Video_Gallery_Block {
 		if ( $tsvg_id ) {
             $tsvg_get_all_records = array_column($this->tsvg_get_all_records(), 'TS_VG_Title', 'id');
 			if ( array_key_exists( absint( $tsvg_id ), $tsvg_get_all_records ) ) {
-				if( strstr($_SERVER['REQUEST_URI'], 'gallery-block') ) {
+				if( isset($_SERVER['REQUEST_URI']) && strstr(sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI'])), 'gallery-block') ) {
                     return  sprintf( '
                         <div class="notice notice-error is-dismissible"><p>%2$s</p></br>[TS_Video_Gallery id="%1$d"] </div>
                         </br>

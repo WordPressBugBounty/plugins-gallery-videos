@@ -709,7 +709,7 @@
 	.tsvg-classic-blocks-list-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[data-tsvg-effect='effect07']   .tsvg-classic-block-hover {
 		position: absolute;
 		top: 50%;
-		left: 15%;
+		left: 0;
 		transform: translate(-300%, -50%);
 		-webkit-transform: translate(-300%, -50%);
 		-moz-transform: translate(-300%, -50%);
@@ -727,6 +727,7 @@
 		-webkit-transform: translate(0, -50%);
 		-moz-transform: translate(0, -50%);
 		-o-transform: translate(0, -50%);
+		left:20%;
 	}
 	.tsvg-classic-blocks-list-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[data-tsvg-effect='effect07']   .tsvg-classic-title-hover-span-<?php echo esc_attr( $tsvg_shortcode_id ); ?> {
 		line-height: 1;
