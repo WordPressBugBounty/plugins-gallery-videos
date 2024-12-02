@@ -178,39 +178,43 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function{
 		}
 		if (isset($_GET['tsvg-id']) || isset($_GET['tsvg-theme'])) {
 			$this->tsvg_function_class = new TS_Video_Gallery_Function();
-			$tsvg_get_id = sanitize_text_field(wp_unslash($_GET['tsvg-id']));
-			if (isset($_GET['tsvg-id']) && is_numeric($tsvg_get_id) && is_int((int) $tsvg_get_id) && (int) $tsvg_get_id > 0) {
-				global $wpdb;
-				$tsvg_db_manager_table = esc_sql($wpdb->prefix . 'ts_galleryv_manager');
-				$tsvg_db_videos_table = esc_sql($wpdb->prefix . 'ts_galleryv_videos');
-				$tsvg_get_record = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$tsvg_db_manager_table} WHERE id = %d ", $tsvg_get_id), ARRAY_A);
-				if (is_array($tsvg_get_record)) {
-					$tsvg_get_record['TS_VG_Title'] = html_entity_decode(htmlspecialchars_decode($tsvg_get_record['TS_VG_Title']), ENT_QUOTES);
-					$tsvg_record_style = json_decode($tsvg_get_record['TS_VG_Style'], true);
-					$tsvg_record_settings = json_decode($tsvg_get_record['TS_VG_Settings'], true);
-					$tsvg_record_option_style = json_decode($tsvg_get_record['TS_VG_Option_Style'], true);
-					foreach ($tsvg_record_style as $key => $value) {
-						$tsvg_record_style[$key] = html_entity_decode(htmlspecialchars_decode($value), ENT_QUOTES);
+			if (isset($_GET['tsvg-id'])) {
+				$tsvg_get_id = sanitize_text_field(wp_unslash($_GET['tsvg-id']));
+				if (is_numeric($tsvg_get_id) && is_int((int) $tsvg_get_id) && (int) $tsvg_get_id > 0) {
+					global $wpdb;
+					$tsvg_db_manager_table = esc_sql($wpdb->prefix . 'ts_galleryv_manager');
+					$tsvg_db_videos_table = esc_sql($wpdb->prefix . 'ts_galleryv_videos');
+					$tsvg_get_record = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$tsvg_db_manager_table} WHERE id = %d ", $tsvg_get_id), ARRAY_A);
+					if (is_array($tsvg_get_record)) {
+						$tsvg_get_record['TS_VG_Title'] = html_entity_decode(htmlspecialchars_decode($tsvg_get_record['TS_VG_Title']), ENT_QUOTES);
+						$tsvg_record_style = json_decode($tsvg_get_record['TS_VG_Style'], true);
+						$tsvg_record_settings = json_decode($tsvg_get_record['TS_VG_Settings'], true);
+						$tsvg_record_option_style = json_decode($tsvg_get_record['TS_VG_Option_Style'], true);
+						foreach ($tsvg_record_style as $key => $value) {
+							$tsvg_record_style[$key] = html_entity_decode(htmlspecialchars_decode($value), ENT_QUOTES);
+						}
+						foreach ($tsvg_record_settings as $key => $value) {
+							$tsvg_record_settings[$key] = html_entity_decode(htmlspecialchars_decode($value), ENT_QUOTES);
+						}
+						foreach ($tsvg_record_option_style as $key => $value) {
+							$tsvg_record_option_style[$key] = html_entity_decode(htmlspecialchars_decode($value), ENT_QUOTES);
+						}
+						$tsvg_get_record['TS_VG_Style'] = json_encode($tsvg_record_style, true);
+						$tsvg_get_record['TS_VG_Option_Style'] = json_encode($tsvg_record_option_style, true);
+						$tsvg_get_record['TS_VG_Old_User'] = html_entity_decode(htmlspecialchars_decode($tsvg_get_record['TS_VG_Old_User']), ENT_QUOTES);
+						$tsvg_get_record['TS_VG_Settings'] = json_encode($tsvg_record_settings, true);
+						$tsvg_get_video_records = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$tsvg_db_videos_table} WHERE TS_VG_SetType = %d ", (int) $tsvg_get_id) , ARRAY_A);
+						foreach ($tsvg_get_video_records as $key => $value) {
+							$tsvg_get_video_records[$key]['TS_VG_SetName'] = html_entity_decode(htmlspecialchars_decode($value['TS_VG_SetName']), ENT_QUOTES);
+						}
+						$tsvg_get_record['tsvg_video_records'] = $tsvg_get_video_records;
+						$tsvg_get_record['TS_VG_Style'] = json_decode($tsvg_get_record['TS_VG_Style'], true);
+						$this->tsvg_build = 'edit';
+						$this->tsvg_build_proporties = $tsvg_get_record;
+						$this->tsvg_build_id = $tsvg_get_id;
+					} else {
+						$this->tsvg_build = 'not';
 					}
-					foreach ($tsvg_record_settings as $key => $value) {
-						$tsvg_record_settings[$key] = html_entity_decode(htmlspecialchars_decode($value), ENT_QUOTES);
-					}
-					foreach ($tsvg_record_option_style as $key => $value) {
-						$tsvg_record_option_style[$key] = html_entity_decode(htmlspecialchars_decode($value), ENT_QUOTES);
-					}
-					$tsvg_get_record['TS_VG_Style'] = json_encode($tsvg_record_style, true);
-					$tsvg_get_record['TS_VG_Option_Style'] = json_encode($tsvg_record_option_style, true);
-					$tsvg_get_record['TS_VG_Old_User'] = html_entity_decode(htmlspecialchars_decode($tsvg_get_record['TS_VG_Old_User']), ENT_QUOTES);
-					$tsvg_get_record['TS_VG_Settings'] = json_encode($tsvg_record_settings, true);
-					$tsvg_get_video_records = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$tsvg_db_videos_table} WHERE TS_VG_SetType = %d ", (int) $tsvg_get_id) , ARRAY_A);
-					foreach ($tsvg_get_video_records as $key => $value) {
-						$tsvg_get_video_records[$key]['TS_VG_SetName'] = html_entity_decode(htmlspecialchars_decode($value['TS_VG_SetName']), ENT_QUOTES);
-					}
-					$tsvg_get_record['tsvg_video_records'] = $tsvg_get_video_records;
-					$tsvg_get_record['TS_VG_Style'] = json_decode($tsvg_get_record['TS_VG_Style'], true);
-					$this->tsvg_build = 'edit';
-					$this->tsvg_build_proporties = $tsvg_get_record;
-					$this->tsvg_build_id = $tsvg_get_id;
 				} else {
 					$this->tsvg_build = 'not';
 				}

@@ -1,10 +1,10 @@
-﻿=== Video Gallery - Best WordPress YouTube Gallery Plugin ===
+﻿=== Video Gallery - YouTube Gallery and Vimeo Gallery ===
 Contributors: totalsoft
 Donate link: https://total-soft.com/wp-video-gallery/
 Tags: gallery, image gallery, photo gallery, video gallery, wordpress gallery
 Requires at least: 4.0
 Tested up to: 6.7
-Stable tag: 2.4.2
+Stable tag: 2.4.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -230,6 +230,10 @@ After activating video gallery choose the type of version you wish to use.
 15. An example of plugin in action - Parallax Engine
 
 == Changelog ==
+
+= Version 2.4.3 =
+
+* Fixed a bug in the Admin Panel. Copy and search did not work.
 
 = Version 2.4.2 =
 

@@ -9,7 +9,7 @@ class TS_Video_Gallery {
 		if ( defined( 'TSVG_VERSION' ) ) {
 			$this->version = TSVG_VERSION;
 		} else {
-			$this->version = '2.4.2';
+			$this->version = '2.4.3';
 		}
 		$this->plugin_name = 'TS Video Gallery';
 		$this->theme_details = wp_get_theme();
@@ -30,15 +30,13 @@ class TS_Video_Gallery {
 	}
 	public function tsvg_activate_scripts() {
 		wp_register_script( "tsvg-classie", plugin_dir_url( __DIR__ ) . 'public/js/classie.js', array("jquery"), $this->version, false );
-		wp_register_script( "tsvg-imagesloaded", plugin_dir_url( __DIR__ ) . 'public/js/imagesloaded.pkgd.min.js', array("jquery"), $this->version, false );
-		wp_register_script( "tsvg-masonry", plugin_dir_url( __DIR__ ) . 'public/js/masonry.pkgd.min.js', array("jquery"), $this->version, false );
 		wp_register_script( "tsvg-modernizr", plugin_dir_url( __DIR__ ) . 'public/js/modernizr.custom.js', array("jquery"), $this->version, false );
 		wp_register_script( "tsvg-adipoli", plugin_dir_url( __DIR__ ) . 'public/js/jquery.adipoli.js', array("jquery"), $this->version, false );
 		wp_register_script( "tsvg-boxer", plugin_dir_url( __DIR__ ) . 'public/js/jquery.fs.boxer.js', array("jquery"), $this->version, false );
 		wp_register_script( "tsvg-hoverdir", plugin_dir_url( __DIR__ ) . 'public/js/jquery.hoverdir.js', array("jquery"), $this->version, false );
 		wp_register_script( "tsvg-mousewheel", plugin_dir_url( __DIR__ ) . 'public/js/jquery.mousewheel.min.js', array("jquery"), $this->version, false );
 		wp_register_script( "tsvg-froogaloop", plugin_dir_url( __DIR__ ) . 'public/js/froogaloop.min.js', array("jquery"), $this->version, false );
-		wp_enqueue_script( "tsvg-resize-sensor", plugin_dir_url( __DIR__ ) . 'public/js/ResizeSensor.js', array("tsvg-classie","tsvg-imagesloaded","tsvg-masonry","tsvg-modernizr","tsvg-adipoli","tsvg-boxer","tsvg-mousewheel","tsvg-froogaloop"), $this->version, false );
+		wp_enqueue_script( "tsvg-resize-sensor", plugin_dir_url( __DIR__ ) . 'public/js/ResizeSensor.js', array("tsvg-classie","imagesloaded","masonry","tsvg-modernizr","tsvg-adipoli","tsvg-boxer","tsvg-mousewheel","tsvg-froogaloop"), $this->version, false );
 		wp_enqueue_script( "tsvg-element-queries", plugin_dir_url( __DIR__ ) . 'public/js/ElementQueries.js', array("jquery","tsvg-hoverdir","tsvg_html5lightbox"), $this->version, false );
 		wp_register_style( "tsvg-fonts", plugin_dir_url( __DIR__ ) . 'public/css/tsvg-fonts.css', array(),$this->version, 'all' );
 		wp_register_style( "tsvg-boxer", plugin_dir_url( __DIR__ ) . 'public/css/jquery.fs.boxer.css', array(),$this->version, 'all' );
@@ -654,9 +652,7 @@ class TS_Video_Gallery {
 		wp_enqueue_script("tsvg-classie-{$tsvg_shortcode_id}", plugin_dir_url( __DIR__ ) . 'public/js/classie.js', array( 'jquery' ), time(), true );
 		switch ( $tsvg_theme_name ) {
 			case 'Grid Video Gallery':
-				wp_enqueue_script( "tsvg_imagesloaded_{$tsvg_shortcode_id}", plugin_dir_url( __DIR__ ) . 'public/js/imagesloaded.pkgd.min.js', array( 'jquery' ), time(), false );
-				wp_enqueue_script( "tsvg_masonry_{$tsvg_shortcode_id}", plugin_dir_url( __DIR__ ) . 'public/js/masonry.pkgd.min.js', array( 'jquery' ), time(), true );
-				wp_enqueue_script( "tsvg_modernizr_{$tsvg_shortcode_id}", plugin_dir_url( __DIR__ ) . 'public/js/modernizr.custom.js', array( 'jquery' ), time(), false );
+				wp_enqueue_script( "tsvg_modernizr_{$tsvg_shortcode_id}", plugin_dir_url( __DIR__ ) . 'public/js/modernizr.custom.js', array( 'jquery','masonry','imagesloaded' ), time(), false );
 				break;
 			case 'Thumbnails Video':
 				wp_enqueue_script( "tsvg_adipoli_{$tsvg_shortcode_id}", plugin_dir_url( __DIR__ ) . 'public/js/jquery.adipoli.js', array( 'jquery' ), time(), true );
