@@ -1123,6 +1123,12 @@
 	.tsvg-classic-block-desc{
 		display:none!important;
 	}
+	#tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?> .tsvg-classic-blocks-list-<?php echo esc_attr( $tsvg_shortcode_id ); ?> .tsvg-classic-block-<?php echo esc_attr( $tsvg_shortcode_id ); ?> .tsvg-classic-block-items-<?php echo esc_attr( $tsvg_shortcode_id ); ?> figcaption{
+		position: unset !important;
+		margin:unset !important;
+		padding:unset !important;
+		opacity: 1;
+	}
 </style>
 <?php
 	$tsvg_videos_data_html = '';

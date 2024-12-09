@@ -14,19 +14,22 @@ class TS_Video_Gallery_List_Table extends WP_List_Table {
 	}
 	public static function tsvg_get_galleries( $per_page = 10, $page_number = 1 ) {
 		global $wpdb;
-		$sql = "SELECT `id`,`TS_VG_Title`,`TS_VG_Option`,`TS_VG_Sort`,`created_at` FROM {$wpdb->prefix}ts_galleryv_manager";
+		$tsvg_db_manager_table = esc_sql( $wpdb->prefix . 'ts_galleryv_manager' );
+		$orderby = 'id';
+		$order = 'ASC';
+		if ( isset( $_REQUEST['orderby'] ) ) {
+			$orderby = in_array( sanitize_sql_orderby(wp_unslash($_REQUEST["orderby"])), ['Question_Title','created_at'], true ) ? sanitize_text_field(wp_unslash($_REQUEST["orderby"])) : 'id';
+			$order = isset( $_REQUEST["order"] ) && "DESC" === strtoupper( sanitize_text_field(wp_unslash($_REQUEST["order"])) ) ? "DESC" : "ASC";
+		}
+		$sql = "";
+		$sql .= $wpdb->prepare("SELECT `id`,`TS_VG_Title`,`TS_VG_Option`,`TS_VG_Sort`,`created_at` FROM $tsvg_db_manager_table WHERE id>%d",0);
+		$sql .= " ";
 		if ( isset( $_REQUEST['s'] ) ) {
-			$sql .= ' WHERE TS_VG_Title LIKE "%%' . $wpdb->esc_like( $_REQUEST['s'] ) . '%%"';
+			$sql .= $wpdb->prepare( "AND TS_VG_Title LIKE %s", '%' . $wpdb->esc_like( sanitize_text_field(wp_unslash($_REQUEST["s"])) ) . '%');
 		}
-		if ( ! empty( $_REQUEST['orderby'] ) ) {
-			$orderby = in_array( $_REQUEST['orderby'], ['TS_VG_Title','created_at'], true ) ? $_REQUEST['orderby'] : 'id';
-			$order = !empty( $_REQUEST['order'] ) && 'DESC' === strtoupper( $_REQUEST['order'] ) ? 'DESC' : 'ASC';
-			$orderby_sql = sanitize_sql_orderby( "{$orderby} {$order}" );
-			$sql .= " ORDER BY {$orderby_sql}";
-		}
-		$sql   .= " LIMIT $per_page";
-		$sql   .= ' OFFSET ' . ( $page_number - 1 ) * $per_page;
-		$result = $wpdb->get_results( $sql, 'ARRAY_A' );
+		$sql .= " ORDER BY " . $orderby . ' ' . $order;
+		$sql .= $wpdb->prepare( " LIMIT %d OFFSET %d", (int) $per_page,((int) $page_number - 1 ) * (int) $per_page);
+		$result = $wpdb->get_results( $sql, "ARRAY_A");
 		return $result;
 	}
 	public static function tsvg_remove_record( $id ) {
@@ -302,8 +305,8 @@ class TS_Video_Gallery_List_Table extends WP_List_Table {
 		$total_items  = self::tsvg_records_count();
 		$this->set_pagination_args(
 			array(
-				'total_items' => $total_items, // WE have to calculate the total number of items
-				'per_page'    => $per_page // WE have to determine how many items to show on a page
+				'total_items' => $total_items,
+				'per_page'    => $per_page
 			)
 		);
 		$this->items = self::tsvg_get_galleries( $per_page, $current_page );
