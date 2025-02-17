@@ -134,17 +134,17 @@
 		-webkit-line-clamp: 3;
 		-webkit-box-orient: vertical;
 	}
-	.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[max-width~="500px"]{
+	.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[max-width~="550px"]{
 		--tsvg_g_v_w_<?php echo esc_attr( $tsvg_shortcode_id ); ?>: 2;
 		--tsvg_g_place_between_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:5px;
 	}
-	.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[max-width~="400px"]{
+	.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[max-width~="450px"]{
 		--tsvg_g_v_w_<?php echo esc_attr( $tsvg_shortcode_id ); ?>: 1;
 	}
-	.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[max-width~="400px"] > figure > ul > li{
+	.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[max-width~="450px"] > figure > ul > li{
 		--tsvg_g_v_w_<?php echo esc_attr( $tsvg_shortcode_id ); ?>: 1;
 	}
-	.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[max-width~="400px"]  nav > ul > li{
+	.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[max-width~="450px"]  nav > ul > li{
 		margin-bottom: 6px !important
 	}
 	.tsvg-cp-block-view-second .mask {

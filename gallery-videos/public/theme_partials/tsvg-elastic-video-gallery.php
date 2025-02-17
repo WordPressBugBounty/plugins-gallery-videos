@@ -372,7 +372,7 @@
 			margin: 5px 0;
 		}
 	}
-	@media screen and (max-width: 400px) {
+	@media screen and (max-width: 450px) {
 		.tsvg-elastic-lg-outer<?php echo esc_attr( $tsvg_shortcode_id ); ?> .tsvg-elastic-lg-video<?php echo esc_attr( $tsvg_shortcode_id ); ?> {
 			width: 100%;
 			height: 0;

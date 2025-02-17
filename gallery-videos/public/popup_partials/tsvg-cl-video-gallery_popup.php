@@ -216,10 +216,10 @@
 			}
 		}
 	<?php } ?>
-	.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[max-width~="500px"]{
+	.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[max-width~="550px"]{
 		--tsvg_g_c_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>: 2;
 	}
-	.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[max-width~="400px"]{
+	.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[max-width~="450px"]{
 		--tsvg_g_c_c_<?php echo esc_attr( $tsvg_shortcode_id ); ?>: 1;
 	}
 </style>

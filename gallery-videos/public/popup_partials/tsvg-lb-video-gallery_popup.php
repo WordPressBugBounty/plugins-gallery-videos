@@ -396,9 +396,9 @@
         function tsvgCheckWidth() {
             let tsvgWindowWidth = jQuery(window).width();
             let tsvgWindowHeight = jQuery(window).height();
-            if(tsvgWindowWidth <= '400'){
+            if(tsvgWindowWidth <= '450'){
                 document.documentElement.style.setProperty('--tsvg_general_img_w_<?php echo esc_attr( $tsvg_shortcode_id ); ?>', '1')
-            } else if(tsvgWindowWidth <= '500'){
+            } else if(tsvgWindowWidth <= '550'){
                 document.documentElement.style.setProperty('--tsvg_general_img_w_<?php echo esc_attr( $tsvg_shortcode_id ); ?>', '2')
             } else {
                 document.documentElement.style.removeProperty('--tsvg_general_img_w_<?php echo esc_attr( $tsvg_shortcode_id ); ?>');

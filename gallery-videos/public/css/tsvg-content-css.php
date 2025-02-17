@@ -164,7 +164,7 @@
 		-webkit-animation: animtr 3s cubic-bezier(0.77, 0.35, 0, 1.6)  0s forwards;
 		-moz-animation: animtr 3s cubic-bezier(0.77, 0.35, 0, 1.6)  0s forwards;
 	}
-	@media only screen and (max-width: 400px) {
+	@media only screen and (max-width: 450px) {
 		#tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?> .tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?> > figure > ul{
 			padding: 0 !important;
 		}

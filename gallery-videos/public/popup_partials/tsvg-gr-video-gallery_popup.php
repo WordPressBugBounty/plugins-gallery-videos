@@ -584,9 +584,9 @@
             let tsvgLayoutWidth = jQuery('.tsvg-grid-content-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>').width(),
                 tsvgColumnSpaces = getComputedStyle(document.documentElement).getPropertyValue('--tsvg_general_place_between_<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>'),
                 tsvgColumnCount = getComputedStyle(document.documentElement).getPropertyValue('--tsvg_general_img_w_<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>');
-                if(400 >= jQuery('.tsvg-grid-content-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>').innerWidth()){
+                if(450 >= jQuery('.tsvg-grid-content-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>').innerWidth()){
                     tsvgColumnCount = 1;
-                }else if ( 500 >= jQuery('.tsvg-grid-content-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>').innerWidth()){
+                }else if ( 550 >= jQuery('.tsvg-grid-content-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>').innerWidth()){
                     tsvgColumnCount = 2;
                 }
                 let tsvgLayoutCleanWidth = tsvgLayoutWidth - ((+tsvgColumnCount - 1) * +tsvgColumnSpaces),

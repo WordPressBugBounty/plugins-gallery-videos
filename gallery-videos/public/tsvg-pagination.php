@@ -441,7 +441,7 @@
 			transform: scaleY(1);
 	  	}
 	}
-	@media (max-width: 400px) {
+	@media (max-width: 450px) {
 	 	body .container .button {
 			margin: 12px;
 	 	}

@@ -365,10 +365,10 @@
 			transform: scale(0.4);
 		<?php } ?>
 	}
-	.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[max-width~="500px"]{
+	.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[max-width~="550px"]{
 		--tsvg_v_w_<?php echo esc_attr( $tsvg_shortcode_id ); ?>: 2;
 	}
-	.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[max-width~="400px"]{
+	.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[max-width~="450px"]{
 		--tsvg_v_w_<?php echo esc_attr( $tsvg_shortcode_id ); ?>: 1;
 	}
 	#boxer.tsvg-boxer-<?php echo esc_attr( $tsvg_shortcode_id ); ?> .boxer-position,#boxer.tsvg-boxer-<?php echo esc_attr( $tsvg_shortcode_id ); ?> .current,#boxer.tsvg-boxer-<?php echo esc_attr( $tsvg_shortcode_id ); ?> .total{

@@ -880,7 +880,7 @@
 			margin: 5px 0;
 		}
 	}
-	@media screen and (max-width: 400px) {
+	@media screen and (max-width: 450px) {
 		.tsvg-elastic-lg-outer<?php echo esc_attr( $tsvg_shortcode_id ); ?> .tsvg-elastic-lg-video {
 			width: 100%;
 			height: 0;
@@ -888,10 +888,10 @@
 			position: relative;
 		}
 	}
-	/* .tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[max-width~="500px"]{
+	/* .tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[max-width~="550px"]{
 		--tsvg_g_img_w_<?php echo esc_attr( $tsvg_shortcode_id ); ?>: 2;
 	}
-	.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[max-width~="400px"]{
+	.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[max-width~="450px"]{
 		--tsvg_g_img_w_<?php echo esc_attr( $tsvg_shortcode_id ); ?>: 1;
 	} */
 </style>
@@ -899,9 +899,9 @@
 	if( typeof(jQuery) != "undefined" && jQuery != null  ){
 		function tsvgCheckWidth() {
 			let tsvgWindowWidth = jQuery(window).width();
-			if(tsvgWindowWidth <= '400'){
+			if(tsvgWindowWidth <= '450'){
 				document.documentElement.style.setProperty('--tsvg_g_img_w_<?php echo esc_attr( $tsvg_shortcode_id ); ?>', '1')
-			} else if(tsvgWindowWidth <= '500'){
+			} else if(tsvgWindowWidth <= '550'){
 				document.documentElement.style.setProperty('--tsvg_g_img_w_<?php echo esc_attr( $tsvg_shortcode_id ); ?>', '2')
 			} else {
 				document.documentElement.style.removeProperty('--tsvg_g_img_w_<?php echo esc_attr( $tsvg_shortcode_id ); ?>');

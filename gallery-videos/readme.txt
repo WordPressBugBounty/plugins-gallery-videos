@@ -1,10 +1,10 @@
-﻿=== Video Gallery - YouTube Gallery and Vimeo Gallery ===
+﻿=== Video Gallery - YouTube Gallery, Vimeo Gallery, Video Portfolio, Image Portfolio and Image Gallery ===
 Contributors: totalsoft
 Donate link: https://total-soft.com/wp-video-gallery/
-Tags: gallery, image gallery, photo gallery, video gallery, wordpress gallery
+Tags: gallery, image gallery, portfolio gallery, video gallery, wordpress gallery
 Requires at least: 4.0
 Tested up to: 6.7
-Stable tag: 2.4.4
+Stable tag: 2.4.5
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -59,6 +59,17 @@ Most powerful features
 
 ### Pro features ###
 [The features of the premium version](https://total-soft.com/wp-video-gallery/)
+
+* [Video Portfolio Theme](https://total-soft.com/wp-video-portfolio-1/)
+* [Image Portfolio Theme](https://total-soft.com/wp-video-image-portfolio-2/)
+* [Image Gallery Theme](https://total-soft.com/wp-video-image-gallery-1)
+
+### These effects are available in the Video Portfolio Theme, Image Portfolio Theme and Image Gallery Theme ###
+
+* [Menu Theme] - 9 Type
+* [Hover Effects] - 12 types for gallery hover effect.
+* [Open Effects] - 14 types of effect for opening gallery.
+* [Lightbox] - Very beautiful and unique lightbox. 6 lightbox types available.
 
 
 **There are 10 types of beautiful effects to open the gallery**
@@ -230,6 +241,11 @@ After activating video gallery choose the type of version you wish to use.
 15. An example of plugin in action - Parallax Engine
 
 == Changelog ==
+
+= Version 2.4.5 =
+
+* Added 3 types of gallery. Video Portfolio Theme, Image Portfolio Theme and Image Gallery Theme.
+* Added 6 types of gallery.
 
 = Version 2.4.4 =
 
