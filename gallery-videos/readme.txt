@@ -1,10 +1,10 @@
-﻿=== Video Gallery - YouTube Gallery, Vimeo Gallery, Video Portfolio, Image Portfolio and Image Gallery ===
+﻿=== Video Gallery - YouTube Gallery, Vimeo, Video Portfolio, Image Portfolio and Image Gallery ===
 Contributors: totalsoft
 Donate link: https://total-soft.com/wp-video-gallery/
 Tags: gallery, image gallery, portfolio gallery, video gallery, wordpress gallery
 Requires at least: 4.0
 Tested up to: 6.7
-Stable tag: 2.4.5
+Stable tag: 2.4.6
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -241,6 +241,10 @@ After activating video gallery choose the type of version you wish to use.
 15. An example of plugin in action - Parallax Engine
 
 == Changelog ==
+
+= Version 2.4.6 =
+
+* Added demo versions for new themes"Image Gallery and Image Portfolio".
 
 = Version 2.4.5 =
 
@@ -727,20 +731,6 @@ After activating video gallery choose the type of version you wish to use.
 * Added some features for responsive.
 * Fixed a bug with icons.
 * Updated style for pagination and load more.
-
-= Version 1.1.3 =
-* Fixed responsive options.
-* Changed settings for free version.
-
-= Version 1.1.2 =
-* Changed responsive options, lightbox options and youtube video player for some types.
-
-= Version 1.1.1 =
-* Fixed a bug with the zoom.
-* Fixed a bug in gallery lightbox with themes.
-
-= Version 1.1.0 =
-* Add New Type "Fancy Gallery"
 
 = Version 1.0.7 =
 * Added Vimeo link support.

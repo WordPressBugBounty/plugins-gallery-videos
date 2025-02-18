@@ -34,9 +34,71 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function{
 		}
 		global $wp_filesystem;
 		WP_Filesystem();
+		add_action( 'admin_notices', array($this, 'tsvg_push_notice') );
+		add_action( 'admin_init', array($this, 'tsvg_dismissed_notice') );
+	}
+	function tsvg_push_notice() {
+		if ($this->tsvg_page_slug === 'tsvg-admin') {
+			$tsvg_dismissed_meta = get_user_meta(  get_current_user_id(), 'tsvg_dismissed_notice' );
+			$tsvg_remind_me_meta = get_user_meta(  get_current_user_id(), 'tsvg_remindme_notice' );
+			$tsvg_dismissed = !$tsvg_dismissed_meta || $tsvg_dismissed_meta[0] !== $this->version;
+			$tsvg_remind_me = !$tsvg_remind_me_meta || time()+(get_option('gmt_offset') * 3600) - (int) $tsvg_remind_me_meta[0] > 86400;
+			if ( $tsvg_dismissed && $tsvg_remind_me) {
+				echo sprintf(
+					'
+					<div class="tsvg-banner">
+						<div class="tsvg-banner-container">
+							<svg class="tsvg-banner-circle tsvg-banner-circle-a" height="160" width="160">
+								<circle cx="80" cy="80" r="80" />
+							</svg>
+							<svg class="tsvg-banner-circle tsvg-banner-circle-b" height="60" width="60">
+								<circle cx="30" cy="30" r="30" />
+							</svg>
+							<svg class="tsvg-banner-circle tsvg-banner-circle-c" height="600" width="600">
+								<circle cx="300" cy="300" r="300" />
+							</svg>
+							<svg class="tsvg-banner-circle tsvg-banner-circle-d" height="60" width="60">
+								<circle cx="30" cy="30" r="30" />
+							</svg>
+							<img class="tsvg-banner-img" src="%1$s" />
+							<div class="tsvg-banner-content">
+								<p class="tsvg-banner-text">TS Poll - Survey, Versus Poll, Image Poll, Video Poll</p>
+								<a target="_blank" href="%2$s" class="tsvg-banner-link">WP Plugin</a>
+								<a target="_blank" href="%3$s" class="tsvg-banner-link">See demos</a>
+							</div>
+						</div>
+						<div class="tsvg-banner-btns">
+							<a class="tsvg-banner-btn tsvg-remind-btn" href="%4$s">%5$s</a>
+							<a class="tsvg-banner-btn tsvg-dismiss-btn" href="%6$s">%7$s</a>
+						</div>
+					</div>
+					',
+					esc_url(plugin_dir_url( __FILE__ ) . 'img/ts-poll-logo.png'),
+					esc_url('https://wordpress.org/plugins/poll-wp/'),
+					esc_url('https://poll-wp.total-soft.com/'),
+					esc_url( add_query_arg( 'tsvg-remind-me', 'true' ) ),
+					__('Remind me later'),
+					esc_url( add_query_arg( 'tsvg-dismissed', 'true' ) ),
+					__('Dismiss')
+				);
+			}
+		}
+	}
+	function tsvg_dismissed_notice() {
+		if ( isset( $_GET['tsvg-dismissed'] ) || isset( $_GET['tsvg-remind-me'] )){
+			if ( isset( $_GET['tsvg-dismissed'] )){
+				$tsvg_dismissed_meta = get_user_meta(  get_current_user_id(), 'tsvg_dismissed_notice' );
+				!$tsvg_dismissed_meta ? add_user_meta( get_current_user_id(), 'tsvg_dismissed_notice', $this->version, true ) : update_user_meta( get_current_user_id(), 'tsvg_dismissed_notice', $this->version );
+			}else if (isset( $_GET['tsvg-remind-me'] )) {
+				$tsvg_remind_me_meta = get_user_meta(  get_current_user_id(), 'tsvg_remindme_notice' );
+				!$tsvg_remind_me_meta ? add_user_meta( get_current_user_id(), 'tsvg_remindme_notice', time()+(get_option('gmt_offset') * 3600), true ) : update_user_meta( get_current_user_id(), 'tsvg_remindme_notice', time()+(get_option('gmt_offset') * 3600) ) ;
+			}
+			wp_redirect(wp_get_referer());
+			exit;
+		}
 	}
 	public function tsvg_process_requests(){
-		$this->tsvg_themes = array('grid_video_gallery'=>'Grid Video Gallery','lightbox_video_gallery'=>'LightBox Video Gallery','thumbnails_video'=>'Thumbnails Video','content_popup'=>'Content Popup','elastic_gallery'=>'Elastic Gallery','fancy_gallery'=>'Fancy Gallery','parallax_engine'=>'Parallax Engine','classic_gallery'=>'Classic Gallery','space_gallery'=>'Space Gallery','effective_gallery'=>'Effective Gallery','gallery_album'=>'Gallery Album');
+		$this->tsvg_themes = array('grid_video_gallery'=>'Grid Video Gallery','lightbox_video_gallery'=>'LightBox Video Gallery','thumbnails_video'=>'Thumbnails Video','content_popup'=>'Content Popup','elastic_gallery'=>'Elastic Gallery','fancy_gallery'=>'Fancy Gallery','parallax_engine'=>'Parallax Engine','classic_gallery'=>'Classic Gallery','space_gallery'=>'Space Gallery','effective_gallery'=>'Effective Gallery','gallery_album'=>'Gallery Album','video_portfolio'=>'Video Portfolio','image_portfolio'=>'Image Portfolio','image_gallery'=>'Image Gallery','mix_portfolio'=>'Mix Portfolio');
 		$this->tsvg_styles_array = array('TotalSoft_GV_1_01','TotalSoft_GV_1_02','TotalSoft_GV_1_03','TotalSoft_GV_1_04','TotalSoft_GV_1_05','TotalSoft_GV_1_06','TotalSoft_GV_1_07','TotalSoft_GV_1_08','TotalSoft_GV_1_09','TotalSoft_GV_1_10','TotalSoft_GV_1_11','TotalSoft_GV_1_12','TotalSoft_GV_1_13','TotalSoft_GV_1_14','TotalSoft_GV_1_15','TotalSoft_GV_1_16','TotalSoft_GV_1_PT','TotalSoft_GV_1_17','TotalSoft_GV_1_18','TotalSoft_GV_1_19','TotalSoft_GV_1_20','TotalSoft_GV_1_21','TotalSoft_GV_1_22','TotalSoft_GV_1_23','TotalSoft_GV_1_24','TotalSoft_GV_1_25','TotalSoft_GV_1_26','TotalSoft_GV_1_27','TotalSoft_GV_1_28','TotalSoft_GV_1_29','TotalSoft_GV_1_30','TotalSoft_GV_1_31','TotalSoft_GV_1_32','TotalSoft_GV_1_33','TotalSoft_GV_1_34','TotalSoft_GV_1_35','TotalSoft_GV_1_36','TotalSoft_GV_1_37','TotalSoft_GV_1_38','TotalSoft_GV_1_39','TotalSoft_GV_1_40','TotalSoft_GV_2_01','TotalSoft_GV_2_02','TotalSoft_GV_2_03','TotalSoft_GV_2_04','TotalSoft_GV_2_05','TotalSoft_GV_2_06','TotalSoft_GV_2_07','TotalSoft_GV_2_08','TotalSoft_GV_2_09','TotalSoft_GV_2_10','TotalSoft_GV_2_11','TotalSoft_GV_FG_PT','TotalSoft_GV_FG_PD','TotalSoft_GV_2_12','TotalSoft_GV_2_13','TotalSoft_GV_2_14','TotalSoft_GV_2_15','TotalSoft_GV_2_16','TotalSoft_GV_2_17','TotalSoft_GV_2_18','TotalSoft_GV_2_19','TotalSoft_GV_2_20','TotalSoft_GV_2_21','TotalSoft_GV_2_22','TotalSoft_GV_2_23','TotalSoft_GV_2_24','TotalSoft_GV_2_25','TotalSoft_GV_2_26','TotalSoft_GV_2_27','TotalSoft_GV_2_28','TotalSoft_GV_2_29','TotalSoft_GV_2_30','TotalSoft_GV_2_31','TotalSoft_GV_2_32','TotalSoft_GV_2_33','TotalSoft_GV_2_34','TotalSoft_GV_2_35','TotalSoft_GV_2_36','TotalSoft_GV_2_37','TotalSoft_GV_2_38','TotalSoft_GV_2_39');
 		$this->tsvg_settings_array = array('TotalSoft_VGallery_Set_01','TotalSoft_VGallery_Set_02','TotalSoft_VGallery_Set_03','TotalSoft_VGallery_Set_04','TotalSoft_VGallery_Set_05','TotalSoft_VGallery_Set_06','TotalSoft_VGallery_Set_07','TotalSoft_VGallery_Set_08');
 		$this->tsvg_option_styles_array = array('TotalSoft_VGallery_Sty_01','TotalSoft_VGallery_Sty_02','TotalSoft_VGallery_Sty_03','TotalSoft_VGallery_Sty_04','TotalSoft_VGallery_Sty_05','TotalSoft_VGallery_Sty_06','TotalSoft_VGallery_Sty_07','TotalSoft_VGallery_Sty_08','TotalSoft_VGallery_Sty_09','TotalSoft_VGallery_Sty_10','TotalSoft_VGallery_Sty_11','TotalSoft_VGallery_Sty_12','TotalSoft_VGallery_Sty_13','TotalSoft_VGallery_Sty_14','TotalSoft_VGallery_Sty_15','TotalSoft_VGallery_Sty_16','TotalSoft_VGallery_Sty_17','TotalSoft_VGallery_Sty_18','TotalSoft_VGallery_Sty_19','TotalSoft_VGallery_Sty_20','TotalSoft_VGallery_Sty_21','TotalSoft_VGallery_Sty_22','TotalSoft_VGallery_Sty_23','TotalSoft_VGallery_Sty_24','TotalSoft_VGallery_Sty_25','TotalSoft_VGallery_Sty_26','TotalSoft_VGallery_Sty_27');
@@ -258,7 +320,11 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function{
 				'classic_gallery'        => 'wp-video-gallery-classic',
 				'space_gallery'          => 'wp-video-gallery-space',
 				'effective_gallery'		 => 'wp-video-gallery-effective',
-				'gallery_album'			 => 'wp-video-gallery-album'
+				'gallery_album'			 => 'wp-video-gallery-album',
+				'video_portfolio'        => 'wp-video-portfolio-1',
+				'image_portfolio'        => 'wp-video-image-portfolio-1',
+				'image_gallery'          => 'wp-video-image-gallery-1',
+				'mix_portfolio'          => 'wp-video-mix-portfolio-1'
 			);
 		}
 	}

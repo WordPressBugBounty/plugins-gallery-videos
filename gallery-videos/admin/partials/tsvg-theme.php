@@ -1,7 +1,7 @@
 <div class="tsvg_content active" data-tsvg-section="theme">
     <?php
     foreach ( $this->tsvg_themes as $theme_key => $theme_value ) {
-        $tsvg_is_pro_theme = $theme_key === "effective_gallery" || $theme_key === "gallery_album";
+        $tsvg_is_pro_theme = $theme_key === "effective_gallery" || $theme_key === "gallery_album" || $theme_key === "video_portfolio" || $theme_key === "image_portfolio" || $theme_key === "image_gallery" || $theme_key === "mix_portfolio";
         echo sprintf(
             '
             <div class="tsvg_theme tsvg_flex_col">
