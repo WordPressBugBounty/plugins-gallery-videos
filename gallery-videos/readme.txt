@@ -4,7 +4,7 @@ Donate link: https://total-soft.com/wp-video-gallery/
 Tags: gallery, image gallery, portfolio gallery, video gallery, wordpress gallery
 Requires at least: 4.0
 Tested up to: 6.7
-Stable tag: 2.4.6
+Stable tag: 2.4.7
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -22,6 +22,11 @@ Gallery is a user-friendly plugin to display user or hashtag-based gallery feeds
 
 The software is responsive user friendly and can really enhance the reiting of your site when people search for related topics and videos whether on Youtube, Vimeo and Wistia or search engines in general. Getting your Youtube, Vimeo or Wistia extension working is straightforward with a few simple steps required to build this great video resources on your WordPress site. The benefits of the gallery plugin are already making a real difference for all kinds of sites from business oriented to hobby or entertainment pages. The great thing about the Gallery is that it allows users to express their creative editing skills when composing a video collection slideshow or even workshop and information content. Being able to engage with site visitors this way directly with gallery also helps to make your site much more reiting.
 
+* [Video Portfolio Theme](https://total-soft.com/wp-video-portfolio-1/)
+* [Image Portfolio Theme](https://total-soft.com/wp-video-image-portfolio-2/)
+* [Image Gallery Theme](https://total-soft.com/wp-video-image-gallery-1)
+* [Mix Portfolio Theme](https://total-soft.com/wp-video-mix-portfolio-3/)
+
 
 = Fully responsive =
 Plugin is designed to be shown clearly and neatly on any screen size. No matter how small your device screens are it will automatically adjust to fit on that screens and display perfectly.
@@ -32,7 +37,7 @@ Most powerful features
 
 * User friendly editor.
 * Nice and sleek lightbox.
-* Video Galleries themes - 16 free version.
+* Video Galleries themes - 20 free version.
 * Beautiful and Fantastic for the hover effects.
 * Responsive and touch friendly.
 * Gallery 9 Layouts.
@@ -48,7 +53,7 @@ Most powerful features
 * Support YouTube, Vimeo, Wistia, MP4.
 * Unlimited videos (YouTube, Vimeo, Wistia & MP4).
 * Gallery animations that run smoothly on modern devices.
-* Video Gallery plugin plays nice with your existing HTML and CSS, making it a great choice for responsive layouts.
+* Plugin plays nice with your existing HTML and CSS, making it a great choice for responsive layouts.
 * Add custom link on single videos in gallery views.
 * Speed, effects, locations, and more are all changeable.
 * Gallery animations that run smoothly on modern devices.
@@ -60,16 +65,27 @@ Most powerful features
 ### Pro features ###
 [The features of the premium version](https://total-soft.com/wp-video-gallery/)
 
-* [Video Portfolio Theme](https://total-soft.com/wp-video-portfolio-1/)
-* [Image Portfolio Theme](https://total-soft.com/wp-video-image-portfolio-2/)
-* [Image Gallery Theme](https://total-soft.com/wp-video-image-gallery-1)
+* [🆕Video Portfolio Theme](https://total-soft.com/wp-video-portfolio-1/)
+* [🆕Image Portfolio Theme](https://total-soft.com/wp-video-image-portfolio-2/)
+* [🆕Image Gallery Theme](https://total-soft.com/wp-video-image-gallery-1)
+* [🆕Mix Portfolio Theme](https://total-soft.com/wp-video-mix-portfolio-3/)
 
 ### These effects are available in the Video Portfolio Theme, Image Portfolio Theme and Image Gallery Theme ###
 
-* [Menu Theme] - 9 Type
-* [Hover Effects] - 12 types for gallery hover effect.
-* [Open Effects] - 14 types of effect for opening gallery.
-* [Lightbox] - Very beautiful and unique lightbox. 6 lightbox types available.
+* [🆕Menu Theme - 9 Type](https://total-soft.com/wp-video-gallery-menu/)
+
+* [🆕Hover Effects - 12 types for gallery hover effect](https://total-soft.com/wp-video-gallery-hover)
+
+📍 With TS Video Gallery, building a beautiful website is now easier with animated headlines, image hover effects, and creative buttons.
+
+📍 Hover Effects: Add cool titles and descriptions to your images and videos with over 12 customizable effects. Get creative and make your images and video interactive.
+
+
+* [🆕Open Effects - 15 types of effect for opening gallery.](https://total-soft.com/wp-video-gallery-open/)
+
+### These lightbox work with 4 themes “Video Portfolio Theme, Image Portfolio Theme, Image Gallery Theme & Mix Portfolio Theme” ###
+
+* [🆕Lightbox](https://total-soft.com/wp-video-gallery-lightbox-3/) - Very beautiful and unique lightbox. 6 lightbox types available.
 
 
 **There are 10 types of beautiful effects to open the gallery**
@@ -92,7 +108,8 @@ Most powerful features
 
 **Advanced Pagination**
 
-* Numbered pagination "7 Type"
+* [⭐Numbered pagination "7 Type"](https://total-soft.com/wp-video-gallery-pagination/)
+* [⭐Image Gallery Theme](https://total-soft.com/wp-video-image-gallery-1)
 * "Load More" pagination "5 Type"
 * Infinite scroll video gallery
 
@@ -230,17 +247,21 @@ After activating video gallery choose the type of version you wish to use.
 4. An example of plugin in action - Grid Gallery Type
 5. An example of plugin in action - Grid Gallery Type
 6. An example of plugin in action - LightBox Gallery Version
-7. An example of plugin in action - LightBox Gallery Version
+7. An example of plugin in action - MIX Gallery Theme
 8. An example of plugin in action - Thumbnails Video Version
 9. An example of plugin in action - Thumbnails Video Version
 10. An example of plugin in action Video Gallery / Content Popup
-11. An example of plugin in action Video Gallery / Content Popup
+11. An example of plugin in action - Image Gallery Theme
 12. An example of plugin in action - Elastic Gallery
-13. An example of plugin in action - Elastic Gallery
-14. An example of plugin in action - Fancy Gallery
-15. An example of plugin in action - Parallax Engine
+13. An example of plugin in action - Image Portfolio Theme
+14. An example of plugin in action - Video Portfolio Theme
+15. An example of plugin in action - Menu Theme
 
 == Changelog ==
+
+= Version 2.4.7 =
+
+* Added new lightbox for portfolio..
 
 = Version 2.4.6 =
 
