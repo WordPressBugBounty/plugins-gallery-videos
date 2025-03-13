@@ -17,7 +17,7 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function{
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
 		if (isset($_GET) && isset($_GET['page'])) {
-			if (sanitize_text_field(wp_unslash($_GET['page'])) === 'tsvg-admin' || sanitize_text_field(wp_unslash($_GET['page'])) === 'tsvg-builder') {
+			if (sanitize_text_field(wp_unslash($_GET['page'])) === 'tsvg-admin' || sanitize_text_field(wp_unslash($_GET['page'])) === 'tsvg-builder' || sanitize_text_field(wp_unslash($_GET['page'])) === 'tsvg-pro' || sanitize_text_field(wp_unslash($_GET['page'])) === 'tsvg-add-ons') {
 				$this->tsvg_page_slug = sanitize_text_field(wp_unslash($_GET['page']));
 			}
 		}
@@ -349,6 +349,60 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function{
 				wp_enqueue_style('tsvg-builder-new', plugin_dir_url(__FILE__) . 'css/tsvg-new.css', array(), time(), 'all');
 			}
 		}
+		if ($this->tsvg_page_slug == 'tsvg-pro') {
+			wp_enqueue_style( "tsvg-pro", plugin_dir_url( __FILE__ ) . 'css/tsvg-pro.css', array(), time(), 'all' );
+		}
+		if ($this->tsvg_page_slug == 'tsvg-add-ons') {
+			wp_enqueue_style( "tsvg-add-ons", plugin_dir_url( __FILE__ ) . 'css/tsvg-addons.css', array(), time(), 'all' );
+			$tsvg_inline_style = sprintf(
+				'
+				@font-face {
+					font-family: "Source Sans Pro";
+					font-style: normal;
+					font-weight: 200;
+					src: url(%1$s) format("truetype");
+				}
+				@font-face {
+					font-family: "Source Sans Pro";
+					font-style: normal;
+					font-weight: 300;
+					src: url(%2$s) format("truetype");
+				}
+				@font-face {
+					font-family: "Source Sans Pro";
+					font-style: normal;
+					font-weight: 400;
+					src: url(%3$s) format("truetype");
+				}
+				@font-face {
+					font-family: "Source Sans Pro";
+					font-style: normal;
+					font-weight: 600;
+					src: url(%4$s) format("truetype");
+				}
+				@font-face {
+					font-family: "Source Sans Pro";
+					font-style: normal;
+					font-weight: 700;
+					src: url(%5$s) format("truetype");
+				}
+				@font-face {
+					font-family: "Source Sans Pro";
+					font-style: normal;
+					font-weight: 900;
+					src: url(%6$s) format("truetype");
+				}
+				',
+				esc_url("https://fonts.gstatic.com/s/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3i94_wlxdr.ttf"),
+				esc_url("https://fonts.gstatic.com/s/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ik4zwlxdr.ttf"),
+				esc_url("https://fonts.gstatic.com/s/sourcesanspro/v21/6xK3dSBYKcSV-LCoeQqfX1RYOo3qOK7g.ttf"),
+				esc_url("https://fonts.gstatic.com/s/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3i54rwlxdr.ttf"),
+				esc_url("https://fonts.gstatic.com/s/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlxdr.ttf"),
+				esc_url("https://fonts.gstatic.com/s/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3iu4nwlxdr.ttf")
+			);
+			wp_add_inline_style("tsvg-add-ons", $tsvg_inline_style);
+		}
+
 	}
 	public function enqueue_scripts(){
 		if ($this->tsvg_page_slug == 'tsvg-admin') {
@@ -387,6 +441,9 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function{
 					)
 				);
 			}
+		}
+		if ($this->tsvg_page_slug == 'tsvg-add-ons') {
+			wp_enqueue_script( "tsvg-add-ons", plugin_dir_url( __FILE__ ) . 'js/tsvg-addons.js', array( 'jquery'), time(), true );
 		}
 	}
 	public static function tsvg_set_screen($status, $option, $value){
@@ -467,10 +524,36 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function{
 			array($this, 'tsvg_get_builder')
 		);
 	}
+	public function tsvg_admin_pro_submenu() {
+		add_submenu_page(
+			'tsvg-admin',
+			esc_html__( 'TS Video Gallery Pro Features' ),
+			esc_html__( 'Pro Features' ),
+			'manage_options',
+			'tsvg-pro',
+			array( $this, 'tsvg_get_pro' )
+		);
+	}
+	public function tsvg_admin_addons_submenu() {
+		add_submenu_page(
+			'tsvg-admin',
+			esc_html__( 'TS Video Gallery Add-Ons' ),
+			esc_html__( 'Add-Ons' ),
+			'manage_options',
+			'tsvg-add-ons',
+			array( $this, 'tsvg_get_add_ons' )
+		);
+	}
 	public function tsvg_get_admin(){
 		include_once 'tsvg-admin.php';
 	}
 	public function tsvg_get_builder(){
 		include_once 'tsvg-builder.php';
+	}
+	public function tsvg_get_pro() {
+		include_once 'tsvg-pro.php';
+	}
+	public function tsvg_get_add_ons() {
+		include_once 'tsvg-add-ons.php';
 	}
 }

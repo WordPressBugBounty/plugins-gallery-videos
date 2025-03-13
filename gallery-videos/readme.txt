@@ -4,7 +4,7 @@ Donate link: https://total-soft.com/wp-video-gallery/
 Tags: gallery, image gallery, portfolio gallery, video gallery, wordpress gallery
 Requires at least: 4.0
 Tested up to: 6.7
-Stable tag: 2.4.7
+Stable tag: 2.4.8
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -258,6 +258,12 @@ After activating video gallery choose the type of version you wish to use.
 15. An example of plugin in action - Menu Theme
 
 == Changelog ==
+
+= Version 2.4.8 =
+
+* Added new lightbox for gallery portfolio.
+* Added demo for theme version 4.
+* Added demo for menu.
 
 = Version 2.4.7 =
 

@@ -9,7 +9,7 @@ class TS_Video_Gallery {
 		if ( defined( 'TSVG_VERSION' ) ) {
 			$this->version = TSVG_VERSION;
 		} else {
-			$this->version = '2.4.7';
+			$this->version = '2.4.8';
 		}
 		$this->plugin_name = 'TS Video Gallery';
 		$this->theme_details = wp_get_theme();
@@ -448,6 +448,8 @@ class TS_Video_Gallery {
 			$this->loader->add_action( 'admin_menu', $plugin_admin, 'tsvg_admin_menu', 9 );
 			$this->loader->add_action( 'admin_menu', $plugin_admin, 'tsvg_admin_submenu', 90 );
 			$this->loader->add_action( 'admin_menu', $plugin_admin, 'tsvg_admin_builder_submenu', 100 );
+			$this->loader->add_action( 'admin_menu', $plugin_admin, 'tsvg_admin_pro_submenu', 110 );
+			$this->loader->add_action( 'admin_menu', $plugin_admin, 'tsvg_admin_addons_submenu', 120 );
 		}
 	}
 	private function define_public_hooks() {
