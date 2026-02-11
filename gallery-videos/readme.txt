@@ -138,8 +138,8 @@ Most powerful features
 
 **Load More** - Also, in this option the videos will succeed to each other. Simply the other videos wil be displayed by "Load More". These animations work in pagination and in Load-more. We have 10 effects.
 
-* [Load More Effect 1 - Demo](https://total-soft.com/wp-video-gallery-lightbox/)
-* [Load More Effect 2 - Demo](https://total-soft.com/wp-video-gallery-content-popup/)
+* [Load More Effect 1 - Demo](https://total-soft.com/wp-video-gallery-lightbox)
+* [Load More Effect 2 - Demo](https://total-soft.com/wp-video-gallery-content-popup)
 * [Load More Effect 3 - Demo](https://total-soft.com/wp-video-gallery-content-popup-2/)
 * [Load More Effect 4 - Demo](https://total-soft.com/wp-video-gallery-space)
 * [Load More Effect 5 - Demo](https://total-soft.com/wp-video-gallery-fancy/)
