@@ -16,7 +16,7 @@ class TS_Video_Gallery_Widget extends WP_Widget {
 			array_unshift(
 				$tsvg_all_records,
 				array(
-					"id"          => "",
+					"id" => "",
 					"TS_VG_Title" => "Select video gallery"
 				)
 			);
@@ -24,7 +24,7 @@ class TS_Video_Gallery_Widget extends WP_Widget {
 				$tsvg_return_options .= sprintf(
 					'
                     <option value="%1$s" %2$s>%3$s</option>
-                 	',
+					',
 					esc_attr( $tsvg_value['id'] ),
 					$tsvg_value['id'] == $tsvg_id ? esc_attr( 'selected' ) : '',
 					esc_html( wp_strip_all_tags( html_entity_decode( htmlspecialchars_decode( $tsvg_value['TS_VG_Title'] ), ENT_QUOTES ) ) )

@@ -15,7 +15,7 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function{
 	protected $tsvg_function_class;
 	public function __construct($plugin_name, $version){
 		$this->plugin_name = $plugin_name;
-		$this->version     = $version;
+		$this->version = $version;
 		if (isset($_GET) && isset($_GET['page'])) {
 			if (sanitize_text_field(wp_unslash($_GET['page'])) === 'tsvg-admin' || sanitize_text_field(wp_unslash($_GET['page'])) === 'tsvg-builder' || sanitize_text_field(wp_unslash($_GET['page'])) === 'tsvg-pro' || sanitize_text_field(wp_unslash($_GET['page'])) === 'tsvg-add-ons') {
 				$this->tsvg_page_slug = sanitize_text_field(wp_unslash($_GET['page']));
@@ -130,17 +130,17 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function{
 				$tsvg_options['TS_vgallery_Q_Theme'] = $tsvg_theme;
 				foreach ($tsvg_videos_order as $video_id) {
 					$tsvg_videos[] = [
-						'id'            => $video_id,
+						'id' => $video_id,
 						'TS_VG_SetType' => isset($_POST['TS_VG_SetType-' . $video_id]) ? sanitize_text_field(wp_unslash($_POST['TS_VG_SetType-' . $video_id])) : '',
-						'TS_VG_SetName' => isset($_POST['TS_VG_SetName-' . $video_id]) ? htmlentities(sanitize_text_field(wp_unslash($_POST['TS_VG_SetName-' . $video_id])), ENT_QUOTES) : '',
+						'TS_VG_SetName' => isset($_POST['TS_VG_SetName-' . $video_id]) ? htmlspecialchars(sanitize_text_field(wp_unslash($_POST['TS_VG_SetName-' . $video_id])), ENT_QUOTES) : '',
 						'TS_VG_Options' => [
-							'TotalSoftVGallery_Vid_Im'    => isset($_POST['TotalSoftVGallery_Vid_Im-' . $video_id]) ? sanitize_url(wp_unslash($_POST['TotalSoftVGallery_Vid_Im-' . $video_id])) : '',
-							'TotalSoftVGallery_Vid_Vd'    => isset($_POST['TotalSoftVGallery_Vid_Vd-' . $video_id]) ? sanitize_url(wp_unslash($_POST['TotalSoftVGallery_Vid_Vd-' . $video_id])) : '',
-							'TotalSoftVGallery_Vid_vont'  => isset($_POST['TotalSoftVGallery_Vid_vont-' . $video_id]) ? sanitize_text_field(wp_unslash($_POST['TotalSoftVGallery_Vid_vont-' . $video_id])) : '',
+							'TotalSoftVGallery_Vid_Im' => isset($_POST['TotalSoftVGallery_Vid_Im-' . $video_id]) ? sanitize_url(wp_unslash($_POST['TotalSoftVGallery_Vid_Im-' . $video_id])) : '',
+							'TotalSoftVGallery_Vid_Vd' => isset($_POST['TotalSoftVGallery_Vid_Vd-' . $video_id]) ? sanitize_url(wp_unslash($_POST['TotalSoftVGallery_Vid_Vd-' . $video_id])) : '',
+							'TotalSoftVGallery_Vid_vont' => isset($_POST['TotalSoftVGallery_Vid_vont-' . $video_id]) ? sanitize_text_field(wp_unslash($_POST['TotalSoftVGallery_Vid_vont-' . $video_id])) : '',
 							'TotalSoftVGallery_Vid_vd_em' => '',
-							'TotalSoftVGallery_Vid_desc'  => isset($_POST['TotalSoftVGallery_Vid_desc-' . $video_id]) ? wp_kses_post(wp_unslash($_POST['TotalSoftVGallery_Vid_desc-' . $video_id])) : '',
-							'TotalSoftVGallery_Vid_link'  => isset($_POST['TotalSoftVGallery_Vid_link-' . $video_id]) ? sanitize_url(wp_unslash($_POST['TotalSoftVGallery_Vid_link-' . $video_id])) : '',
-							'TotalSoftVGallery_Vid_Cl'    => isset($_POST['TotalSoftVGallery_Vid_Cl-' . $video_id]) ? sanitize_text_field(wp_unslash($_POST['TotalSoftVGallery_Vid_Cl-' . $video_id])) : ''
+							'TotalSoftVGallery_Vid_desc' => isset($_POST['TotalSoftVGallery_Vid_desc-' . $video_id]) ? wp_kses_post(wp_unslash($_POST['TotalSoftVGallery_Vid_desc-' . $video_id])) : '',
+							'TotalSoftVGallery_Vid_link' => isset($_POST['TotalSoftVGallery_Vid_link-' . $video_id]) ? sanitize_url(wp_unslash($_POST['TotalSoftVGallery_Vid_link-' . $video_id])) : '',
+							'TotalSoftVGallery_Vid_Cl' => isset($_POST['TotalSoftVGallery_Vid_Cl-' . $video_id]) ? sanitize_text_field(wp_unslash($_POST['TotalSoftVGallery_Vid_Cl-' . $video_id])) : ''
 						]
 					];
 				}
@@ -148,16 +148,16 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function{
 					$wpdb->insert(
 						$tsvg_db_manager_table,
 						array(
-							'id'                 => '',
-							'TS_VG_Title'        => $tsvg_title,
-							'TS_VG_Option'       => json_encode( $tsvg_options ),
-							'TS_VG_Style'        => json_encode( $tsvg_styles ),
-							'TS_VG_Settings'     => json_encode( $tsvg_settings ),
+							'id' => '',
+							'TS_VG_Title' => $tsvg_title,
+							'TS_VG_Option' => json_encode( $tsvg_options ),
+							'TS_VG_Style' => json_encode( $tsvg_styles ),
+							'TS_VG_Settings' => json_encode( $tsvg_settings ),
 							'TS_VG_Option_Style' => json_encode( $tsvg_option_styles ),
-							'TS_VG_Sort'         => '',
-							'TS_VG_Old_User'     => 'no',
-							'created_at'         => gmdate( 'd.m.Y h:i:sa' ),
-							'updated_at'         => gmdate( 'd.m.Y h:i:sa' )
+							'TS_VG_Sort' => '',
+							'TS_VG_Old_User' => 'no',
+							'created_at' => gmdate( 'd.m.Y h:i:sa' ),
+							'updated_at' => gmdate( 'd.m.Y h:i:sa' )
 						),
 						array( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
 					);
@@ -166,7 +166,7 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function{
 						$wpdb->insert(
 							$tsvg_db_videos_table,
 							array(
-								'id'            => '',
+								'id' => '',
 								'TS_VG_SetType' => (int) $tsvg_insert_id,
 								'TS_VG_SetName' => $tsvg_video['TS_VG_SetName'],
 								'TS_VG_Options' => json_encode($tsvg_video['TS_VG_Options'])
@@ -183,7 +183,7 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function{
 							$wpdb->insert(
 								$tsvg_db_videos_table,
 								array(
-									'id'            => '',
+									'id' => '',
 									'TS_VG_SetType' => (int) $tsvg_id,
 									'TS_VG_SetName' => $tsvg_video['TS_VG_SetName'],
 									'TS_VG_Options' => json_encode($tsvg_video['TS_VG_Options'])
@@ -219,13 +219,13 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function{
 					$wpdb->update(
 						$tsvg_db_manager_table,
 						array(
-							'TS_VG_Title'        => $tsvg_title,
-							'TS_VG_Option'       => json_encode($tsvg_options),
-							'TS_VG_Style'        => json_encode($tsvg_styles),
-							'TS_VG_Settings'     => json_encode($tsvg_settings),
+							'TS_VG_Title' => $tsvg_title,
+							'TS_VG_Option' => json_encode($tsvg_options),
+							'TS_VG_Style' => json_encode($tsvg_styles),
+							'TS_VG_Settings' => json_encode($tsvg_settings),
 							'TS_VG_Option_Style' => json_encode($tsvg_option_styles),
-							'TS_VG_Sort'         => implode(',', $tsvg_order_array),
-							'updated_at'         => gmdate('d.m.Y h:i:sa'),
+							'TS_VG_Sort' => implode(',', $tsvg_order_array),
+							'updated_at' => gmdate('d.m.Y h:i:sa'),
 						),
 						array('id' => (int) $tsvg_id),
 						array('%s', '%s', '%s', '%s', '%s', '%s'),
@@ -292,16 +292,16 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function{
 				}
 				$tsvg_theme_default_data = $this->tsvg_function_class->tsvg_get_theme_params($this->tsvg_build_id);
 				$this->tsvg_build_proporties = array(
-					'id'                 => $this->tsvg_build_id,
-					'TS_VG_Title'        => $tsvg_default_data['TS_VG_Title'],
-					'TS_VG_Settings'     => json_encode($tsvg_default_data['TS_VG_Settings']),
+					'id' => $this->tsvg_build_id,
+					'TS_VG_Title' => $tsvg_default_data['TS_VG_Title'],
+					'TS_VG_Settings' => json_encode($tsvg_default_data['TS_VG_Settings']),
 					'TS_VG_Option_Style' => json_encode($tsvg_default_data['TS_VG_Style']),
-					'TS_VG_Option'       => json_encode($tsvg_default_data['TS_VG_Option']),
-					'TS_VG_Style'        => $tsvg_theme_default_data,
-					'TS_VG_Sort'         => $tsvg_default_data['TS_VG_Sort'],
-					'TS_VG_Old_User'     => 'no',
-					'created_at'         => gmdate('d.m.Y h:i:sa'),
-					'updated_at'         => gmdate('d.m.Y h:i:sa'),
+					'TS_VG_Option' => json_encode($tsvg_default_data['TS_VG_Option']),
+					'TS_VG_Style' => $tsvg_theme_default_data,
+					'TS_VG_Sort' => $tsvg_default_data['TS_VG_Sort'],
+					'TS_VG_Old_User' => 'no',
+					'created_at' => gmdate('d.m.Y h:i:sa'),
+					'updated_at' => gmdate('d.m.Y h:i:sa'),
 					'tsvg_video_records' => $tsvg_default_data['Videos']
 				);
 			} else {
@@ -310,27 +310,27 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function{
 		} else {
 			$this->tsvg_build = 'new';
 			$this->tsvg_themes_links = array(
-				'grid_video_gallery'     => 'wp-video-gallery-grid',
+				'grid_video_gallery' => 'wp-video-gallery-grid',
 				'lightbox_video_gallery' => 'wp-video-gallery-lightbox',
-				'thumbnails_video'       => 'wp-video-gallery-thumbnails',
-				'content_popup'          => 'wp-video-gallery-content-popup',
-				'elastic_gallery'        => 'wp-video-gallery-elastic',
-				'fancy_gallery'          => 'wp-video-gallery-fancy',
-				'parallax_engine'        => 'wp-video-gallery-parallax',
-				'classic_gallery'        => 'wp-video-gallery-classic',
-				'space_gallery'          => 'wp-video-gallery-space',
-				'effective_gallery'		 => 'wp-video-gallery-effective',
-				'gallery_album'			 => 'wp-video-gallery-album',
-				'video_portfolio'        => 'wp-video-portfolio-1',
-				'image_portfolio'        => 'wp-video-image-portfolio-1',
-				'image_gallery'          => 'wp-video-image-gallery-1',
-				'mix_portfolio'          => 'wp-video-mix-portfolio-1'
+				'thumbnails_video' => 'wp-video-gallery-thumbnails',
+				'content_popup' => 'wp-video-gallery-content-popup',
+				'elastic_gallery' => 'wp-video-gallery-elastic',
+				'fancy_gallery' => 'wp-video-gallery-fancy',
+				'parallax_engine' => 'wp-video-gallery-parallax',
+				'classic_gallery' => 'wp-video-gallery-classic',
+				'space_gallery' => 'wp-video-gallery-space',
+				'effective_gallery' => 'wp-video-gallery-effective',
+				'gallery_album' => 'wp-video-gallery-album',
+				'video_portfolio' => 'wp-video-portfolio-1',
+				'image_portfolio' => 'wp-video-image-portfolio-1',
+				'image_gallery' => 'wp-video-image-gallery-1',
+				'mix_portfolio' => 'wp-video-mix-portfolio-1'
 			);
 		}
 	}
 	public function tsvg_add_action_link($links){
-		$links['tsvgallery_support'] = sprintf('<a href="%1$s" style="color: #8bc34a;font-weight: bold;" target="_blank">Support</a>', esc_url('https://wordpress.org/support/plugin/gallery-videos/'));
-		$links['tsvgallery_go_pro']  = sprintf('<a href="%1$s" style="color: #ff0000;font-weight: bold;" target="_blank">Go Pro</a>', esc_url('https://total-soft.com/wp-video-gallery/'));
+		$links['tsvg_support'] = sprintf('<a href="%1$s" style="color: #8bc34a;font-weight: bold;" target="_blank">Support</a>', esc_url('https://wordpress.org/support/plugin/gallery-videos/'));
+		$links['tsvg_go_pro']  = sprintf('<a href="%1$s" style="color: #ff0000;font-weight: bold;" target="_blank">Go Pro</a>', esc_url('https://total-soft.com/wp-video-gallery/'));
 		return $links;
 	}
 	public function enqueue_styles(){
@@ -402,7 +402,6 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function{
 			);
 			wp_add_inline_style("tsvg-add-ons", $tsvg_inline_style);
 		}
-
 	}
 	public function enqueue_scripts(){
 		if ($this->tsvg_page_slug == 'tsvg-admin') {
@@ -424,20 +423,20 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function{
 					'tsvg-builder',
 					'tsvg_builder_object',
 					array(
-						'ajaxurl'         => admin_url('admin-ajax.php'),
-						'tsvg_nonce'      => wp_create_nonce('tsvg_builder_nonce_field'),
+						'ajaxurl' => admin_url('admin-ajax.php'),
+						'tsvg_nonce' => wp_create_nonce('tsvg_builder_nonce_field'),
 						'tsvg_proporties' => $this->tsvg_build_proporties,
-						'tsvg_id'         => $this->tsvg_build_id,
-						'tsvg_creation'   => isset($_GET['tsvg-theme']) ? 'save' : 'update',
-						'fonts'           => $this->tsvg_function_class->tsvg_get_all_fonts(),
-						'tsvg_svg_move'   => esc_url(plugin_dir_url(__FILE__) . 'img/move.svg'),
+						'tsvg_id' => $this->tsvg_build_id,
+						'tsvg_creation' => isset($_GET['tsvg-theme']) ? 'save' : 'update',
+						'tsvg_fonts' => esc_url( plugin_dir_url( __FILE__ ) . 'js/tsvg-fonts.json' ),
+						'tsvg_svg_move' => esc_url(plugin_dir_url(__FILE__) . 'img/move.svg'),
 						'tsvg_svg_remove' => esc_url(plugin_dir_url(__FILE__) . 'img/recycle.svg'),
-						'tsvg_svg_edit'   => esc_url(plugin_dir_url(__FILE__) . 'img/edit.svg'),
-						'tsvg_svg_copy'   => esc_url(plugin_dir_url(__FILE__) . 'img/copy.svg'),
-						'tsvg_no_img'     => esc_url(plugin_dir_url(__DIR__) . 'public/img/tsvg_no_img.jpg'),
-						'tsvg_no_iframe'  => esc_url("https://www.youtube.com/embed/IxxHeAUtcS4"),
+						'tsvg_svg_edit' => esc_url(plugin_dir_url(__FILE__) . 'img/edit.svg'),
+						'tsvg_svg_copy' => esc_url(plugin_dir_url(__FILE__) . 'img/copy.svg'),
+						'tsvg_no_img' => esc_url(plugin_dir_url(__DIR__) . 'public/img/tsvg_no_img.jpg'),
+						'tsvg_no_iframe' => esc_url("https://www.youtube.com/embed/IxxHeAUtcS4"),
 						'tsvg_image_load' => esc_url(plugin_dir_url(__DIR__) . 'public/img/loading.gif'),
-						'tsvg_no_video'   => esc_url(plugin_dir_url(__DIR__) . 'public/img/tsvg_no_video.png')
+						'tsvg_no_video' => esc_url(plugin_dir_url(__DIR__) . 'public/img/tsvg_no_video.png')
 					)
 				);
 			}
@@ -470,9 +469,9 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function{
 		if ($tsvg_attachment_fopen) {
 			list($width, $height) = getimagesize($tsvg_attachment_url);
 			$data = array(
-				'image'  => esc_url($tsvg_attachment_url),
-				'width'  => esc_html($width),
-				'height' => esc_html($height),
+				'image' => esc_url($tsvg_attachment_url),
+				'width' => esc_html($width),
+				'height' => esc_html($height)
 			);
 			if (is_numeric(attachment_url_to_postid($tsvg_attachment_url))) {
 				$data['id'] = attachment_url_to_postid($tsvg_attachment_url);
@@ -485,9 +484,9 @@ class TS_Video_Gallery_Admin extends TS_Video_Gallery_Function{
 	public function tsvg_screen_option(){
 		$option = 'per_page';
 		$args   = array(
-			'label'   => 'Galleries per page',
+			'label' => 'Galleries per page',
 			'default' => 15,
-			'option'  => 'tsvg_records_per_page'
+			'option' => 'tsvg_records_per_page'
 		);
 		add_screen_option($option, $args);
 		$this->tsvg_admin_manager = new TS_Video_Gallery_List_Table();

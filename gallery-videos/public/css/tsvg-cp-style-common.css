@@ -9,6 +9,7 @@
 	-webkit-box-sizing: border-box;
 	max-width: 100% !important;
 }
+
 .tsvg-cp-block-view .mask,
 .tsvg-cp-block-view .content {
 	position: absolute;
@@ -17,6 +18,7 @@
 	left: 0;
 	width: 100%;
 }
+
 .tsvg-cp-block-view img {
 	display: block;
 	position: absolute;
@@ -26,23 +28,28 @@
 	height: 100%;
 	margin: 0 !important;
 }
+
 .tsvg-cp-block-view h2 {
 	position: relative;
 	margin-top: 10px !important;
 	padding: 3px !important;
 	line-height: 1 !important;
 }
+
 .tsvg-cp-block-view p {
 	position: relative;
 	padding: 0px 10px;
 }
+
 .tsvg-cp-block-view a.tsvg-cp-block-info-link {
 	display: inline-block;
 	text-decoration: none;
-	margin: 0 auto;
+	margin: 10px auto 0px;
 	padding-left: 7px;
 	padding-right: 7px;
+	line-height: 1.2;
 }
+
 /* NINTH EXAMPLE*/
 .tsvg-cp-block-view-ninth .mask-1,
 .tsvg-cp-block-view-ninth .mask-2 {
@@ -53,6 +60,7 @@
 	-o-transition: all 0.3s ease-in-out 0.6s;
 	transition: all 0.3s ease-in-out 0.6s;
 }
+
 .tsvg-cp-block-view-ninth .mask-1 {
 	left: auto;
 	right: 0;
@@ -67,6 +75,7 @@
 	-ms-transform-origin: 100% 0%;
 	transform-origin: 100% 0%;
 }
+
 .tsvg-cp-block-view-ninth .mask-2 {
 	top: auto;
 	bottom: 0;
@@ -81,6 +90,7 @@
 	-ms-transform-origin: 0% 100%;
 	transform-origin: 0% 100%;
 }
+
 .tsvg-cp-block-view-ninth .content {
 	height: 0;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
@@ -103,10 +113,12 @@
 	-o-transition: all 0.4s ease-in-out 0.3s;
 	transition: all 0.4s ease-in-out 0.3s;
 }
+
 .tsvg-cp-block-view-ninth h2 {
 	background: transparent;
 	margin-top: 5px;
 }
+
 .tsvg-cp-block-view-ninth:hover .content {
 	height: 100%;
 	width: 100%;
@@ -119,6 +131,7 @@
 	-ms-transform: rotate(0deg) translate(0, 0);
 	transform: rotate(0deg) translate(0, 0);
 }
+
 .tsvg-cp-block-view-ninth:hover .mask-1,
 .tsvg-cp-block-view-ninth:hover .mask-2 {
 	-webkit-transition-delay: 0s;
@@ -126,6 +139,7 @@
 	-o-transition-delay: 0s;
 	transition-delay: 0s;
 }
+
 .tsvg-cp-block-view-ninth:hover .mask-1 {
 	-webkit-transform: rotate(55.5deg) translateX(5px);
 	-moz-transform: rotate(55.5deg) translateX(5px);
@@ -133,6 +147,7 @@
 	-ms-transform: rotate(55.5deg) translateX(5px);
 	transform: rotate(55.5deg) translateX(5px);
 }
+
 .tsvg-cp-block-view-ninth:hover .mask-2 {
 	-webkit-transform: rotate(55.5deg) translateX(-5px);
 	-moz-transform: rotate(55.5deg) translateX(-5px);

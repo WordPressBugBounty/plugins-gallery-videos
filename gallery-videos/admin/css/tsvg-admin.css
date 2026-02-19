@@ -193,11 +193,11 @@ div.TS_vgallery_Manager_Records {
 }
 
 .tsvg-shake-anim {
-	animation: shake 0.5s;
+	animation: tsvg-shake 0.5s;
 	animation-iteration-count: infinite;
 }
 
-@keyframes shake {
+@keyframes tsvg-shake {
 	0% {
 		transform: translateX(-50%) translateY(.0625rem) rotate(0deg);
 	}
@@ -486,15 +486,10 @@ a[data-tsvg-action="delete"] {
 
 #tsvg-manager-form td {
 	-webkit-touch-callout: none;
-	/* iOS Safari */
 	-webkit-user-select: none;
-	/* Safari */
 	-khtml-user-select: none;
-	/* Konqueror HTML */
 	-moz-user-select: none;
-	/* Old versions of Firefox */
 	-ms-user-select: none;
-	/* Internet Explorer/Edge */
 	user-select: none;
 }
 

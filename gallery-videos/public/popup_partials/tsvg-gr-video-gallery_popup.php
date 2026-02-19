@@ -684,7 +684,7 @@
             },
             tsvgGridGetVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?> = function() {
                 let tsvgWindowVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?> = tsvgDocElem<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>['clientWidth'], tsvgWindowInner<?php echo esc_attr( $tsvg_js_shortcode_id ); ?> = window['innerWidth'];
-                if (tsvgWindowInner<?php echo esc_attr( $tsvg_js_shortcode_id ); ?> > tsvgWindowVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?> ) return tsvgWindowInner<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>; else return tsvgWindowVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>;
+                if (tsvgWindowInner<?php echo esc_attr( $tsvg_js_shortcode_id ); ?> > tsvgWindowVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?> ) {return tsvgWindowInner<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>;} else {return tsvgWindowVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>;}
             },
             tsvgGridExtend<?php echo esc_attr( $tsvg_js_shortcode_id ); ?> = function(a, b) {
                 for (let key in b) {
@@ -708,7 +708,7 @@
         CBPGridGallery_<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>.prototype.options = {};
         CBPGridGallery_<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>.prototype._init = function () {
             this.grid = this.el.querySelector('ul.tsvg-grid-content-items-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>');
-            this.gridItems = [].slice.call(this.grid.querySelectorAll('li'));
+            this.gridItems = [].slice.call(this.grid.querySelectorAll('li.tsvg-grid-layout-item-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>'));
             this.itemsCount = this.gridItems.length;
             this.tsvgGridSlideShow = document.querySelector('.tsvg-grid-slideshow-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?> > ul');
             this.slideshowItems = [].slice.call(this.tsvgGridSlideShow.children);
@@ -819,16 +819,22 @@
                 }
             }
             if (this.prevItem) {
+                this.prevBtn.style.display = '';
                 var size = jQuery(window).width();
-                var items = jQuery('.tsvg-grid-slides-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>').children('li');
+                var items = jQuery('.tsvg-grid-slides-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>').children('li.tsvg-grid-slide');
                 classie.addClass(this.prevItem, 'tsvg-grid-slide-display-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>');
                 var translateVal = Number(-1 * (tsvgGridGetVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>() / 2 + this.prevItem.offsetWidth / 2));
                 tsvgGridSetTransform<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>(this.prevItem, support<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>.support3d ? 'translate3d(' + translateVal + 'px, 0, -150px)' : 'translate(' + translateVal + 'px)');
+            }else{
+                this.prevBtn.style.display = 'none';
             }
             if (this.nextItem) {
+                this.nextBtn.style.display = '';
                 classie.addClass(this.nextItem, 'tsvg-grid-slide-display-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>');
                 var translateVal = Number(tsvgGridGetVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>() / 2 - this.nextItem.offsetWidth / 2);
                 tsvgGridSetTransform<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>(this.nextItem, support<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>.support3d ? 'translate3d(' + translateVal + 'px, 0, -150px)' : 'translate(' + translateVal + 'px)');
+            }else{
+                this.nextBtn.style.display = 'none';
             }
             let tsvgPopupHeight = jQuery(this.tsvgCurrentItem).find("figure").outerHeight(true),
                 root = document.documentElement;
@@ -847,17 +853,18 @@
                 transformRightStr = support<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>.support3d ? 'translate3d(' + Number(tsvgGridGetVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>() / 2 - itemWidth / 2) + 'px, 0, -150px)' : 'translate(' + Number(tsvgGridGetVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>() / 2 + itemWidth / 2) + 'px)',
                 transformCenterStr = '', transformOutStr, transformIncomingStr,
                 tsvgIncomingSlide;
+                
             if (dir === 'next') {
                 transformOutStr = support<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>.support3d ? 'translate3d( -' + Number((tsvgGridGetVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>() * 2) / 2 + itemWidth / 2) + 'px, 0, -150px )' : 'translate(-' + Number((tsvgGridGetVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>() * 2) / 2 + itemWidth / 2) + 'px)';
                 transformIncomingStr = support<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>.support3d ? 'translate3d( ' + Number((tsvgGridGetVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>() * 2) / 2 + itemWidth / 2) + 'px, 0, -150px )' : 'translate(' + Number((tsvgGridGetVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>() * 2) / 2 + itemWidth / 2) + 'px)';
                 var size = jQuery(window).width();
                 if (820 > size ) {
-                    var items = jQuery('.tsvg-grid-slides-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>').children('li');
+                    var items = jQuery('.tsvg-grid-slides-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>').children('li.tsvg-grid-slide');
                     jQuery(items).each(function (i, el) {
                         if(jQuery(el).hasClass('tsvg-media-iframe-container') && jQuery(el).hasClass('tsvg-grid-slide-current-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>') && jQuery(el).hasClass('tsvg-grid-slide-display-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>')){
                             jQuery(el).css({}).animate({ opacity: 1 }, 100);
                         }
-                        if(jQuery(el).hasClass('tsvg-media-iframe-container') && jQuery(el).hasClass('tsvg-grid-slide-display-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>')  && !jQuery(el).hasClass('tsvg-grid-slide-current-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>')){
+                        if(jQuery(el).hasClass('tsvg-media-iframe-container') && jQuery(el).hasClass('tsvg-grid-slide-display-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>') && !jQuery(el).hasClass('tsvg-grid-slide-current-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>')){
                             jQuery(el).css({
                                 "z-index": '0',
                             }).animate({ opacity: 1 }, 500);
@@ -865,11 +872,11 @@
                     }); 
                 }
             } else {
-                transformOutStr = support<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>.support3d ? 'translate3d( ' + Number((tsvgGridGetVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>() * 2) / 2 - itemWidth / 2) + 'px, 0, -150px )' : 'translate(' + Number((tsvgGridGetVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>() * 2) / 2 + itemWidth / 2) + itemWidth + 'px)';
-                transformIncomingStr = support<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>.support3d ? 'translate3d( -' + Number((tsvgGridGetVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>() * 2) / 2 - itemWidth / 2) + 'px, 0, -150px )' : 'translate(-' + Number((tsvgGridGetVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>() * 2) / 2 + itemWidth / 2) + 'px)';
+                transformOutStr = support<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>.support3d ? 'translate3d( ' + Number((tsvgGridGetVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>() * 2) / 2 + itemWidth / 2) + 'px, 0, -150px )' : 'translate(' + Number((tsvgGridGetVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>() * 2) / 2 + itemWidth / 2) + itemWidth + 'px)';
+                transformIncomingStr = support<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>.support3d ? 'translate3d( -' + Number((tsvgGridGetVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>() * 2) / 2 + itemWidth / 2) + 'px, 0, -150px )' : 'translate(-' + Number((tsvgGridGetVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>() * 2) / 2 + itemWidth / 2) + 'px)';
                 var size = jQuery(window).width();
                 if (820 > size) {
-                    var items = jQuery('.tsvg-grid-slides-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>').children('li');
+                    var items = jQuery('.tsvg-grid-slides-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>').children('li.tsvg-grid-slide');
                     var x = 0;
                     jQuery(items).each(function (i, el) {
                         x--;
@@ -903,8 +910,7 @@
                 if (jQuery(tsvgGridSelf.tsvgCurrentItem).hasClass('tsvg-media-video-container')) {
                     jQuery(tsvgGridSelf.tsvgCurrentItem).find('video').get(0).currentTime = 0;
                     jQuery(tsvgGridSelf.tsvgCurrentItem).find('video').get(0).pause();
-                }
-                else if (jQuery(tsvgGridSelf.tsvgCurrentItem).hasClass('tsvg-media-iframe-container')) {
+                } else if (jQuery(tsvgGridSelf.tsvgCurrentItem).hasClass('tsvg-media-iframe-container')) {
                     jQuery(tsvgGridSelf.tsvgCurrentItem).find('.tsvg-iframe-wrapper .tsvg-wrapper-bgc').show();
                     jQuery(tsvgGridSelf.tsvgCurrentItem).find('.tsvg-iframe-wrapper> iframe').remove();
                 }
@@ -912,8 +918,10 @@
                     classie.removeClass(tsvgGridSelf.tsvgCurrentItem, 'tsvg-grid-slide-current-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>');
                 }
                 var tsvgNewCurrentSlide = dir === 'next' ? tsvgGridSelf.nextItem : tsvgGridSelf.prevItem;
-                if(tsvgNewCurrentSlide){
+                if (tsvgNewCurrentSlide) {
                     classie.addClass(tsvgNewCurrentSlide, 'tsvg-grid-slide-current-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>');
+                    tsvgGridSelf.prevBtn.style.display = jQuery(tsvgNewCurrentSlide).prev('li.tsvg-grid-slide').length ? '' : 'none';
+                    tsvgGridSelf.nextBtn.style.display = jQuery(tsvgNewCurrentSlide).next('li.tsvg-grid-slide').length ? '' : 'none';
                 }
                 if (jQuery(tsvgNewCurrentSlide).hasClass('tsvg-media-iframe-container')) {
                     if(jQuery(tsvgNewCurrentSlide).find('.tsvg-iframe-wrapper').length){
@@ -956,8 +964,7 @@
                     }
                     if (tsvgGridSelf.prevItem && dir === 'next') {
                         classie.removeClass(tsvgGridSelf.prevItem, 'tsvg-grid-slide-display-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>');
-                    }
-                    else if (tsvgGridSelf.nextItem && dir === 'prev') {
+                    } else if (tsvgGridSelf.nextItem && dir === 'prev') {
                         var last_item = jQuery('.tsvg-grid-slides-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>').children('li:last-child');
                         var pre = jQuery(last_item[0]).prev();
                         if(jQuery(pre[0]).hasClass('tsvg-media-iframe-container') && jQuery(pre[0]).hasClass('tsvg-grid-slide-current-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>') && jQuery(pre[0]).hasClass('tsvg-grid-slide-display-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>')){
@@ -975,9 +982,8 @@
                         if (tsvgIncomingSlide) {
                             tsvgGridSelf.nextItem = tsvgIncomingSlide;
                         }
-                        jQuery(tsvgGridSelf.prevItem).fadeIn("0.2");
-                    }
-                    else {
+                        // jQuery(tsvgGridSelf.prevItem).fadeIn("0.2");
+                    } else {
                         tsvgGridSelf.nextItem = tsvgGridSelf.tsvgCurrentItem;
                         tsvgGridSelf.tsvgCurrentItem = tsvgGridSelf.prevItem;
                         if (tsvgIncomingSlide) {
@@ -991,14 +997,12 @@
                         root.style.setProperty('--tsvg_popup_elem_height_<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>', tsvgPopupHeight + "px");
                 };
                 if (support<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>.transitions) {
-                    if(tsvgGridSelf.tsvgCurrentItem){
+                    if (tsvgGridSelf.tsvgCurrentItem) {
                         tsvgGridSelf.tsvgCurrentItem.addEventListener(transEndEventName<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>, onEndTransitionFn);
-                    }
-                    else{
+                    } else {
                         tsvgGridSelf.isAnimating = false;
                     }
-                }
-                else {
+                } else {
                     onEndTransitionFn();
                 }
             };
@@ -1046,7 +1050,7 @@
             } else {
                 onEndTransitionFn();
             }
-            var items = jQuery('.tsvg-grid-slides-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>').children('li');
+            var items = jQuery('.tsvg-grid-slides-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>').children('li.tsvg-grid-slide');
             jQuery(items).removeClass('tsvg-grid-slide-display-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?> tsvg-grid-slide-current-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>');
         };
         CBPGridGallery_<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>.prototype._setViewportItems = function () {
@@ -1076,7 +1080,7 @@
             if (this.isSlideshowVisible) {
                 let tsvgPopupHeight = jQuery(this.tsvgCurrentItem).find("figure").outerHeight(true),
                     tsvgPopupWidth = jQuery(this.tsvgCurrentItem).find("figure").width(),
-                root = document.documentElement;
+                    root = document.documentElement;
                 root.style.setProperty('--tsvg_popup_elem_height_<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>', tsvgPopupHeight + "px");
                 if (!jQuery(this.nextItem).hasClass("tsvg-grid-slide-current-<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>")) {
                     let translateValNext = parseFloat( Math.floor(tsvgGridGetVW<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>() / 2 ) - Math.floor(this.nextItem.tsvgPopupWidth / 2) );

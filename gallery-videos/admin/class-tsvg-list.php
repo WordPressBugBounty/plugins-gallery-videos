@@ -7,8 +7,8 @@ class TS_Video_Gallery_List_Table extends WP_List_Table {
 		parent::__construct(
 			array(
 				'singular' => __( 'gallery','gallery-videos' ),
-				'plural'   => __( 'galleries','gallery-videos' ),
-				'ajax'     => false
+				'plural' => __( 'galleries','gallery-videos' ),
+				'ajax' => false
 			)
 		);
 	}
@@ -50,21 +50,21 @@ class TS_Video_Gallery_List_Table extends WP_List_Table {
 	public static function tsvg_copy_record( $id ) {
 		global $wpdb;
 		$tsvg_db_manager_table = esc_sql( $wpdb->prefix . 'ts_galleryv_manager' );
-		$tsvg_db_videos_table  = esc_sql( $wpdb->prefix . 'ts_galleryv_videos' );
+		$tsvg_db_videos_table = esc_sql( $wpdb->prefix . 'ts_galleryv_videos' );
 		$tsvg_record = $wpdb->get_row( $wpdb->prepare( "SELECT `TS_VG_Title`, `TS_VG_Option`, `TS_VG_Style`, `TS_VG_Settings`,`TS_VG_Option_Style`, `TS_VG_Sort`, `TS_VG_Old_User` FROM $tsvg_db_manager_table WHERE id = %d", $id ) );
 		$wpdb->insert(
 			$tsvg_db_manager_table,
 			array(
-				'id'                 => '',
-				'TS_VG_Title'        => $tsvg_record->TS_VG_Title,
-				'TS_VG_Option'       => $tsvg_record->TS_VG_Option,
-				'TS_VG_Style'        => $tsvg_record->TS_VG_Style,
-				'TS_VG_Settings'     => $tsvg_record->TS_VG_Settings,
+				'id' => '',
+				'TS_VG_Title' => $tsvg_record->TS_VG_Title,
+				'TS_VG_Option' => $tsvg_record->TS_VG_Option,
+				'TS_VG_Style' => $tsvg_record->TS_VG_Style,
+				'TS_VG_Settings' => $tsvg_record->TS_VG_Settings,
 				'TS_VG_Option_Style' => $tsvg_record->TS_VG_Option_Style,
-				'TS_VG_Sort'         => '',
-				'TS_VG_Old_User' 	 => 'no',
-				'created_at'         => gmdate( 'd.m.Y h:i:sa' ),
-				'updated_at'         => gmdate( 'd.m.Y h:i:sa' ),
+				'TS_VG_Sort' => '',
+				'TS_VG_Old_User' => 'no',
+				'created_at' => gmdate( 'd.m.Y h:i:sa' ),
+				'updated_at' => gmdate( 'd.m.Y h:i:sa' )
 			),
 			array( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
 		);
@@ -77,7 +77,7 @@ class TS_Video_Gallery_List_Table extends WP_List_Table {
 				$wpdb->insert(
 					$tsvg_db_videos_table,
 					array(
-						'id'            => '',
+						'id' => '',
 						'TS_VG_SetType' => (int) $tsvg_insert_id,
 						'TS_VG_SetName' => $tsvg_video_records_columned[ $tsvg_video_records_sort[ $i ] ]['TS_VG_SetName'],
 						'TS_VG_Options' => $tsvg_video_records_columned[ $tsvg_video_records_sort[ $i ] ]['TS_VG_Options']
@@ -96,15 +96,15 @@ class TS_Video_Gallery_List_Table extends WP_List_Table {
 		$tsvg_db_videos_table  = esc_sql( $wpdb->prefix . 'ts_galleryv_videos' );
 		$tsvg_get_all = new TS_Video_Gallery_Function();
 		$tsvg_themes_arr = array(
-			'Grid Video Gallery'     => 'grid_video_gallery',
+			'Grid Video Gallery' => 'grid_video_gallery',
 			'LightBox Video Gallery' => 'lightbox_video_gallery',
-			'Thumbnails Video'       => 'thumbnails_video',
-			'Content Popup'          => 'content_popup',
-			'Elastic Gallery'        => 'elastic_gallery',
-			'Fancy Gallery'          => 'fancy_gallery',
-			'Parallax Engine'        => 'parallax_engine',
-			'Classic Gallery'        => 'classic_gallery',
-			'Space Gallery'          => 'space_gallery'
+			'Thumbnails Video' => 'thumbnails_video',
+			'Content Popup' => 'content_popup',
+			'Elastic Gallery' => 'elastic_gallery',
+			'Fancy Gallery' => 'fancy_gallery',
+			'Parallax Engine' => 'parallax_engine',
+			'Classic Gallery' => 'classic_gallery',
+			'Space Gallery' => 'space_gallery'
 		);
 		$tsvg_theme_key = $tsvg_themes_arr[ $tsvg_theme ];
 		$tsvg_design_options = $tsvg_get_all->tsvg_get_theme_params( $tsvg_theme_key );
@@ -112,16 +112,16 @@ class TS_Video_Gallery_List_Table extends WP_List_Table {
 		$wpdb->insert(
 			$tsvg_db_manager_table,
 			array(
-				'id'                 => '',
-				'TS_VG_Title'        => $tsvg_record->TS_VG_Title,
-				'TS_VG_Option'       => '{"TS_vgallery_Q_Theme":"' . $tsvg_theme . '"}',
-				'TS_VG_Style'        => json_encode( $tsvg_design_options ),
-				'TS_VG_Settings'     => $tsvg_record->TS_VG_Settings,
+				'id' => '',
+				'TS_VG_Title' => $tsvg_record->TS_VG_Title,
+				'TS_VG_Option' => '{"TS_vgallery_Q_Theme":"' . $tsvg_theme . '"}',
+				'TS_VG_Style' => json_encode( $tsvg_design_options ),
+				'TS_VG_Settings' => $tsvg_record->TS_VG_Settings,
 				'TS_VG_Option_Style' => $tsvg_record->TS_VG_Option_Style,
-				'TS_VG_Sort'         => '',
-				'TS_VG_Old_User' 	 => 'no',
-				'created_at'         => gmdate( 'd.m.Y h:i:sa' ),
-				'updated_at'         => gmdate( 'd.m.Y h:i:sa' )
+				'TS_VG_Sort' => '',
+				'TS_VG_Old_User' => 'no',
+				'created_at' => gmdate( 'd.m.Y h:i:sa' ),
+				'updated_at' => gmdate( 'd.m.Y h:i:sa' )
 			),
 			array( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
 		);
@@ -134,10 +134,10 @@ class TS_Video_Gallery_List_Table extends WP_List_Table {
 				$wpdb->insert(
 					$tsvg_db_videos_table,
 					array(
-						'id'            => '',
+						'id' => '',
 						'TS_VG_SetType' => (int) $tsvg_insert_id,
 						'TS_VG_SetName' => $tsvg_video_records_columned[ $tsvg_video_records_sort[ $i ] ]['TS_VG_SetName'],
-						'TS_VG_Options' => $tsvg_video_records_columned[ $tsvg_video_records_sort[ $i ] ]['TS_VG_Options'],
+						'TS_VG_Options' => $tsvg_video_records_columned[ $tsvg_video_records_sort[ $i ] ]['TS_VG_Options']
 					),
 					array( '%d', '%d', '%s', '%s' )
 				);
@@ -192,18 +192,18 @@ class TS_Video_Gallery_List_Table extends WP_List_Table {
 	}
 	function get_columns() {
 		$columns = array(
-			'cb'           => '<input type="checkbox" />',
-			'TS_VG_Title'  => __( 'Title', 'gallery-videos' ),
-			'id'           => __( 'Shortcode', 'gallery-videos' ),
+			'cb' => '<input type="checkbox" />',
+			'TS_VG_Title' => __( 'Title', 'gallery-videos' ),
+			'id' => __( 'Shortcode', 'gallery-videos' ),
 			'TS_VG_Option' => __( 'Video theme', 'gallery-videos' ),
-			'created_at'   => __( 'Created At', 'gallery-videos' ),
+			'created_at' => __( 'Created At', 'gallery-videos' ),
 			'TS_VG_Sort' => __( 'Videos Count', 'gallery-videos')
 		);
 		return $columns;
 	}
 	public function get_sortable_columns() {
 		$sortable_columns = array(
-			'created_at'  => array( 'created_at', false ),
+			'created_at' => array( 'created_at', false ),
 			'TS_VG_Title' => array( 'TS_VG_Title', true )
 		);
 		return $sortable_columns;
@@ -211,7 +211,7 @@ class TS_Video_Gallery_List_Table extends WP_List_Table {
 	public function get_bulk_actions() {
 		$actions = array(
 			'bulk-delete' => 'Delete',
-			'bulk-copy'   => 'Copy'
+			'bulk-copy' => 'Copy'
 		);
 		return $actions;
 	}
@@ -264,10 +264,10 @@ class TS_Video_Gallery_List_Table extends WP_List_Table {
 	public function tsvg_confirm_modal() {
 		$tsvgNonceItems = array(
 			'input' => array(
-				'type'      => array(),
-				'name'      => array(),
-				'value'     => array(),
-				'checked'   => array()
+				'type' => array(),
+				'name' => array(),
+				'value' => array(),
+				'checked' => array()
 			)
 		); 
 		echo sprintf(
@@ -300,13 +300,13 @@ class TS_Video_Gallery_List_Table extends WP_List_Table {
 	public function prepare_items() {
 		$this->_column_headers = $this->get_column_info();
 		$this->process_bulk_action();
-		$per_page     = $this->get_items_per_page( 'tsvg_records_per_page', 15 );
+		$per_page = $this->get_items_per_page( 'tsvg_records_per_page', 15 );
 		$current_page = $this->get_pagenum();
-		$total_items  = self::tsvg_records_count();
+		$total_items = self::tsvg_records_count();
 		$this->set_pagination_args(
 			array(
 				'total_items' => $total_items,
-				'per_page'    => $per_page
+				'per_page' => $per_page
 			)
 		);
 		$this->items = self::tsvg_get_galleries( $per_page, $current_page );

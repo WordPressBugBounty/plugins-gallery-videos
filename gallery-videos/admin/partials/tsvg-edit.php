@@ -19,7 +19,7 @@ echo sprintf(
     ',
     esc_url( plugin_dir_url( __DIR__ ) . 'img/desktop.svg' ),
     esc_url( plugin_dir_url( __DIR__ ) . 'img/tablet.svg' ),
-    esc_url( plugin_dir_url( __DIR__ ) . 'img/mobile.svg' ),
+    esc_url( plugin_dir_url( __DIR__ ) . 'img/mobile.svg' )
 );
 echo do_shortcode( sprintf( '[TS_Video_Gallery id="%s" edit="true"]', esc_attr( $this->tsvg_build_id ) ) );
 $tsvg_builder_params = $this->tsvg_build_proporties;
@@ -27,7 +27,7 @@ echo sprintf(
     '
                 </div>
 			</div>
-		</div> 
+		</div>
 		<div class="tsvg_flex_col tsvg_content_subsection active" data-tsvg-subsection="field">
 			<main class="tsvg_content_fields_menu">
 				<div aria-tsvg-use="field" class="tsvg_flex_col active">
@@ -37,7 +37,7 @@ echo sprintf(
 								<span></span>
 								%1$s
 							</span>
-							<span class="right ts-vgallery ts-vgallery-plus"></span>
+							<span class="ts-vgallery ts-vgallery-plus"></span>
 						</div>
 					</div>
 					<div class="tsvg-list tsvg_flex_col" id="tsvg-list" >
@@ -89,10 +89,11 @@ echo sprintf(
                 </div>
             </main>
             <main class="tsvg_content_fields_edit" style="display:none;">
-                <div class="tsvg_back_to_videos tsvg_flex_row ts-vgallery ts-vgallery-home">
-                    %1$s
+                <div class="tsvg_back_to_videos tsvg_flex_row">
+					<span>%1$s</span>
+					<span class="ts-vgallery ts-vgallery-home"></span>
                 </div>
-                <div class="tsvg_TS_VG_Optionss">
+                <div class="tsvg_item_options">
                     <div class="tsvg_select_div_edit">
                         <span class="tsvg_select_div_title tsvg_field_title">
                             %2$s
@@ -103,15 +104,15 @@ echo sprintf(
 	esc_html__( 'Back to video','gallery-videos' ),
 	esc_html__( 'Add title','gallery-videos' )
 );
-$tsvg_elem    = 'tsvg_content_area';
+$tsvg_elem = 'tsvg_content_area';
 $tsvg_content = '';
-$tsvg_args    = array(
-    'tinymce'       => array(
-        'toolbar1'         => 'formatselect, fontselect, fontsizeselect, alignleft, aligncenter, alignright, pastetext, bold, italic, underline, strikethrough, removeformat, link, code, hr, forecolor, backcolor, charmap, outdent, indent, undo, redo',
+$tsvg_args = array(
+    'tinymce' => array(
+        'toolbar1' => 'formatselect, fontselect, fontsizeselect, alignleft, aligncenter, alignright, pastetext, bold, italic, underline, strikethrough, removeformat, link, code, hr, forecolor, backcolor, charmap, outdent, indent, undo, redo',
         'fontsize_formats' => '8px 10px 12px 14px 16px 18px 20px 22px 24px 26px 28px 30px 32px 34px 36px 38px 40px 42px 44px 46px 48px',
-        'font_formats'     => 'Arial = arial; Arial Black = arial black; alibri = calibri; alibri Light = calibri light; Calisto MT = calisto mt; Cambria = cambria; Century Gothic = century gothic; Comic Sans MS = comic sans ms; onsolas = consolas; Constantia = constantia; Copperplate Gothic = copperplate gothic; Copperplate Gothic Light = copperplate gothic light; orbel = corbel; Courier New = courier new; Ebrima = ebrima; abriola = gabriola; adugi = gadugi; Georgia = georgia; mpact = impact; Leelawadee = leelawadee; ucida Console = lucida console; Microsoft Himalaya = microsoft himalaya; icrosoft JhengHei = microsoft jhenghei; Microsoft New Tai Lue = microsoft new tai lue; icrosoft PhagsPa = microsoft phagspa; Microsoft Sans Serif = microsoft sans serif; icrosoft Tai Le = microsoft tai le; icrosoft Uighur = microsoft uighur; icrosoft YaHei = microsoft yahei; icrosoft YaHei UI = microsoft yahei ui; Microsoft Yi Baiti = microsoft yi baiti; iriam = miriam; Mongolian Baiti = mongolian baiti; MS UI Gothic = ms ui gothic; V Boli = mv boli; yanmar Text = myanmar text; arkisim = narkisim; SimSun = nsimsun; yala = nyala; alatino Linotype = palatino linotype; egoe Print = segoe print; egoe Script = segoe script; egoe UI Symbol = segoe ui symbol; SimSun = simsun; ylfaen = sylfaen; ahoma = tahoma; rebuchet MS = trebuchet ms'
+        'font_formats' => 'Arial = arial; Arial Black = arial black; Calibri = calibri; Calibri Light = calibri light; Calisto MT = calisto mt; Cambria = cambria; Century Gothic = century gothic; Comic Sans MS = comic sans ms; Consolas = consolas; Constantia = constantia; Copperplate Gothic = copperplate gothic; Copperplate Gothic Light = copperplate gothic light; Corbel = corbel; Courier New = courier new; Ebrima = ebrima; Gabriola = gabriola; Gadugi = gadugi; Georgia = georgia; Impact = impact; Leelawadee = leelawadee; Lucida Console = lucida console; Microsoft Himalaya = microsoft himalaya; Microsoft JhengHei = microsoft jhenghei; Microsoft New Tai Lue = microsoft new tai lue; Microsoft PhagsPa = microsoft phagspa; Microsoft Sans Serif = microsoft sans serif; Microsoft Tai Le = microsoft tai le; Microsoft Uighur = microsoft uighur; Microsoft YaHei = microsoft yahei; Microsoft YaHei UI = microsoft yahei ui; Microsoft Yi Baiti = microsoft yi baiti; Miriam = miriam; Mongolian Baiti = mongolian baiti; MS UI Gothic = ms ui gothic; MV Boli = mv boli; Myanmar Text = myanmar text; Narkisim = narkisim; Nyala = nyala; Palatino Linotype = palatino linotype; Segoe Print = segoe print; Segoe Script = segoe script; Segoe UI Symbol = segoe ui symbol; SimSun = simsun; Sylfaen = sylfaen; Tahoma = tahoma; Trebuchet MS = trebuchet ms'
     ),
-    'quicktags'     => false,
+    'quicktags' => false,
     'media_buttons' => false
 );
 wp_editor( $tsvg_content, $tsvg_elem, $tsvg_args );
@@ -273,6 +274,24 @@ foreach ( $tsvg_builder_arr as $fields_key => $fields_value ) {
 					array_key_exists('no', $field['options']) ? esc_attr($field['options']['no']) : 'false'
 				);
 				break;
+			case 'select-font':
+				echo sprintf(
+					'
+					<div class="tsvg_select_div tsvg_select_font tsvg_builder_option" data-option="%s">
+						<span class="tsvg_select_div_title tsvg_field_title">%s</span>
+						<input type="hidden" id="%s" name="%s" class="%s" data-change-elem="%s" data-change-prop="%s" value="%s" />
+					</div>
+					',
+					esc_attr( $fieldname ),
+					esc_attr( $field['label'] ),
+					esc_attr( $fieldname ),
+					esc_attr( $fieldname ),
+					array_key_exists( 'change_elem', $field ) ? esc_attr( 'tsvg_elem_data' ) : esc_attr( 'tsvg_root_elem' ),
+					array_key_exists( 'change_elem', $field ) ? esc_attr( $field['change_elem'] ) : '',
+					array_key_exists( 'change_attr', $field ) ? esc_attr( $field['change_attr'] ) : '',
+					esc_attr( $value )
+				);
+				break;
 			case 'select-icon':
 				echo sprintf(
 					'
@@ -364,7 +383,7 @@ foreach ( $tsvg_builder_arr as $fields_key => $fields_value ) {
 								<a href="%s" target="_blank">
 									GET THE FULL VERSION
 								</a>
-							</div>	
+							</div>
 					',
 					esc_attr($field['label']),
 					array_key_exists('full', $field['options']) ? 'btn' : 'div',
@@ -400,7 +419,7 @@ foreach ( $tsvg_builder_arr as $fields_key => $fields_value ) {
 								<a href="%s" target="_blank">
 									GET THE FULL VERSION
 								</a>
-							</div>	
+							</div>
 					',
 					esc_attr($field['label']),
 					esc_attr($fieldname),
@@ -536,6 +555,24 @@ foreach ( $tsvg_pagination_arr as $fields_key => $fields_value ) {
 					array_key_exists('no', $field['options']) ? esc_attr($field['options']['no']) : 'false'
 				);
 				break;
+			case 'select-font':
+				echo sprintf(
+					'
+					<div class="tsvg_select_div tsvg_select_font tsvg_builder_option" data-option="%s">
+						<span class="tsvg_select_div_title tsvg_field_title">%s</span>
+						<input type="hidden" id="%s" name="%s" class="%s" data-change-elem="%s" data-change-prop="%s" value="%s" />
+					</div>
+					',
+					esc_attr( $fieldname ),
+					esc_attr( $field['label'] ),
+					esc_attr( $fieldname ),
+					esc_attr( $fieldname ),
+					array_key_exists( 'change_elem', $field ) ? esc_attr( 'tsvg_elem_data' ) : esc_attr( 'tsvg_root_elem' ),
+					array_key_exists( 'change_elem', $field ) ? esc_attr( $field['change_elem'] ) : '',
+					array_key_exists( 'change_attr', $field ) ? esc_attr( $field['change_attr'] ) : '',
+					esc_attr( $value )
+				);
+				break;
 			case 'select-icon':
 				echo sprintf(
 					'
@@ -627,7 +664,7 @@ foreach ( $tsvg_pagination_arr as $fields_key => $fields_value ) {
 								<a href="%s" target="_blank">
 									GET THE FULL VERSION
 								</a>
-							</div>	
+							</div>
 					',
 					esc_attr($field['label']),
 					array_key_exists('full', $field['options']) ? 'btn' : 'div',
@@ -663,7 +700,7 @@ foreach ( $tsvg_pagination_arr as $fields_key => $fields_value ) {
 								<a href="%s" target="_blank">
 									GET THE FULL VERSION
 								</a>
-							</div>	
+							</div>
 					',
 					esc_attr($field['label']),
 					esc_attr($fieldname),

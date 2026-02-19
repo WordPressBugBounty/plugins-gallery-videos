@@ -231,15 +231,15 @@
 	foreach ( $tsvg_videos_data as $key => $value ) {
 		$tsvg_block_index++;
 		$tsvg_videos_data_object = json_decode( $tsvg_videos_data[ $key ]->TS_VG_Options );
-		$tsvg_media_url_target   = $tsvg_videos_data_object->TotalSoftVGallery_Vid_vont == 'true' ? '_blank' : '_self';
-		$tsvg_block_video_url    = $tsvg_videos_data_object->TotalSoftVGallery_Vid_Vd == '' ? $tsvg_default_video : $tsvg_videos_data_object->TotalSoftVGallery_Vid_Vd;
+		$tsvg_media_url_target = $tsvg_videos_data_object->TotalSoftVGallery_Vid_vont == 'true' ? '_blank' : '_self';
+		$tsvg_block_video_url = $tsvg_videos_data_object->TotalSoftVGallery_Vid_Vd == '' ? $tsvg_default_video : $tsvg_videos_data_object->TotalSoftVGallery_Vid_Vd;
 		if( strpos($tsvg_block_video_url, 'youtube.com/shorts/') !== false ) { $tsvg_block_video_url = str_replace('shorts','embed', $tsvg_block_video_url );	}
-		$tsvg_block_link_url     = $tsvg_videos_data_object->TotalSoftVGallery_Vid_link != "" ? esc_url($tsvg_videos_data_object->TotalSoftVGallery_Vid_link) : '#';
-		$tsvg_block_link_show    = $tsvg_videos_data_object->TotalSoftVGallery_Vid_link != '#' ? 'yes' : 'no';
-		$tsvg_block_img_url      = $tsvg_videos_data_object->TotalSoftVGallery_Vid_Im == '' ? esc_url( plugins_url( 'img/tsvg_no_video.png', __DIR__ ) ) : esc_url( $tsvg_videos_data_object->TotalSoftVGallery_Vid_Im );
-		$tsvg_videos_data_html  .= sprintf(
+		$tsvg_block_link_url = $tsvg_videos_data_object->TotalSoftVGallery_Vid_link != "" ? esc_url($tsvg_videos_data_object->TotalSoftVGallery_Vid_link) : '#';
+		$tsvg_block_link_show = $tsvg_videos_data_object->TotalSoftVGallery_Vid_link != '#' ? 'yes' : 'no';
+		$tsvg_block_img_url = $tsvg_videos_data_object->TotalSoftVGallery_Vid_Im == '' ? esc_url( plugins_url( 'img/tsvg_no_video.png', __DIR__ ) ) : esc_url( $tsvg_videos_data_object->TotalSoftVGallery_Vid_Im );
+		$tsvg_videos_data_html .= sprintf(
 			'
-			<li class="tsvg-fancy-block tsvg-fancy-block-%1$s" data-tsvg-id="%2$s" style="-moz-animation-delay:  %3$ss;-webkit-animation-delay:  %3$ss;animation-delay:  %3$ss;">
+			<li class="tsvg-li-content tsvg-fancy-block tsvg-fancy-block-%1$s" data-tsvg-id="%2$s" style="-moz-animation-delay:  %3$ss;-webkit-animation-delay:  %3$ss;animation-delay:  %3$ss;">
 				<figure class="tsvg-block-inner tsvg-html5lightbox-%1$s"  data-href="%4$s"  data-width="%5$s" data-height="%6$s" data-group="mygroup%1$s" data-thumbnail="%7$s"  data-title="%8$s" data-tsvgid="%2$s">
 					<div class="tsvg-fancy-block-desc" >%9$s</div>
 					<a class="tsvg-fancy-block-link" href="%10$s" target="%11$s" data-tsvg-title="%12$s" data-tsvg-show="%13$s">%14$s</a>
@@ -273,8 +273,8 @@
 	echo sprintf(
 		'
 		<main class="tsvg-main-content-%1$s" data-tsvg-autoplay="%2$s"   data-item-open="%3$s"  data-item-number="%4$s" data-pagination="%5$s" data-p-lm="%6$s"  data-tsvg-c="%7$s" data-tsvg-BgC="%8$s" data-tsvg-HBC="%9$s" data-tsvg-HBW="%10$s" data-tsvg-IW="%11$s" data-tsvg-IH="%12$s" data-tsvg-ShVAutoPl="%13$s">
-			<figure  class="tsvg-fancy-blocks-container-%1$s tsvg-fancy-blocks-container"  data-tsvg-ShN="%14$s"  data-tsvg-ShPT="%15$s" data-tsvg-ShSlPlIc="%16$s"   data-tsvg-FS="%17$s"  data-tsvg-FF="%18$s"  data-tsvg-C="%19$s"  data-tsvg-LI="%20$s"  data-tsvg-RI="%21$s"  >
-				<ul class="tsvg-fancy-blocks-list tsvg-fancy-blocks-list-%1$s"  data-tsvg-S="%22$s"  data-tsvg-C="%23$s" data-tsvg-DI="%24$s"   data-tsvg-DIS="%25$s"  data-tsvg-DIC="%26$s"  data-tsvg-TIC="%27$s"  data-tsvg-Color="%19$s"  data-tsvg-PT="%28$s" data-tsvg-PD="%29$s">
+			<figure class="tsvg-figure-content tsvg-fancy-blocks-container-%1$s tsvg-fancy-blocks-container"  data-tsvg-ShN="%14$s"  data-tsvg-ShPT="%15$s" data-tsvg-ShSlPlIc="%16$s"   data-tsvg-FS="%17$s"  data-tsvg-FF="%18$s"  data-tsvg-C="%19$s"  data-tsvg-LI="%20$s"  data-tsvg-RI="%21$s"  >
+				<ul class="tsvg-ul-content tsvg-fancy-blocks-list tsvg-fancy-blocks-list-%1$s"  data-tsvg-S="%22$s"  data-tsvg-C="%23$s" data-tsvg-DI="%24$s"   data-tsvg-DIS="%25$s"  data-tsvg-DIC="%26$s"  data-tsvg-TIC="%27$s"  data-tsvg-Color="%19$s"  data-tsvg-PT="%28$s" data-tsvg-PD="%29$s">
 					%30$s  
 				</ul>
 			</figure>
@@ -309,47 +309,50 @@
 		esc_attr( $tsvg_style_options->TotalSoft_GV_1_31 ),
 		esc_attr( $tsvg_style_options->TotalSoft_GV_FG_PT ),
 		esc_attr( $tsvg_style_options->TotalSoft_GV_FG_PD ),
-		wp_kses( $tsvg_videos_data_html, array(
-			'li' => array(
-				'class'  => array(),
-				'data-tsvg-id'  => array(),
-				'style'  => array(),
-			),
-			'figure' => array(
-				'class'  => array(),
-				'data-href'  => array(),
-				'data-width'  => array(),
-				'data-height'  => array(),
-				'data-group'  => array(),
-				'data-thumbnail'  => array(),
-				'data-title'  => array(),
-				'data-tsvgid'  => array(),
-			),
-			'div' => array(
-				'class'  => array(),
-				'style'  => array(),
-			),
-			'p' => array(),
-			'span' => array(
-				'style'  => array(),
-				'class'  => array(),
-				'data-tsvg-bottom'  => array(),
-				'data-tsvg-show'  => array(),
-			),
-			'a' => array(
-				'class'  => array(),
-				'href'  => array(),
-				'target'  => array(),
-				'data-tsvg-title'  => array(),
-				'data-tsvg-show'  => array(),
-			),
-			'img' => array(
-				'width'  => array(),
-				'height'  => array(),
-				'src'  => array(),
-				'alt'  => array(),
-			),
-		) )
+		wp_kses(
+			$tsvg_videos_data_html,
+			array(
+				'li' => array(
+					'class'  => array(),
+					'data-tsvg-id'  => array(),
+					'style'  => array()
+				),
+				'figure' => array(
+					'class'  => array(),
+					'data-href'  => array(),
+					'data-width'  => array(),
+					'data-height'  => array(),
+					'data-group'  => array(),
+					'data-thumbnail'  => array(),
+					'data-title'  => array(),
+					'data-tsvgid'  => array()
+				),
+				'div' => array(
+					'class'  => array(),
+					'style'  => array()
+				),
+				'p' => array(),
+				'span' => array(
+					'style'  => array(),
+					'class'  => array(),
+					'data-tsvg-bottom'  => array(),
+					'data-tsvg-show'  => array()
+				),
+				'a' => array(
+					'class'  => array(),
+					'href'  => array(),
+					'target'  => array(),
+					'data-tsvg-title'  => array(),
+					'data-tsvg-show'  => array()
+				),
+				'img' => array(
+					'width'  => array(),
+					'height'  => array(),
+					'src'  => array(),
+					'alt'  => array()
+				)
+			) 
+		)
 	);
 ?>
 <script>

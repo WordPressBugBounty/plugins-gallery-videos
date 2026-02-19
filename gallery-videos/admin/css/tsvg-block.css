@@ -3,17 +3,21 @@
 .tsvg-selector-block .components-placeholder__fieldset {
     align-items: center !important;
 }
+
 .tsvg-selector-block .components-placeholder__fieldset {
     flex-direction: column;
     -ms-flex-direction: column;
     -webkit-box-direction: column;
 }
+
 .tsvg-guttenberg-block {
     cursor: not-allowed;
 }
+
 .tsvg-guttenberg-block * {
     pointer-events: none;
 }
+
 .tsvg-select-block {
     padding-right: 2px;
     padding-left: 7px;
@@ -23,9 +27,11 @@
     background-color: #fff;
     width: max-content;
 }
+
 .tsvg-select-block .components-select-control__input {
     padding: 0 24px 0 8px;
 }
+
 .tsvg-select-block .components-base-control__field {
     margin-bottom: 0;
     margin-top: 3px;

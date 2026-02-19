@@ -26,8 +26,8 @@ class TS_Video_Gallery_Block {
                     'tsvg_id' => array(
                         'type' => 'string'
                     ),
-                    'preview'     => array(
-                        'type'    => 'boolean',
+                    'preview' => array(
+                        'type' => 'boolean',
                         'default' => false
                     )
                 )
@@ -49,7 +49,7 @@ class TS_Video_Gallery_Block {
             )
         );
         foreach ( $tsvg_all_records as $tsvg_record ) {
-            $tsvg_title =  $tsvg_record['TS_VG_Title'];
+            $tsvg_title = $tsvg_record['TS_VG_Title'];
             if ( empty( $tsvg_title ) ) {
                 $tsvg_title = "";
             }
@@ -76,14 +76,16 @@ class TS_Video_Gallery_Block {
             $tsvg_get_all_records = array_column($this->tsvg_get_all_records(), 'TS_VG_Title', 'id');
 			if ( array_key_exists( absint( $tsvg_id ), $tsvg_get_all_records ) ) {
 				if( isset($_SERVER['REQUEST_URI']) && strstr(sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI'])), 'gallery-block') ) {
-                    return  sprintf( '
-                        <div class="notice notice-error is-dismissible"><p>%2$s</p></br>[TS_Video_Gallery id="%1$d"] </div>
+                    return sprintf(
+                        '
+                        <div class="notice notice-error is-dismissible"><p>%2$s</p></br>[TS_Video_Gallery id="%1$d"]</div>
                         </br>
-                        ', absint( $tsvg_id ),
+                        ',
+                        absint( $tsvg_id ),
                         esc_html__("In the preview of page you can see result of shortcode.",'gallery-videos')
                     );
 				}else{
-					return  sprintf( '[TS_Video_Gallery id="%d"]', absint( $tsvg_id ) );
+					return sprintf( '[TS_Video_Gallery id="%d"]', absint( $tsvg_id ) );
 				}
 			} else {
 				return sprintf( '<p>%s</p>', 'Selected gallery is not defined.' );

@@ -41,9 +41,7 @@
 									<?php $this->tsvg_admin_manager->search_box( 'Search', 'search_id' ); ?>
 								</div>
 							</div>
-							<?php
-								$this->tsvg_admin_manager->display();
-							?>
+							<?php $this->tsvg_admin_manager->display(); ?>
 						</form>
 					</div>
 				</div>

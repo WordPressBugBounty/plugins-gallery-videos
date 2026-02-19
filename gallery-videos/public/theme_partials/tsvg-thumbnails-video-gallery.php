@@ -413,7 +413,7 @@
 		$tsvg_media_img_url                  = $tsvg_videos_data_object->TotalSoftVGallery_Vid_Im == '' ? esc_url( plugins_url( 'img/tsvg_no_video.png', __DIR__ ) ) : esc_url( $tsvg_videos_data_object->TotalSoftVGallery_Vid_Im );
 		$tsvg_videos_data_html .= sprintf(
 			'
-			<li class="tsvg-thumbnails-block tsvg-thumbnails-block-%1$s"  data-tsvg-ef="%2$s" data-tsvg-id="%3$s" style="-moz-animation-delay:  %4$ss;-webkit-animation-delay:  %4$ss;animation-delay:  %4$ss;">
+			<li class="tsvg-li-content tsvg-thumbnails-block tsvg-thumbnails-block-%1$s"  data-tsvg-ef="%2$s" data-tsvg-id="%3$s" style="-moz-animation-delay:  %4$ss;-webkit-animation-delay:  %4$ss;animation-delay:  %4$ss;">
 				<figure class="tsvg-thumbnails-block-effect">
 					<a  href="%5$s" class="tsvg-thumbnails-block-effect-inner tsvg-thumbnails-block-effect-inner-%1$s" data-gallery="video_gallery_%1$s" data-id="%1$s" title="%6$s">
 						<img  width="" height="" src="%7$s" alt="%6$s"  title="%6$s" class="tsvg-thumbnails-block-img-%1$s">
@@ -433,8 +433,8 @@
 	echo sprintf(
 		'
 		<main class="tsvg-main-content-%1$s  tsvg-thumbnails-effect-container tsvg-thumbnails-effect-container%1$s" data-tsvg-autoplay="%2$s"   data-item-open="%3$s"  data-item-number="%4$s" data-pagination="%5$s" data-p-lm="%6$s">
-			<figure  class="tsvg-th-blocks-container-%1$s" data-tsvg-show-num="%10$s" data-tsvg-popup_bacg="%7$s" data-tsvg-titl_bacg="%8$s" data-tsvg-titl_position="%9$s" data-tsvg-show-navigation="%11$s">
-				<ul class="tsvg-thumbnails-effect-blocks">
+			<figure class="tsvg-figure-content tsvg-th-blocks-container-%1$s" data-tsvg-show-num="%10$s" data-tsvg-popup_bacg="%7$s" data-tsvg-titl_bacg="%8$s" data-tsvg-titl_position="%9$s" data-tsvg-show-navigation="%11$s">
+				<ul class="tsvg-ul-content tsvg-thumbnails-effect-blocks">
 					%12$s  
 				</ul>
 		</figure>
@@ -451,32 +451,35 @@
 		esc_attr( $tsvg_style_options->TotalSoft_GV_1_29 ),
 		esc_attr( $tsvg_style_options->TotalSoft_GV_1_13 ),
 		!esc_attr( $tsvg_style_options->TotalSoft_GV_2_22 ) ? 'true' : esc_attr( $tsvg_style_options->TotalSoft_GV_2_22 ),
-		wp_kses( $tsvg_videos_data_html, array(
-			'li' => array(
-				'class'  => array(),
-				'data-tsvg-ef'  => array(),
-				'data-tsvg-id'  => array(),
-				'style'  => array(),
-			),
-			'figure' => array(
-				'class'  => array(),
-			),
-			'a' => array(
-				'href'  => array(),
-				'class'  => array(),
-				'data-gallery'  => array(),
-				'data-id'  => array(),
-				'title'  => array(),
-			),
-			'img' => array(
-				'width'  => array(),
-				'height'  => array(),
-				'src'  => array(),
-				'alt'  => array(),
-				'title'  => array(),
-				'class'  => array(),
-			),
-		) )
+		wp_kses(
+			$tsvg_videos_data_html, 
+			array(
+				'li' => array(
+					'class'  => array(),
+					'data-tsvg-ef'  => array(),
+					'data-tsvg-id'  => array(),
+					'style'  => array()
+				),
+				'figure' => array(
+					'class'  => array()
+				),
+				'a' => array(
+					'href'  => array(),
+					'class'  => array(),
+					'data-gallery'  => array(),
+					'data-id'  => array(),
+					'title'  => array()
+				),
+				'img' => array(
+					'width'  => array(),
+					'height'  => array(),
+					'src'  => array(),
+					'alt'  => array(),
+					'title'  => array(),
+					'class'  => array()
+				)
+			)
+		)
 	);
 ?>
 <script>

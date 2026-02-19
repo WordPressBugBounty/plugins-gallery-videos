@@ -993,7 +993,7 @@
 		$tsvg_block_img_url                  = $tsvg_videos_data_object->TotalSoftVGallery_Vid_Im == '' ? esc_url( plugins_url( 'img/tsvg_no_video.png', __DIR__ ) ) : esc_url( $tsvg_videos_data_object->TotalSoftVGallery_Vid_Im );
 		$tsvg_videos_data_html .= sprintf(
 			'
-			<li class="tsvg-parallax-block-%1$s tsvg-parallax-block-swipebox-%1$s" data-href="%2$s"  data-name="%3$s"  data-tsvg-id="%4$s" style="-moz-animation-delay:  %5$ss;-webkit-animation-delay:  %5$ss;animation-delay:  %5$ss;"  data-tsvg-type="%6$s" data-tsvg-ef="%7$s" >
+			<li class="tsvg-li-content tsvg-parallax-block-%1$s tsvg-parallax-block-swipebox-%1$s" data-href="%2$s"  data-name="%3$s"  data-tsvg-id="%4$s" style="-moz-animation-delay:  %5$ss;-webkit-animation-delay:  %5$ss;animation-delay:  %5$ss;"  data-tsvg-type="%6$s" data-tsvg-ef="%7$s" >
 				<figure class="tsvg-block-inner">
 					<img class="tsvg-parallax-block-img" src="%8$s" />
 					<div class="mask tsvg-parallax-block-lines" data-tsvg-ef="%9$s"  data-tsvg-show="%10$s">
@@ -1030,8 +1030,8 @@
 	echo sprintf(
 		'
 		<main class="tsvg-main-content-%1$s" data-tsvg-autoplay="%2$s"   data-item-open="%3$s"  data-item-number="%4$s" data-pagination="%5$s" data-p-lm="%6$s">
-			<figure  class="tsvg-parallax-blocks-container tsvg-parallax-blocks-container-%1$s"  data-item-prev="%7$s"  data-item-next="%8$s"  data-item-close="%9$s" data-item-efect="%10$s"  data-item-type="%11$s">
-				<ul class="tsvg-parallax-blocks-list">
+			<figure class="tsvg-figure-content tsvg-parallax-blocks-container tsvg-parallax-blocks-container-%1$s"  data-item-prev="%7$s"  data-item-next="%8$s"  data-item-close="%9$s" data-item-efect="%10$s"  data-item-type="%11$s">
+				<ul class="tsvg-ul-content tsvg-parallax-blocks-list">
 					%12$s  
 				</ul>
 			</figure>
@@ -1048,36 +1048,39 @@
 		esc_attr( $tsvg_style_options->TotalSoft_GV_2_04 ),
 		esc_attr( $tsvg_style_options->TotalSoft_GV_1_30 ),
 		esc_attr( $tsvg_style_options->TotalSoft_GV_1_29 ),
-		wp_kses( $tsvg_videos_data_html, array(
-			'li' => array(
-				'class'  => array(),
-				'data-href'  => array(),
-				'data-name'  => array(),
-				'data-tsvg-id'  => array(),
-				'style'  => array(),
-				'data-tsvg-type'  => array(),
-				'data-tsvg-ef'  => array(),
-			),
-			'figure' => array(
-				'class'  => array(),
-			),
-			'img' => array(
-				'class'  => array(),
-				'src'  => array(),
-			),
-			'div' => array(
-				'class'  => array(),
-				'data-tsvg-ef'  => array(),
-				'data-tsvg-show'  => array(),
-			),
-			'figcaption' => array(
-				'class'  => array(),
-				'data-tsvg-ef'  => array(),
-			),
-			'i' => array(
-				'class'  => array(),
-				'data-tsvg-show'  => array(),
-			),
-		) )
+		wp_kses( 
+			$tsvg_videos_data_html,
+			array(
+				'li' => array(
+					'class'  => array(),
+					'data-href'  => array(),
+					'data-name'  => array(),
+					'data-tsvg-id'  => array(),
+					'style'  => array(),
+					'data-tsvg-type'  => array(),
+					'data-tsvg-ef'  => array()
+				),
+				'figure' => array(
+					'class'  => array()
+				),
+				'img' => array(
+					'class'  => array(),
+					'src'  => array()
+				),
+				'div' => array(
+					'class'  => array(),
+					'data-tsvg-ef'  => array(),
+					'data-tsvg-show'  => array()
+				),
+				'figcaption' => array(
+					'class'  => array(),
+					'data-tsvg-ef'  => array()
+				),
+				'i' => array(
+					'class'  => array(),
+					'data-tsvg-show'  => array()
+				)
+			) 
+		)
 	);
 ?>

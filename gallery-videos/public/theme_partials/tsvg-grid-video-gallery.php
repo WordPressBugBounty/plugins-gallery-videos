@@ -448,9 +448,19 @@
 	}
 	.tsvg-grid-layout-item-<?php echo esc_attr( $tsvg_shortcode_id ); ?> .tsvg-grid-layout-item-title-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[data-tsvg-hide='true']{
 		padding: unset;
+		display: none;
 	}
 	.tsvg-grid-layout-item-<?php echo esc_attr( $tsvg_shortcode_id ); ?> .tsvg-grid-layout-item-caption-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[data-tsvg-hide='true']{
 		padding: unset;
+	}
+	.tsvg-grid-layout-item-<?php echo esc_attr( $tsvg_shortcode_id ); ?> .tsvg-grid-layout-item-title-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[data-tsvg-hide='true'] + .tsvg-grid-layout-item-caption-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[data-tsvg-hide='false']{
+		margin-top:  var(--tsvg_title_mt_<?php echo esc_attr( $tsvg_shortcode_id ); ?>) ;
+	}
+	.tsvg-grid-content-items-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[data-show-title='false'] .tsvg-grid-layout-item-caption-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[data-tsvg-hide='false']{
+		margin-top:  var(--tsvg_title_mt_<?php echo esc_attr( $tsvg_shortcode_id ); ?>) ;
+	}
+	.tsvg-grid-layout-item-<?php echo esc_attr( $tsvg_shortcode_id ); ?> .tsvg-grid-layout-item-title-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[data-tsvg-hide='true'] + .tsvg-grid-layout-item-caption-<?php echo esc_attr( $tsvg_shortcode_id ); ?>[data-tsvg-hide='false']{
+		margin-top:  var(--tsvg_title_mt_<?php echo esc_attr( $tsvg_shortcode_id ); ?>) ;
 	}
 </style>
 <?php
@@ -462,15 +472,11 @@ foreach ( $tsvg_videos_data as $key => $value ) {
 	$tsvg_block_img_url = $tsvg_videos_data_object->TotalSoftVGallery_Vid_Im == '' ? esc_url( plugins_url( 'img/tsvg_no_img.jpg', __DIR__ ) ) : esc_url( $tsvg_videos_data_object->TotalSoftVGallery_Vid_Im );
 	$tsvg_videos_data_html .= sprintf(
 		'
-      	<li class="tsvg-grid-layout-item tsvg-grid-layout-item-%1$s" data-tsvg-id="%3$s" style="-moz-animation-delay: %4$ss;-webkit-animation-delay: %4$ss;animation-delay: %4$ss;">
+      	<li class="tsvg-li-content tsvg-grid-layout-item tsvg-grid-layout-item-%1$s" data-tsvg-id="%3$s" style="-moz-animation-delay: %4$ss;-webkit-animation-delay: %4$ss;animation-delay: %4$ss;">
       	  	<figure class="tsvg-grid-layout-item-block-%1$s" data-tsvg-effect="%5$s" data-tsvg-bool="%6$s">
       	  	  	<img  width="" height="" src="%7$s" alt="img" >
-      	  	  	<h3 class="tsvg-grid-layout-item-title-%1$s"  data-tsvg-title="%8$s" data-tsvg-hide="%10$s">
-      	  	    	%9$s  
-      	  	  	</h3>
-      	  	  	<figcaption class="tsvg-grid-layout-item-caption-%1$s" data-tsvg-hide="%11$s">
-      	  	  	  	%2$s
-      	  	  	</figcaption>
+      	  	  	<h3 class="tsvg-grid-layout-item-title-%1$s"  data-tsvg-title="%8$s" data-tsvg-hide="%10$s">%9$s</h3>
+      	  	  	<figcaption class="tsvg-grid-layout-item-caption-%1$s" data-tsvg-hide="%11$s">%2$s</figcaption>
       	  	</figure>
       	</li>
     	',
@@ -483,15 +489,15 @@ foreach ( $tsvg_videos_data as $key => $value ) {
 		esc_url( $tsvg_block_img_url ),
 		esc_attr( $tsvg_style_options->TotalSoft_GV_1_14 ),
 		esc_html( html_entity_decode( htmlspecialchars_decode( $tsvg_videos_data[ $key ]->TS_VG_SetName ), ENT_QUOTES ) ),
-        esc_html( html_entity_decode( htmlspecialchars_decode( $tsvg_videos_data[ $key ]->TS_VG_SetName ), ENT_QUOTES ) ) == '' ? 'true"': 'false' ,
-        wp_unslash( html_entity_decode( $tsvg_videos_data_object->TotalSoftVGallery_Vid_desc ) ) == '' ? 'true"': 'false' ,
+        esc_html( html_entity_decode( htmlspecialchars_decode( $tsvg_videos_data[ $key ]->TS_VG_SetName ), ENT_QUOTES ) ) == '' ? 'true': 'false',
+        wp_unslash( html_entity_decode( $tsvg_videos_data_object->TotalSoftVGallery_Vid_desc ) ) == '' ? 'true': 'false'
 	);
 }
 echo sprintf(
 	'
  	<main class="tsvg-main-content-%1$s"  data-item-open="%2$s" data-item-number="%3$s" data-pagination="%4$s"  data-p-lm="%5$s">
- 	  	<figure class="tsvg-grid-content-%1$s">
- 	   		<ul class="tsvg-grid-content-items-%1$s tsvg-grid-content-items"  data-show-title="%6$s"  data-show-desc="%7$s">
+ 	  	<figure class="tsvg-figure-content tsvg-grid-content-%1$s">
+ 	   		<ul class="tsvg-ul-content tsvg-grid-content-items-%1$s tsvg-grid-content-items"  data-show-title="%6$s"  data-show-desc="%7$s">
  	   			%8$s  
  	   		</ul>
  	   	</figure>
@@ -504,37 +510,40 @@ echo sprintf(
 	esc_attr( $tsvg_style_options->TotalSoft_GV_2_26 ),
 	esc_attr( $tsvg_style_options->TotalSoft_GV_1_01 ),
 	esc_attr( $tsvg_style_options->TotalSoft_GV_1_02 ),
-	wp_kses( $tsvg_videos_data_html, array(
-		'li' => array(
-			'class'  => array(),
-			'data-tsvg-id'  => array(),
-			'style'  => array(),
-		),
-		'figure' => array(
-			'class'  => array(),
-			'data-tsvg-effect'  => array(),
-			'data-tsvg-bool'  => array(),
-		),
-		'p' => array(),
-		'em' => array(),
-		'span' => array(
-			'style'  => array(),
-		),
-		'figcaption' => array(
-			'class'  => array(),
-			'data-tsvg-hide'  => array(),
-		),
-		'h3' => array(
-			'class'  => array(),
-			'data-tsvg-title'  => array(),
-			'data-tsvg-hide'  => array(),
-		),
-		'img' => array(
-			'width'  => array(),
-			'height'  => array(),
-			'src'  => array(),
-			'alt'  => array(),
-		),
-	) )
+	wp_kses(
+		$tsvg_videos_data_html,
+		array(
+			'li' => array(
+				'class'  => array(),
+				'data-tsvg-id'  => array(),
+				'style'  => array()
+			),
+			'figure' => array(
+				'class'  => array(),
+				'data-tsvg-effect'  => array(),
+				'data-tsvg-bool'  => array()
+			),
+			'p' => array(),
+			'em' => array(),
+			'span' => array(
+				'style'  => array()
+			),
+			'figcaption' => array(
+				'class'  => array(),
+				'data-tsvg-hide'  => array()
+			),
+			'h3' => array(
+				'class'  => array(),
+				'data-tsvg-title'  => array(),
+				'data-tsvg-hide'  => array()
+			),
+			'img' => array(
+				'width'  => array(),
+				'height'  => array(),
+				'src'  => array(),
+				'alt'  => array()
+			)
+		) 
+	)
 );
 ?>

@@ -1,7 +1,9 @@
 <style type="text/css">
-	section.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>{
-		margin-bottom:50px;
-	}
+	<?php if ($tsvg_edit !== 'true') { ?>
+		section.tsvg-section-<?php echo esc_attr( $tsvg_shortcode_id ); ?>{
+			margin-bottom:50px;
+		}
+	<?php }  ?>
 	.tsvg-main-content-<?php echo esc_attr( $tsvg_shortcode_id ); ?>{
 		margin-right:unset !important;
 		margin-left:unset !important;

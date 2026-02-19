@@ -3,8 +3,8 @@ Contributors: totalsoft
 Donate link: https://total-soft.com/wp-video-gallery/
 Tags: gallery, image gallery, portfolio gallery, video gallery, wordpress gallery
 Requires at least: 4.0
-Tested up to: 6.8
-Stable tag: 2.4.9
+Tested up to: 6.9
+Stable tag: 2.5.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -258,6 +258,12 @@ After activating video gallery choose the type of version you wish to use.
 15. An example of plugin in action - Menu Theme
 
 == Changelog ==
+
+= Version 2.5.0 =
+
+* Added 1000 or more fonts.
+* Fixed a bug in the grid theme. Fixed an issue with the lightbox.
+* Fixed a bug when using Load More.
 
 = Version 2.4.9 =
 

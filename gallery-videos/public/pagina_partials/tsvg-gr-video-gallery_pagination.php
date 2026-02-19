@@ -116,7 +116,7 @@
         -ms-transition: height 3s ease-out;
             transition: height 3s ease-out;
     }
-    .tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?> .tsvg-pagination-pages-wrapper[data-pagination='load-more'] .btn-lg span,.tsvg-pagination-pages-wrapper[data-pagination='load-more'] .btn-lg i{
+    .tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?> .tsvg-pagination-pages-wrapper[data-pagination='load-more'] .tsvg-load-more-content-button span,.tsvg-pagination-pages-wrapper[data-pagination='load-more'] .tsvg-load-more-content-button i{
     display:none;
     }
     .tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper[data-pagination='pagination'][data-icon-show='false'] i{
@@ -125,14 +125,14 @@
     .tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper[data-pagination='pagination'][data-icon-show='true'] span{
     display:none;
     }
-    .tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper[data-pagination='load-more'][data-load-icon='text'] .btn-lg span{
+    .tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper[data-pagination='load-more'][data-load-icon='text'] .tsvg-load-more-content-button span{
     display:inline-block;
     vertical-align: sub;
     }
-    .tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper[data-pagination='load-more'][data-load-icon='icon'] .btn-lg i{
+    .tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper[data-pagination='load-more'][data-load-icon='icon'] .tsvg-load-more-content-button i{
     display:inline-block;
     }
-    .tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?> .tsvg-pagination-pages-wrapper[data-pagination='load-more'][data-load-icon='text-icon'] .btn-lg span,.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper[data-pagination='load-more'][data-load-icon='text-icon'] .btn-lg i{
+    .tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?> .tsvg-pagination-pages-wrapper[data-pagination='load-more'][data-load-icon='text-icon'] .tsvg-load-more-content-button span,.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper[data-pagination='load-more'][data-load-icon='text-icon'] .tsvg-load-more-content-button i{
     display:inline-block;
     }
     #tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?> a.tsvg-pagination-page-link{
@@ -235,7 +235,7 @@
             }
           }
         }
-        if( jQuery('.tsvg-main-content-'+short_id).attr("data-pagination")=='load-more' && !jQuery('.tsvg-main-content-'+short_id+' figure ul li').not('.tsvg-layout-item-show').length){ jQuery('.tsvg-section-'+short_id+'  .tsvg-pagination-pages li,.tsvg-section-'+short_id+' .tsvg-pagination-pages-wrapper .btn').remove();}
+        if( jQuery('.tsvg-main-content-'+short_id).attr("data-pagination")=='load-more' && !jQuery('.tsvg-main-content-'+short_id+' figure ul li').not('.tsvg-layout-item-show').length){ jQuery('.tsvg-section-'+short_id+'  .tsvg-pagination-pages li,.tsvg-section-'+short_id+' .tsvg-pagination-pages-wrapper .tsvg-load-more-content').remove();}
     }
     function tsvgPaginationGenerate<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>(id = "<?php echo esc_attr( $tsvg_shortcode_id ); ?>") {
         if (!id) {
@@ -261,7 +261,7 @@
         var page_vw = jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages').attr('data-vw');
         jQuery('.tsvg-main-content-<?php echo esc_attr($tsvg_shortcode_id);?> figure ul').removeClass('tsvg-load');
         jQuery('.tsvg-main-content-<?php echo esc_attr($tsvg_shortcode_id);?> figure ul li').removeClass('tsvg-layout-item-show');
-        jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages li,.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper .btn').remove();
+        jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages li,.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper .tsvg-load-more-content').remove();
         if( jQuery('.tsvg-main-content-<?php echo esc_attr($tsvg_shortcode_id);?>').attr("data-pagination")=='pagination'){
         paginationItemsLenth = Math.ceil(itemsLength / numberItemsPerPage) ;
         pagina_length=paginationItemsLenth=paginationItemsLenth<1?1:paginationItemsLenth;
@@ -422,8 +422,8 @@
         jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?> .tsvg-pagination-page-number:nth-child(2)').click();
     }
     if( jQuery('.tsvg-main-content-<?php echo esc_attr($tsvg_shortcode_id);?>').attr("data-pagination")=='load-more'){
-        jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper').append('<a href="javascript:void(0)" class="btn btn-lg"><span>'+load_text+'</span><i class="'+load_icon+'"></i></a>');
-        jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .btn-lg').click(function (e) {
+        jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper').append('<a href="javascript:void(0)" class="tsvg-load-more-content tsvg-load-more-content-button"><span>'+load_text+'</span><i class="'+load_icon+'"></i></a>');
+        jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-load-more-content-button').click(function (e) {
         let max_heigth =jQuery('.tsvg-main-content-<?php echo esc_attr($tsvg_shortcode_id);?>').height(); 
 		let main_length = jQuery('.tsvg-main-content-<?php echo esc_attr($tsvg_shortcode_id);?> figure ul li').length;
 			tsvgPaginationLoad<?php echo esc_attr( $tsvg_js_shortcode_id ); ?> = 'false';

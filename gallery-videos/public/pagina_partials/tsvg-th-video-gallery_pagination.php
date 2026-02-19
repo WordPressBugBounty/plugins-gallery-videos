@@ -115,7 +115,7 @@
       -ms-transition: height 3s ease-out;
           transition: height 3s ease-out;
 }
-.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?> .tsvg-pagination-pages-wrapper[data-pagination='load-more'] .btn-lg span,.tsvg-pagination-pages-wrapper[data-pagination='load-more'] .btn-lg i{
+.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?> .tsvg-pagination-pages-wrapper[data-pagination='load-more'] .tsvg-load-more-content-button span,.tsvg-pagination-pages-wrapper[data-pagination='load-more'] .tsvg-load-more-content-button i{
   display:none;
 }
 .tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper[data-pagination='pagination'][data-icon-show='false'] i{
@@ -124,14 +124,14 @@
 .tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper[data-pagination='pagination'][data-icon-show='true'] span{
   display:none;
 }
-.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper[data-pagination='load-more'][data-load-icon='text'] .btn-lg span{
+.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper[data-pagination='load-more'][data-load-icon='text'] .tsvg-load-more-content-button span{
   display:inline-block;
   vertical-align: sub;
 }
-.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper[data-pagination='load-more'][data-load-icon='icon'] .btn-lg i{
+.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper[data-pagination='load-more'][data-load-icon='icon'] .tsvg-load-more-content-button i{
   display:inline-block;
 }
-.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?> .tsvg-pagination-pages-wrapper[data-pagination='load-more'][data-load-icon='text-icon'] .btn-lg span,.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper[data-pagination='load-more'][data-load-icon='text-icon'] .btn-lg i{
+.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?> .tsvg-pagination-pages-wrapper[data-pagination='load-more'][data-load-icon='text-icon'] .tsvg-load-more-content-button span,.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper[data-pagination='load-more'][data-load-icon='text-icon'] .tsvg-load-more-content-button i{
   display:inline-block;
 }
 #tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?> a.tsvg-pagination-page-link{
@@ -226,7 +226,7 @@
             }
           }
         }
-        if( jQuery('.tsvg-main-content-'+short_id).attr("data-pagination")=='load-more' && !jQuery('.tsvg-main-content-'+short_id+' figure ul li').not('.tsvg-layout-item-show').length){ jQuery('.tsvg-section-'+short_id+'  .tsvg-pagination-pages li,.tsvg-section-'+short_id+' .tsvg-pagination-pages-wrapper .btn').remove();}
+        if( jQuery('.tsvg-main-content-'+short_id).attr("data-pagination")=='load-more' && !jQuery('.tsvg-main-content-'+short_id+' figure ul li').not('.tsvg-layout-item-show').length){ jQuery('.tsvg-section-'+short_id+'  .tsvg-pagination-pages li,.tsvg-section-'+short_id+' .tsvg-pagination-pages-wrapper .tsvg-load-more-content').remove();}
     }
     function tsvgPaginationGenerate<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>(id = "<?php echo esc_attr( $tsvg_shortcode_id ); ?>") {
         if (!id) {
@@ -252,7 +252,7 @@
         var page_vw = jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages').attr('data-vw');
         jQuery('.tsvg-main-content-<?php echo esc_attr($tsvg_shortcode_id);?> figure ul').removeClass('tsvg-load');
         jQuery('.tsvg-main-content-<?php echo esc_attr($tsvg_shortcode_id);?> figure ul li').removeClass('tsvg-layout-item-show');
-        jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages li,.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper .btn').remove();
+        jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages li,.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper .tsvg-load-more-content').remove();
         if( jQuery('.tsvg-main-content-<?php echo esc_attr($tsvg_shortcode_id);?>').attr("data-pagination")=='pagination'){
         paginationItemsLenth = Math.ceil(itemsLength / numberItemsPerPage) ;
         pagina_length=paginationItemsLenth=paginationItemsLenth<1?1:paginationItemsLenth;
@@ -417,15 +417,15 @@
     jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?> .tsvg-pagination-page-number:nth-child(2)').click();
     }
         if( jQuery('.tsvg-main-content-<?php echo esc_attr($tsvg_shortcode_id);?>').attr("data-pagination")=='load-more'){
-        jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper').append('<a href="javascript:void(0)" class="btn btn-lg"><span>'+load_text+'</span><i class="'+load_icon+'"></i></a>');
+        jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper').append('<a href="javascript:void(0)" class="tsvg-load-more-content tsvg-load-more-content-button"><span>'+load_text+'</span><i class="'+load_icon+'"></i></a>');
         if( jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper').attr("data-load-vw")=='ef-4' || jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper').attr("data-load-vw")=='ef-5' ){
             if(!jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper svg').length){
                 if(jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper').attr("data-load-vw")=='ef-5'){
-                    jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?> .tsvg-pagination-pages-wrapper').find('.btn-lg').html('<ul><li>'+load_text+'</li></ul><div><svg viewBox="0 0 24 24"></svg></div>');
+                    jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?> .tsvg-pagination-pages-wrapper').find('.tsvg-load-more-content-button').html('<ul><li>'+load_text+'</li></ul><div><svg viewBox="0 0 24 24"></svg></div>');
                 }else{
-                    jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?> .tsvg-pagination-pages-wrapper').find('.btn-lg').html('<div><svg viewBox="0 0 24 24"></svg></div>');
+                    jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?> .tsvg-pagination-pages-wrapper').find('.tsvg-load-more-content-button').html('<div><svg viewBox="0 0 24 24"></svg></div>');
                 }
-                var  svg = document.querySelector('.btn-lg svg'),
+                var  svg = document.querySelector('.tsvg-load-more-content-button svg'),
                 svgPath = new Proxy({
                     y: null,
                     smoothing: null
@@ -445,7 +445,7 @@
                 svgPath.smoothing = 0;
             }
         }
-        jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .btn-lg').click(function (e) {
+        jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-load-more-content-button').click(function (e) {
           let max_heigth =jQuery('.tsvg-main-content-<?php echo esc_attr($tsvg_shortcode_id);?>').height(); 
 		 let main_length = jQuery('.tsvg-main-content-<?php echo esc_attr($tsvg_shortcode_id);?> figure ul li').length;
 			tsvgPaginationLoad<?php echo esc_attr( $tsvg_js_shortcode_id ); ?> = 'false';
@@ -458,13 +458,13 @@
             }, 100);
           tsvgPaginationCreate<?php echo esc_attr( $tsvg_js_shortcode_id ); ?>(jQuery('.tsvg-main-content-<?php echo esc_attr($tsvg_shortcode_id);?> figure ul li').not('.tsvg-layout-item-show'),0, numberItemsPerPage);
           if(jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper').attr("data-load-vw")=='ef-3'){
-            jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .btn-lg').addClass('animate');
+            jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-load-more-content-button').addClass('animate');
             setTimeout(function(){
-                jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .btn-lg').removeClass('animate');
+                jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-load-more-content-button').removeClass('animate');
             },700);
           }
-            if(!jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .btn-lg').hasClass('loading')&&(jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper').attr("data-load-vw")=='ef-4'||jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper').attr("data-load-vw")=='ef-5')&&jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper svg').length) {
-            jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .btn-lg').addClass('loading');
+            if(!jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-load-more-content-button').hasClass('loading')&&(jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper').attr("data-load-vw")=='ef-4'||jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper').attr("data-load-vw")=='ef-5')&&jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper svg').length) {
+            jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-load-more-content-button').addClass('loading');
                 setTimeout(() => {
                     svg.innerHTML = getPath(0, 0, [
                         [3, 14],
@@ -473,11 +473,11 @@
                     ]);
                 }, 1000 / 2);
                 setTimeout(() => {
-                    jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .btn-lg').removeClass('loading');
+                    jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-load-more-content-button').removeClass('loading');
                     if(jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper').attr("data-load-vw")=='ef-5'){
-                        jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper').find('.btn-lg').html('<ul><li><span>'+load_text+'</span><i class="'+load_icon+'"></i></li></ul><div><svg viewBox="0 0 24 24"><path d="M 4,12 C 4,12 12,20 12,20 C 12,20 20,12 20,12"></path></svg></div>');
+                        jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper').find('.tsvg-load-more-content-button').html('<ul><li><span>'+load_text+'</span><i class="'+load_icon+'"></i></li></ul><div><svg viewBox="0 0 24 24"><path d="M 4,12 C 4,12 12,20 12,20 C 12,20 20,12 20,12"></path></svg></div>');
                     }else{
-                       jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper').find('.btn-lg').html('<div><svg viewBox="0 0 24 24"><path d="M 4,12 C 4,12 12,20 12,20 C 12,20 20,12 20,12"></path></svg></div>');
+                       jQuery('.tsvg-section-<?php echo esc_attr($tsvg_shortcode_id);?>  .tsvg-pagination-pages-wrapper').find('.tsvg-load-more-content-button').html('<div><svg viewBox="0 0 24 24"><path d="M 4,12 C 4,12 12,20 12,20 C 12,20 20,12 20,12"></path></svg></div>');
                     }
                 }, 2000 );
             }

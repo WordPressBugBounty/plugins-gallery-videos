@@ -1,6 +1,6 @@
 (function ($) {
 	'use strict';
-	let tsvgToastrOptions = { "closeButton": true, "newestOnTop": false, "progressBar": true, "positionClass": "toast-top-right", "preventDuplicates": true, "showDuration": "300", "hideDuration": "1000", "timeOut": "5000", "extendedTimeOut": "1000", "showEasing": "swing", "hideEasing": "linear", "showMethod": "fadeIn", "hideMethod": "fadeOut", },
+	let tsvgToastrOptions = { "closeButton": true, "newestOnTop": false, "progressBar": true, "positionClass": "toast-top-right", "preventDuplicates": true, "showDuration": "300", "hideDuration": "1000", "timeOut": "5000", "extendedTimeOut": "1000", "showEasing": "swing", "hideEasing": "linear", "showMethod": "fadeIn", "hideMethod": "fadeOut" },
 		tsvgThemeSettings = [],
 		tsvgThemeOptionStyles = [],
 		getYTMaxResolution = function (url, callback) {
@@ -8,7 +8,7 @@
 			img.src = url;
 			img.onload = function () { callback(this.width, this.height); }
 		},
-		escapeInput = function (inputContent) {
+		escapeInput = function (inputContent, maxLength = 255) {
 			inputContent = inputContent.replace(/<br>/gi, "\n");
 			inputContent = inputContent.replace(/<br\s\/>/gi, "\n");
 			inputContent = inputContent.replace(/<br\/>/gi, "\n");
@@ -24,7 +24,31 @@
 			inputContent = inputContent.replace(/&quot;/gi, '"');
 			inputContent = inputContent.replace(/&lt;/gi, '<');
 			inputContent = inputContent.replace(/&gt;/gi, '>');
-			return inputContent;
+			return truncate(inputContent.trim(), maxLength);
+		},
+		htmlspecialchars = function (str) {
+			if (!str) return '';
+			return str
+				.replace(/&/g, '&amp;')
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&#039;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;');
+		},
+		getEncodedLength = function (str) {
+			return htmlspecialchars(str).length;
+		},
+		truncate = function (str, maxLength = 255) {
+			let truncated = '';
+			for (let i = 0; i < str.length; i++) {
+				const next = truncated + str[i];
+				if (getEncodedLength(next) > maxLength) {
+					toastr["error"]('Minimum length exceeded.', 'Error', tsvgToastrOptions);
+					break;
+				}
+				truncated = next;
+			}
+			return truncated;
 		},
 		createInput = function (name, value) {
 			let input = document.createElement('input');
@@ -100,7 +124,6 @@
 					case "style":
 					case "pagination":
 					case "popup":
-						$('.tsvg_preview_content').css('width', '100%');
 					case "setting":
 					case "shortcode":
 						$('div.tsvg_sidebar_item').removeClass('tsvg_active');
@@ -110,17 +133,10 @@
 						$('.tsvg_content_subsection.active').removeClass('active');
 						$('.tsvg_content_subsection[data-tsvg-subsection="' + $(this).attr('data-tsvg-item') + '"]').addClass('active');
 						break;
-					case "info":
-						toastr["warning"]('vgallery statistics field is pro feature.', 'Info', { "closeButton": true, "newestOnTop": false, "progressBar": true, "positionClass": "toast-top-full-width", "preventDuplicates": true, "showDuration": "300", "hideDuration": "1000", "timeOut": "5000", "extendedTimeOut": "1000", "showEasing": "swing", "hideEasing": "linear", "showMethod": "fadeIn", "hideMethod": "fadeOut", });
-						break;
-					case "results":
-						toastr["warning"]('vgallery results field is pro feature.', 'Info', { "closeButton": true, "newestOnTop": false, "progressBar": true, "positionClass": "toast-top-full-width", "preventDuplicates": true, "showDuration": "300", "hideDuration": "1000", "timeOut": "5000", "extendedTimeOut": "1000", "showEasing": "swing", "hideEasing": "linear", "showMethod": "fadeIn", "hideMethod": "fadeOut", });
-						break;
 					default:
 						$('.tsvg_content[data-tsvg-section="' + $(this).attr('data-tsvg-item') + '"]').addClass('active');
 						break;
 				}
-				$(`.tsvg_preview_content`).css('width', '70%');
 			}
 		} else {
 			toastr["warning"]('Please Choose a theme for more experiance.', 'Warning', tsvgToastrOptions);
@@ -137,9 +153,431 @@
 				tsvgOptions = JSON.parse(tsvg_builder_object.tsvg_proporties.TS_VG_Option),
 				tsvgShortcodeId = tsvg_builder_object.tsvg_proporties.id,
 				tsvgDeleteIds = [],
-				tsvgShortcodeTheme = tsvgOptions.TS_vgallery_Q_Theme;
+				tsvgShortcodeTheme = tsvgOptions.TS_vgallery_Q_Theme,
+				tsvgImagePicker = false,
+				tsvgVideoPicker = false,
+				tsvgFonts,
+				tsvgFontsInstances = {},
+				tsvgLoadedFonts = {};
 			tsvgThemeSettings = JSON.parse(tsvg_builder_object.tsvg_proporties.TS_VG_Settings);
 			tsvgThemeOptionStyles = JSON.parse(tsvg_builder_object.tsvg_proporties.TS_VG_Option_Style);
+			class tsvgFontPicker {
+				constructor(input) {
+					this.input = input;
+					this.pickerParentElement = input.parentElement;
+					this.preview;
+					this.pickerButton;
+					this.pickerButtonPreview;
+					this.picker;
+					this.pickerItems;
+					this.searchInput;
+					this.filters;
+					this.categories = ['serif', 'sans-serif', 'display', 'handwriting', 'monospace', 'other'];
+					this.languages = {
+						'arabic': 'Arabic',
+						'bengali': 'Bengali',
+						'chinese-hongkong': 'Chinese (Hong Kong)',
+						'chinese-simplified': 'Chinese (Simplified',
+						'chinese-traditional': 'Chinese (Traditional)',
+						'cyrillic': 'Cyrillic',
+						'cyrillic-ext': 'Cyrillic Extended',
+						'devanagari': 'Devanagari',
+						'greek': 'Greek',
+						'greek-ext': 'Greek Extended',
+						'gujarati': 'Gujarati',
+						'gurmukhi': 'Gurmukhi',
+						'hebrew': 'Hebrew',
+						'japanese': 'Japanese',
+						'kannada': 'Kannada',
+						'khmer': 'Khmer',
+						'korean': 'Korean',
+						'latin': 'Latin',
+						'latin-ext': 'Latin Extended',
+						'malayalam': 'Malayalam',
+						'myanmar': 'Myanmar',
+						'oriya': 'Oriya',
+						'sinhala': 'Sinhala',
+						'tamil': 'Tamil',
+						'telugu': 'Telugu',
+						'thai': 'Thai',
+						'tibetan': 'Tibetan',
+						'vietnamese': 'Vietnamese'
+					};
+					this.dictionary = {
+						'selectFont': 'Select a font',
+						'search': 'Search',
+						'allLangs': 'All languages',
+						'favFonts': 'Favorite fonts',
+						'localFonts': 'Local fonts',
+						'googleFonts': 'Google fonts',
+						'select': 'Select',
+						'styles': 'styles',
+						'sampleText': 'The quick brown fox jumps over the lazy dog.',
+						'sampleTextEditable': 'Sample text, editable'
+					};
+					this.setup();
+					this.events();
+				}
+				check(item) {
+					return typeof (item) != 'undefined' && item != null;
+				}
+				position() {
+					const pickerButtonRect = this.pickerButton.getBoundingClientRect();
+					let body = document.body,
+						html = document.documentElement,
+						height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight),
+						left = pickerButtonRect.right - 290,
+						top = pickerButtonRect.bottom + window.scrollY + 5;
+					if (top + 400 > height) {
+						top = pickerButtonRect.top + window.scrollY - 400 - 5;
+					}
+					this.picker.style.left = left + 'px';
+					this.picker.style.top = top + 'px';
+				}
+				needScroll(item) {
+					let container = item.parentElement,
+						rectItem = item.getBoundingClientRect(),
+						rectContainer = container.getBoundingClientRect();
+					if (rectItem.bottom > rectContainer.bottom) { item.scrollIntoView(false); }
+					if (rectItem.top < rectContainer.top) { item.scrollIntoView(); }
+				}
+				load(item) {
+					if (tsvgLoadedFonts[item] || !tsvgFonts.hasOwnProperty(item)) { return; }
+					tsvgLoadedFonts[item] = true;
+					let url = 'https://fonts.googleapis.com/css?family=' + item.replace(/ /g, '+') + ':' + tsvgFonts[item].types + '&display=swap',
+						head = document.getElementsByTagName('head')[0],
+						link = document.createElement('link');
+					link.rel = 'stylesheet';
+					link.type = 'text/css';
+					link.href = url;
+					head.appendChild(link);
+				}
+				remove() {
+					if (this.check(this.pickerItems.querySelector("div.tsvg-font-picker-item.tsvg-font-picker-item-active"))) {
+						let font = this.pickerItems.querySelector("div.tsvg-font-picker-item.tsvg-font-picker-item-active"),
+							fontTypes = font.querySelectorAll('.tsvg-font-picker-item-boxes');
+						font.classList.remove('tsvg-font-picker-item-active');
+						if (fontTypes.length) {
+							fontTypes.forEach(fontType => {
+								fontType.remove();
+							});
+						}
+					}
+				}
+				update(pickerItem) {
+					let italic = false,
+						weight = 400,
+						fontFamily = pickerItem.getAttribute('data-font-family'),
+						value = fontFamily;
+					this.pickerButtonPreview.innerHTML = value;
+					Object.assign(this.pickerButton.style, {
+						fontFamily: "'" + fontFamily + "'",
+						fontStyle: italic ? 'italic' : 'normal',
+						fontWeight: weight
+					});
+					Object.assign(this.preview.style, {
+						fontFamily: "'" + fontFamily + "'",
+						fontStyle: italic ? 'italic' : 'normal',
+						fontWeight: weight
+					});
+					this.input.value = value;
+					this.input.dispatchEvent(new InputEvent("change"));
+					this.load(pickerItem.getAttribute('data-font-family'));
+					if (tsvgStyles.hasOwnProperty(`${this.input.getAttribute("id")}`)) {
+						tsvgStyles[`${this.input.getAttribute("id")}`] = value;
+					} else if (tsvgThemeSettings.hasOwnProperty(`${this.input.getAttribute("id")}`)) {
+						tsvgThemeSettings[`${this.input.getAttribute("id")}`] = value;
+					} else if (tsvgThemeOptionStyles.hasOwnProperty(`${this.input.getAttribute("id")}`)) {
+						tsvgThemeOptionStyles[`${this.input.getAttribute("id")}`] = value;
+					}
+					document.documentElement.style.setProperty(this.input.dataset.changeProp, value);
+					if (tsvgShortcodeTheme == 'Grid Video Gallery') {
+						tsvgGridAdmin();
+					}
+				}
+				change(pickerItem) {
+					if (pickerItem.classList.contains('tsvg-font-picker-item-active')) {
+						return;
+					}
+					let selfPicker = this,
+						fontFamily = pickerItem.getAttribute('data-font-family'),
+						italic = false,
+						weight = 400,
+						selectedItem = this.pickerItems.querySelector("div.tsvg-font-picker-item[data-font-family='" + fontFamily + "']"),
+						font = tsvgFonts[fontFamily],
+						types = font.types ? font.types.split(',') : [];
+					this.remove();
+					pickerItem.classList.add('tsvg-font-picker-item-active');
+					selfPicker.update(pickerItem);
+				}
+				components(options) {
+					let components = options.split(':'),
+						family = components[0],
+						italic = false, weight = 400;
+					return {
+						family: family,
+						weight: weight,
+						italic: italic
+					}
+				}
+				apply(options) {
+					if ('' === options) {
+						this.pickerButton.removeAttribute('style');
+						this.pickerButtonPreview.innerHTML = this.dictionary['selectFont'];
+						this.input.value = '';
+						return;
+					}
+					let fontOptions = this.components(options);
+					this.load(fontOptions.family);
+					Object.assign(this.pickerButton.style, {
+						fontFamily: "'" + fontOptions.family + "'",
+						fontStyle: fontOptions.italic ? 'italic' : 'normal',
+						fontWeight: fontOptions.weight
+					});
+					this.pickerButtonPreview.innerHTML = options;
+				}
+				lazyLoad() {
+					if (!window.IntersectionObserver) { return; }
+					let selfPicker = this,
+						fontTarget,
+						observer = new IntersectionObserver(function (fontItems) {
+							[].forEach.call(fontItems, function (fontItem) {
+								if (fontItem.intersectionRatio > 0) {
+									observer.unobserve(fontItem.target);
+									fontTarget = fontItem.target;
+									selfPicker.load(fontTarget.getAttribute('data-font-family'));
+									fontTarget.style.fontFamily = "'" + fontTarget.getAttribute('data-font-family') + "'";
+								}
+							});
+						});
+					let observeItems = [].slice.call(this.pickerItems.querySelectorAll('div.tsvg-font-picker-item'), 0);
+					if (observeItems.length) {
+						observeItems.forEach((observeItem) => {
+							observer.observe(observeItem);
+						});
+					}
+				}
+				isVisible(item) {
+					return !!(item.offsetWidth || item.offsetHeight || item.getClientRects().length);
+				}
+				toggle(state) {
+					if (!state) { state = this.isVisible(this.picker) ? 'hide' : 'show'; }
+					if ('hide' == state) {
+						let removeItems = [].slice.call(this.picker.querySelectorAll('.tsvg-font-picker-item-boxes'), 0);
+						if (removeItems.length) {
+							removeItems.forEach((removeItem) => {
+								removeItem.remove();
+							});
+						}
+						this.pickerParentElement.classList.remove('tsvg-font-picker-open');
+					} else {
+						this.pickerParentElement.classList.add('tsvg-font-picker-open');
+						this.position();
+						let options = this.input.value;
+						if (options) {
+							let fontOptions = this.components(options),
+								pickerItems = [].slice.call(this.pickerItems.querySelectorAll("div.tsvg-font-picker-item[data-font-family='" + fontOptions.family + "']"), 0);
+							if (pickerItems.length) {
+								let pickerItem = pickerItems[0];
+								pickerItem.setAttribute('data-font-italic', fontOptions.italic);
+								pickerItem.setAttribute('data-font-weight', fontOptions.weight);
+								pickerItem.dispatchEvent(new Event('click'));
+								this.needScroll(pickerItem);
+							}
+						} else {
+							this.pickerItems.scrollTo(0, 0);
+						}
+						this.lazyLoad();
+					}
+				}
+				filter() {
+					let language = this.languageSelect.value,
+						search = this.searchInput.value.trim(),
+						checkedCategories = [],
+						categories = [].slice.call(this.filters.querySelectorAll('.tsvg-font-picker-category.tsvg-font-picker-box-checked'), 0);
+					if (categories.length) {
+						categories.forEach((category) => {
+							checkedCategories.push(category.dataset.category);
+						});
+					}
+					for (const [itemKey, itemValue] of Object.entries(tsvgFonts)) {
+						let languages = (itemValue.subsets && itemValue.subsets != '*') ? itemValue.subsets.split(',') : [],
+							pickerItem = this.pickerItems.querySelector("div.tsvg-font-picker-item[data-font-family='" + itemKey + "']"),
+							category = itemValue.category || 'other';
+						pickerItem.style.display = (('' == language || languages.indexOf(language) != -1) && ('*' == category || checkedCategories.indexOf(category) != -1) && ('' == search || itemKey.toLowerCase().indexOf(search.toLowerCase()) != -1)) ? '' : 'none';
+					}
+				}
+				search() {
+					let selfPicker = this,
+						searchBox = document.createElement('div'),
+						searchClear = document.createElement('div');
+					searchBox.classList.add('tsvg-font-picker-search-box');
+					this.searchInput = document.createElement('input');
+					this.searchInput.classList.add('tsvg-font-picker-search-input');
+					this.searchInput.setAttribute('type', 'text');
+					this.searchInput.setAttribute('placeholder', this.dictionary['search']);
+					this.searchInput.setAttribute('spellcheck', false);
+					this.searchInput.addEventListener('keyup', (e) => {
+						selfPicker.filter();
+					});
+					searchClear.classList.add('tsvg-font-picker-search-clear');
+					searchClear.addEventListener('click', (e) => {
+						selfPicker.search.value = '';
+						selfPicker.search.focus();
+						selfPicker.filter();
+					});
+					searchBox.append(this.searchInput, searchClear);
+					return searchBox;
+				}
+				language() {
+					let selfPicker = this;
+					this.languageSelect = document.createElement('select');
+					this.languageSelect.classList.add('tsvg-font-picker-languages');
+					let languagePlaceholder = document.createElement('option');
+					languagePlaceholder.setAttribute('value', '');
+					languagePlaceholder.innerText = this.dictionary['allLangs'];
+					this.languageSelect.appendChild(languagePlaceholder);
+					for (const [itemKey, itemValue] of Object.entries(this.languages)) {
+						let languageOption = document.createElement('option');
+						languageOption.setAttribute('value', itemKey);
+						languageOption.innerText = itemValue;
+						selfPicker.languageSelect.appendChild(languageOption);
+					}
+					this.languageSelect.addEventListener('change', (e) => {
+						selfPicker.filter();
+					});
+					return this.languageSelect;
+				}
+				category() {
+					let selfPicker = this,
+						categoryBoxes = document.createElement('div');
+					categoryBoxes.classList.add('tsvg-font-picker-category-boxes');
+					this.categories.forEach(category => {
+						let categoryBox = document.createElement('span');
+						categoryBox.classList.add('tsvg-font-picker-category', 'tsvg-font-picker-box', 'tsvg-font-picker-box-checked');
+						categoryBox.dataset.category = category;
+						categoryBox.innerText = category;
+						categoryBoxes.appendChild(categoryBox);
+						categoryBox.addEventListener('click', (e) => {
+							categoryBox.classList.contains('tsvg-font-picker-box-checked') ? categoryBox.classList.remove('tsvg-font-picker-box-checked') : categoryBox.classList.add('tsvg-font-picker-box-checked');
+							selfPicker.filter();
+						});
+					});
+					return categoryBoxes;
+				}
+				createFilters() {
+					let selfPicker = this;
+					this.filters = document.createElement('div');
+					this.filters.classList.add('tsvg-font-picker-filters');
+					this.filters.append(this.search(), this.language(), this.category());
+				}
+				create(fontFamily) {
+					let selfPicker = this,
+						font = tsvgFonts[fontFamily],
+						pickeritemOptions = false,
+						items = [];
+					if (!font) { return; }
+					if ((font.category && font.category != '*') || font.types) {
+						if (font.category) { items.push(font.category); }
+						pickeritemOptions = document.createElement('small');
+						pickeritemOptions.classList.add('tsvg-font-picker-item-options');
+						pickeritemOptions.innerText = items.join(', ');
+					}
+					let pickerItem = document.createElement('div');
+					pickerItem.classList.add('tsvg-font-picker-item')
+					pickerItem.setAttribute('data-font-family', fontFamily);
+					pickerItem.innerText = fontFamily;
+					pickerItem.addEventListener('click', (e) => {
+						selfPicker.change(pickerItem);
+					});
+					pickeritemOptions && pickerItem.appendChild(pickeritemOptions);
+					return pickerItem;
+				}
+				getFonts() {
+					let selfPicker = this,
+						fragment = document.createDocumentFragment();
+					if (Object.keys(tsvgFonts).length > 0) {
+						Object.keys(tsvgFonts).forEach((font) => {
+							fragment.appendChild(this.create(font));
+						});
+					}
+					this.pickerItems = document.createElement('div');
+					this.pickerItems.classList.add('tsvg-font-picker-items');
+					this.pickerItems.setAttribute('tabindex', 0);
+					this.pickerItems.appendChild(fragment);
+				}
+				setup() {
+					let selfPicker = this,
+						options = this.input.value;
+					this.input.style.display = 'none';
+					this.pickerButton = document.createElement('div');
+					this.pickerButton.classList.add('tsvg-font-picker-btn');
+					this.pickerButtonPreview = document.createElement('span');
+					this.pickerButtonPreview.classList.add('tsvg-font-picker-btn-preview');
+					this.pickerButtonPreview.setAttribute('tabindex', 0);
+					this.pickerButtonPreview.innerText = options ? options : this.dictionary['selectFont'];
+					this.pickerButton.appendChild(this.pickerButtonPreview);
+					this.picker = document.createElement('div');
+					this.picker.classList.add('tsvg-font-picker');
+					this.preview = document.createElement('div');
+					this.preview.classList.add('tsvg-font-picker-preview-text');
+					this.preview.setAttribute('title', this.dictionary['sampleTextEditable']);
+					this.preview.innerHTML = this.dictionary['sampleText'];
+					this.picker.appendChild(this.preview);
+					this.createFilters();
+					this.picker.appendChild(this.filters);
+					this.getFonts();
+					this.picker.appendChild(this.pickerItems);
+					let footer = document.createElement('div'),
+						closeButton = document.createElement('span');
+					footer.classList.add('tsvg-font-picker-footer');
+					closeButton.classList.add('tsvg-font-picker-close');
+					closeButton.innerHTML = 'Close';
+					closeButton.addEventListener('click', () => {
+						selfPicker.toggle('hide');
+					});
+					footer.appendChild(closeButton);
+					this.picker.appendChild(footer);
+					options && selfPicker.apply(options);
+					this.pickerParentElement.append(this.pickerButton, this.picker);
+					this.input.addEventListener("change", (e) => {
+						this.apply(e.target.value);
+					});
+				}
+				events() {
+					document.addEventListener("click", (event) => {
+						if (this.pickerParentElement.classList.contains('tsvg-font-picker-open')) {
+							if (!this.picker.contains(event.target) || event.target == this.pickerButton) {
+								this.toggle('hide');
+							}
+						} else if (!this.pickerParentElement.classList.contains('tsvg-font-picker-open') && (event.target == this.pickerButton || this.pickerButton.contains(event.target))) {
+							this.toggle('show');
+						}
+					});
+				}
+			}
+			async function tsvgFetchFonts() {
+				try {
+					const response = await fetch(tsvg_builder_object.tsvg_fonts);
+					if (!response.ok) {
+						throw new Error(`HTTP error! Status: ${response.status}`);
+					}
+					tsvgFonts = await response.json();
+					const tsvgFontFields = document.querySelectorAll(".tsvg_select_font  > input[type='hidden']");
+					tsvgFontFields.forEach((tsvgFontField) => {
+						tsvgFontsInstances[tsvgFontField.getAttribute('id')] = new tsvgFontPicker(tsvgFontField);
+					});
+					$('.tsvg_content[data-tsvg-section="field_style"]>.tsvg_content_subsection').scroll(function (e) {
+						if ($('.tsvg_select_font.tsvg-font-picker-open').length) {
+							$(".tsvg_select_font.tsvg-font-picker-open").removeClass("tsvg-font-picker-open");
+							e.stopPropagation();
+						}
+					});
+				} catch (error) {
+					console.error('Error fetching JSON:', error);
+				}
+			}
+			tsvgFetchFonts();
 			if (tsvg_builder_object.tsvg_creation != "save") {
 				$("input#tsvg_global_shortcode").val(`[TS_Video_Gallery id="${tsvgShortcodeId}"]`);
 				$("input#tsvg_global_theme_shortcode").val(`<?php echo do_shortcode( '[TS_Video_Gallery id="${tsvgShortcodeId}"]' ); ?>`);
@@ -148,12 +586,8 @@
 				$('.tsvg_content_subsection[data-tsvg-subsection="shortcode"] > div[data-tsvg-field="shortcode"]').remove();
 			}
 			let tsvgVideos = Object(),
-				tsvgAllFonts = Object.assign(tsvg_builder_object.fonts.tsvg_fonts.tsvg_fontawesome, tsvg_builder_object.fonts.tsvg_fonts.tsvg_emojies),
 				tsvgEditId = "",
 				tsvgActiveSize = "desktop",
-				tsvgGetKeyByValue = function (object, value) {
-					return Object.keys(object).find(key => object[key] === value);
-				},
 				tsvgSetImage = function (type, id, url, width, height) {
 					jQuery('.wpv-video-frame').last().remove();
 					if (type == "library") {
@@ -178,8 +612,7 @@
 							else {
 								$(`.tsvg-grid-slideshow-${tsvgShortcodeId} li[data-tsvg-id='${tsvgEditId}']`).find(".tsvg-media-wrapper img").attr("src", url);
 							}
-						}
-						else {
+						} else {
 							$(`.tsvg-grid-slideshow-${tsvgShortcodeId} li[data-tsvg-id='${tsvgEditId}']`).find(".tsvg-video-wrapper video").attr("poster", url);
 						}
 					}
@@ -295,15 +728,11 @@
 								}
 							}
 							tsvgNewBlock = `
-								<li class="tsvg-grid-layout-item tsvg-grid-layout-item-${tsvgShortcodeId}"  data-tsvg-id='${tsvgNewBlockId}' style='-moz-animation-delay: ${tsvgTransitionDelay}s;-webkit-animation-delay: ${tsvgTransitionDelay}s;animation-delay: ${tsvgTransitionDelay}s;display:none;' >
+								<li class="tsvg-li-content tsvg-grid-layout-item tsvg-grid-layout-item-${tsvgShortcodeId}"  data-tsvg-id='${tsvgNewBlockId}' style='-moz-animation-delay: ${tsvgTransitionDelay}s;-webkit-animation-delay: ${tsvgTransitionDelay}s;animation-delay: ${tsvgTransitionDelay}s;display:none;' >
 									<figure  class="tsvg-grid-layout-item-block-${tsvgShortcodeId}" data-tsvg-effect="${tsvgGridEffectSvg}" data-tsvg-bool="${tsvgGridBool}" >
 										<img width="" height="" src=" ${tsvgBlockImgUrl} " alt=" ${tsvgBlockTitle} " >
-										<h3 class="tsvg-grid-layout-item-title-${tsvgShortcodeId}"  data-tsvg-title="${tsvgGridTitle}" data-tsvg-hide="${tsvgTitleHide}" >
-											${tsvgBlockTitle}
-										</h3>
-										<figcaption class="tsvg-grid-layout-item-caption-${tsvgShortcodeId}"  data-tsvg-hide="${tsvgDescHide}" >
-											${tsvgGridDesc}
-										</figcaption>
+										<h3 class="tsvg-grid-layout-item-title-${tsvgShortcodeId}"  data-tsvg-title="${tsvgGridTitle}" data-tsvg-hide="${tsvgTitleHide}" >${tsvgBlockTitle}</h3>
+										<figcaption class="tsvg-grid-layout-item-caption-${tsvgShortcodeId}"  data-tsvg-hide="${tsvgDescHide}" >${tsvgGridDesc}</figcaption>
 									</figure>
 								</li> 
 							`;
@@ -340,7 +769,7 @@
 								tsvgLightboxBlockLink = tsvgAction == "add" ? '' : $(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgCopiedId}'] a`).attr("href"),
 								tsvgLightboxBlockVideoUrl = tsvgAction == "add" ? tsvg_builder_object.tsvg_no_iframe : $(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgCopiedId}'] .tsvg-lightbox-block-inner-${tsvgShortcodeId}`).attr("data-tsvg-href");
 							tsvgNewBlock = `
-									<li class='tsvg-lightbox-block  tsvg-lightbox-block-${tsvgShortcodeId}' data-tsvg-border='${tsvgLightboxEffect}'  data-tsvg-id='${tsvgNewBlockId}' style='-moz-animation-delay: ${tsvgTransitionDelay}s;-webkit-animation-delay: ${tsvgTransitionDelay}s;animation-delay: ${tsvgTransitionDelay}s;' >
+									<li class='tsvg-li-content tsvg-lightbox-block  tsvg-lightbox-block-${tsvgShortcodeId}' data-tsvg-border='${tsvgLightboxEffect}'  data-tsvg-id='${tsvgNewBlockId}' style='-moz-animation-delay: ${tsvgTransitionDelay}s;-webkit-animation-delay: ${tsvgTransitionDelay}s;animation-delay: ${tsvgTransitionDelay}s;' >
 										<figure  class='tsvg-lightbox-block-inner-${tsvgShortcodeId}'  data-tsvg-href='${tsvgLightboxBlockVideoUrl}' data-tsvg-title='${tsvgBlockTitle}' >
 											<div class='tsvg-lightbox-block-hover-layout-${tsvgShortcodeId}' data-hoverlay='${tsvgLightboxEffectLayout}' ></div>
 											<figcaption class='tsvg-block-title-hover-layout-${tsvgShortcodeId}' data-hover='${tsvgLightboxEffectHover}' >
@@ -359,7 +788,7 @@
 							let tsvgThumbnailsBlockVideoUrl = tsvgAction == "add" ? tsvg_builder_object.tsvg_no_iframe : $(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgCopiedId}'] a`).attr("href"),
 								tsvgThumbnailsEffect = $(".tsvg_position_select[data-tsvg-select='TotalSoft_GV_1_02'] .tsvg_active").attr('data-tsvg-pos');
 							tsvgNewBlock = `
-									<li class='tsvg-thumbnails-block tsvg-thumbnails-block-${tsvgShortcodeId}'   data-tsvg-id='${tsvgNewBlockId}'  data-tsvg-ef='${tsvgThumbnailsEffect}' >
+									<li class='tsvg-li-content tsvg-thumbnails-block tsvg-thumbnails-block-${tsvgShortcodeId}'   data-tsvg-id='${tsvgNewBlockId}'  data-tsvg-ef='${tsvgThumbnailsEffect}' >
 										<figure class='tsvg-thumbnails-block-effect' >
 											<a href='${tsvgThumbnailsBlockVideoUrl}' class='tsvg-thumbnails-block-effect-inner tsvg-thumbnails-block-effect-inner-${tsvgShortcodeId}'  data-id='${tsvgShortcodeId}' data-gallery='video_gallery_${tsvgShortcodeId}' title='${tsvgBlockTitle}' >
 												<img width='' height='' src='${tsvgBlockImgUrl}' alt='${tsvgBlockTitle}'  title='${tsvgBlockTitle}' class='tsvg-thumbnails-block-img-${tsvgShortcodeId}' >
@@ -396,7 +825,7 @@
 								tsvgContentMaskParent = 'mask';
 							}
 							tsvgNewBlock = `
-								<li class='tsvg-content-popup-block-${tsvgShortcodeId} tsvg-cp-block-view tsvg-cp-block-view-${tsvgShortcodeId} tsvg-cp-block-view-${tsvgContentMaskViewArr[tsvgContentMaskView]}'  data-tsvg-target='${tsvgContentLinkTarget}'  data-tsvg-link='${tsvgContentLinkUrl}'  data-tsvg-href='${tsvgBlockVideoUrl}'   data-tsvg-id='${tsvgNewBlockId}'  data-tsvg-shadow='${tsvgContentShadow}'  style='-moz-animation-delay: ${tsvgTransitionDelay}s;-webkit-animation-delay: ${tsvgTransitionDelay}s;animation-delay: ${tsvgTransitionDelay}s;' >
+								<li class='tsvg-li-content tsvg-content-popup-block-${tsvgShortcodeId} tsvg-cp-block-view tsvg-cp-block-view-${tsvgShortcodeId} tsvg-cp-block-view-${tsvgContentMaskViewArr[tsvgContentMaskView]}'  data-tsvg-target='${tsvgContentLinkTarget}'  data-tsvg-link='${tsvgContentLinkUrl}'  data-tsvg-href='${tsvgBlockVideoUrl}'   data-tsvg-id='${tsvgNewBlockId}'  data-tsvg-shadow='${tsvgContentShadow}'  style='-moz-animation-delay: ${tsvgTransitionDelay}s;-webkit-animation-delay: ${tsvgTransitionDelay}s;animation-delay: ${tsvgTransitionDelay}s;' >
 									<figure class='tsvg-block-inner'>
 										<img  width='' height='' src='${tsvgBlockImgUrl}' alt='${tsvgBlockTitle}'  title='${tsvgBlockTitle}' class='tsvg-thumbnails-block-img-${tsvgShortcodeId}' >
 										<div class='${tsvgContentMaskParent}' >
@@ -428,7 +857,7 @@
 								tsvgElasticLinkTarget = tsvgAction == "add" ? '_self' : $(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgCopiedId}'] a`).attr("target");
 							tsvgBlockVideoUrl = tsvgAction == "add" ? tsvg_builder_object.tsvg_no_iframe : $(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgCopiedId}'] `).attr("data-src");
 							tsvgNewBlock = `
-								<li class='tsvg-elastic-block-${tsvgShortcodeId}'  data-tsvg-id='${tsvgNewBlockId}' data-tsvg-effect='${tsvgElasticBlockEffect}' data-src='${tsvgBlockVideoUrl}' data-poster='${tsvgBlockImgUrl}' data-title='${tsvgBlockTitle}' style='-moz-animation-delay: ${tsvgTransitionDelay}s;-webkit-animation-delay: ${tsvgTransitionDelay}s;animation-delay: ${tsvgTransitionDelay}s;' >
+								<li class='tsvg-li-content tsvg-elastic-block-${tsvgShortcodeId}'  data-tsvg-id='${tsvgNewBlockId}' data-tsvg-effect='${tsvgElasticBlockEffect}' data-src='${tsvgBlockVideoUrl}' data-poster='${tsvgBlockImgUrl}' data-title='${tsvgBlockTitle}' style='-moz-animation-delay: ${tsvgTransitionDelay}s;-webkit-animation-delay: ${tsvgTransitionDelay}s;animation-delay: ${tsvgTransitionDelay}s;' >
 									<figure  class='tsvg-block-inner' >
 										<img width='' height='' src='${tsvgBlockImgUrl}' alt='img' class='tsvg-elastic-block-img' data-tsvg-img='${tsvgElasticImgEffect}' >
 										<figcaption  data-tsvg-hover='${tsvgElasticFigcaptionHover}' >
@@ -457,7 +886,7 @@
 								tsvgFancyPopupHeight = $("#TotalSoft_GV_1_34").val(),
 								tsvgFancyPopupDesc = tsvgAction == "add" ? '' : $(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgCopiedId}']  .tsvg-html5lightbox-${tsvgShortcodeId} .tsvg-fancy-block-desc`).html();
 							tsvgNewBlock = `
-								<li class='tsvg-fancy-block tsvg-fancy-block-${tsvgShortcodeId}'  data-tsvg-id='${tsvgNewBlockId}' style='-moz-animation-delay: ${tsvgTransitionDelay}s;-webkit-animation-delay: ${tsvgTransitionDelay}s;animation-delay: ${tsvgTransitionDelay}s;' >
+								<li class='tsvg-li-content tsvg-fancy-block tsvg-fancy-block-${tsvgShortcodeId}'  data-tsvg-id='${tsvgNewBlockId}' style='-moz-animation-delay: ${tsvgTransitionDelay}s;-webkit-animation-delay: ${tsvgTransitionDelay}s;animation-delay: ${tsvgTransitionDelay}s;' >
 									<figure  class='tsvg-block-inner tsvg-html5lightbox-${tsvgShortcodeId}' data-href='${tsvgFancyBlockVideoUrl}'  data-width='${tsvgFancyPopupWidth}' data-height='${tsvgFancyPopupHeight}' data-group='mygroup${tsvgShortcodeId}' data-thumbnail='${tsvgBlockImgUrl}'  data-title='${tsvgBlockTitle}' data-tsvgid='${tsvgNewBlockId}'>
 										<div class="tsvg-fancy-block-desc" >${tsvgFancyPopupDesc}</div>
 										<a class='tsvg-fancy-block-link' href = '${tsvgFancyLink}' target = '${tsvgFancyLinkTarget}' data-tsvg-title='${tsvgFancyLinkPosition}' data-tsvg-show='${tsvgFancyLinkShow}' > ${tsvgFancyLinkName} </a>
@@ -483,7 +912,7 @@
 								tsvgParallaxTitleIcon = $("#TotalSoft_GV_1_16-icon_value").val(),
 								tsvgParallaxVideoUrl = tsvgAction == "add" ? tsvg_builder_object.tsvg_no_iframe : $(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgCopiedId}']`).attr("data-href");
 							tsvgNewBlock = `
-								<li class='tsvg-parallax-block-${tsvgShortcodeId}  tsvg-parallax-block-swipebox-${tsvgShortcodeId}'   data-href='${tsvgParallaxVideoUrl}'  data-name='${tsvgBlockTitle}' data-tsvg-id='${tsvgNewBlockId}' data-tsvg-type='${tsvgParallaxBlockType}' data-tsvg-ef='${tsvgParallaxBlockEffect}' style='-moz-animation-delay: ${tsvgTransitionDelay}s;-webkit-animation-delay: ${tsvgTransitionDelay}s;animation-delay: ${tsvgTransitionDelay}s;' >
+								<li class='tsvg-li-content tsvg-parallax-block-${tsvgShortcodeId}  tsvg-parallax-block-swipebox-${tsvgShortcodeId}'   data-href='${tsvgParallaxVideoUrl}'  data-name='${tsvgBlockTitle}' data-tsvg-id='${tsvgNewBlockId}' data-tsvg-type='${tsvgParallaxBlockType}' data-tsvg-ef='${tsvgParallaxBlockEffect}' style='-moz-animation-delay: ${tsvgTransitionDelay}s;-webkit-animation-delay: ${tsvgTransitionDelay}s;animation-delay: ${tsvgTransitionDelay}s;' >
 									<figure class='tsvg-block-inner' >
 										<img class='tsvg-parallax-block-img' src='${tsvgBlockImgUrl}' / >
 										<div class='mask tsvg-parallax-block-lines' data-tsvg-ef='${tsvgParallaxLineEffect}'  data-tsvg-show='${tsvgParallaxLineShow}' >
@@ -514,7 +943,7 @@
 							tsvgBlockVideoUrl = tsvgAction == "add" ? tsvg_builder_object.tsvg_no_iframe : $(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgCopiedId}']`).attr("data-tsvg-src");
 							tsvgNewBlock =
 								`
-								<li class="tsvg-classic-block-${tsvgShortcodeId}"  data-tsvg-id="${tsvgNewBlockId}" style="-moz-animation-delay:  ${tsvgTransitionDelay}s;-webkit-animation-delay:  ${tsvgTransitionDelay}s;animation-delay:  ${tsvgTransitionDelay}s;" data-tsvg-effect="${tsvgClassicBlockEffect}" data-tsvg-src="${tsvgBlockVideoUrl}" data-tsvg-link="${tsvgClassicLink}" data-tsvg-target="${tsvgClassicLinkTarget}">
+								<li class="tsvg-li-content tsvg-classic-block-${tsvgShortcodeId}"  data-tsvg-id="${tsvgNewBlockId}" style="-moz-animation-delay:  ${tsvgTransitionDelay}s;-webkit-animation-delay:  ${tsvgTransitionDelay}s;animation-delay:  ${tsvgTransitionDelay}s;" data-tsvg-effect="${tsvgClassicBlockEffect}" data-tsvg-src="${tsvgBlockVideoUrl}" data-tsvg-link="${tsvgClassicLink}" data-tsvg-target="${tsvgClassicLinkTarget}">
 									<figure class="tsvg-classic-block-inner-${tsvgShortcodeId}">
 										<div class="tsvg-classic-block-items-${tsvgShortcodeId}" data-tsvg-effect="${tsvgClassicBlockItemsEffect}">
 											<img  width="" height="" src="${tsvgBlockImgUrl}" alt="img" class="tsvg-classic-block-img-${tsvgShortcodeId}" data-tsvg-img="${tsvgClassicBlockImgEffect}">
@@ -568,7 +997,7 @@
 								}
 							}
 							tsvgNewBlock = `
-								<li class='tsvg-space-block-${tsvgShortcodeId}'  data-tsvg-id='${tsvgNewBlockId}' style='-moz-animation-delay: ${tsvgTransitionDelay}s;-webkit-animation-delay: ${tsvgTransitionDelay}s;animation-delay: ${tsvgTransitionDelay}s;'  data-tsvg-link='${tsvgSpaceLink}' data-tsvg-target='${tsvgSpaceLinkTarget}' data-tsvg-src='${tsvgBlockVideoUrl}' >
+								<li class='tsvg-li-content tsvg-space-block-${tsvgShortcodeId}'  data-tsvg-id='${tsvgNewBlockId}' style='-moz-animation-delay: ${tsvgTransitionDelay}s;-webkit-animation-delay: ${tsvgTransitionDelay}s;animation-delay: ${tsvgTransitionDelay}s;'  data-tsvg-link='${tsvgSpaceLink}' data-tsvg-target='${tsvgSpaceLinkTarget}' data-tsvg-src='${tsvgBlockVideoUrl}' >
 									<figure  class='tsvg-block-inner' >
 										<span class='tsvg-space-block-title-${tsvgShortcodeId}' data-tsvg-text-ps='${tsvgSpaceTitlePosition}' data-tsvg-c='${tsvgSpaceTitleData}' >
 											${tsvgBlockTitle}
@@ -640,11 +1069,11 @@
 					}
 				},
 				tsvgCloseIconPicker = function () {
-					$("#ts-vgallery-aim-modal").attr("style", "display:none;");
-					$(".ts-vgallery-aim-icon-item.ts-vgallery-aim-icon-item-aesthetic-selected").each(function () {
-						$(this).removeClass("ts-vgallery-aim-icon-item-aesthetic-selected");
+					$("#tsvg-aim-modal").attr("style", "display:none;");
+					$(".tsvg-aim-icon-item.tsvg-aim-icon-item-aesthetic-selected").each(function () {
+						$(this).removeClass("tsvg-aim-icon-item-aesthetic-selected");
 					});
-					$("#ts-vgallery-aim-modal--search_input").val("");
+					$("#tsvg-aim-modal--search_input").val("");
 				},
 				tsvgSetIconClass = function (changeItem, changeAttr, changeValue) {
 					if (changeAttr == "class") {
@@ -670,7 +1099,7 @@
 					} else if (changeAttr.indexOf("data-") != -1) {
 						$(`${changeItem}`).attr(changeAttr, changeValue)
 					} else {
-						document.documentElement.style.setProperty(changeItem, `"\\${tsvgGetKeyByValue(tsvgAllFonts, changeValue)}"`);
+						toastr["error"]('Unexpected error.', 'Error', tsvgToastrOptions);
 					}
 					tsvgCloseIconPicker();
 				},
@@ -826,9 +1255,9 @@
 					tsvgTitleInput[0].setSelectionRange(tsvgTitleInputLength, tsvgTitleInputLength);
 				}
 			);
-			$(document).on('click', '.ts-vgallery-aim-modal--header-close-btn', tsvgCloseIconPicker);
-			$(document).on('click', '#ts-vgallery-aim-insert-icon-button', function () {
-				let tsvg_selected_icon = $('.ts-vgallery-aim-icon-item.ts-vgallery-aim-icon-item-aesthetic-selected');
+			$(document).on('click', '.tsvg-aim-modal--header-close-btn', tsvgCloseIconPicker);
+			$(document).on('click', '#tsvg-aim-insert-icon-button', function () {
+				let tsvg_selected_icon = $('.tsvg-aim-icon-item.tsvg-aim-icon-item-aesthetic-selected');
 				let tsvg_select_item_for = $(this).attr("data-tsvg-field");
 				let tsvg_select_item = $(`.ts-vgallery-select-icon#${tsvg_select_item_for}`);
 				let tsvg_selected_value = "";
@@ -890,82 +1319,82 @@
 					tsvgSetIconClass($(tsvg_input_icon_value).attr("data-tsvg-elem"), $(tsvg_input_icon_value).attr("data-change-prop"), tsvg_selected_value);
 				}
 			});
-			$(document).on('click', '.ts-vgallery-aim-modal--sidebar-tab-item', function () {
+			$(document).on('click', '.tsvg-aim-modal--sidebar-tab-item', function () {
 				if (!$(this).hasClass('aesthetic-active')) {
-					$(".ts-vgallery-aim-modal--sidebar-tab-item.aesthetic-active").each(
+					$(".tsvg-aim-modal--sidebar-tab-item.aesthetic-active").each(
 						function () {
 							$(this).removeClass("aesthetic-active");
 						}
 					);
 					$(this).addClass("aesthetic-active");
 					if ($(this).attr("data-library-id") == "all") {
-						$(".ts-vgallery-aim-icon-item").each(
+						$(".tsvg-aim-icon-item").each(
 							function () {
 								$(this).removeAttr("style");
 							}
 						);
 					} else {
-						$(`.ts-vgallery-aim-icon-item[data-library-id="${$(this).attr('data-library-id')}"]`).each(
+						$(`.tsvg-aim-icon-item[data-library-id="${$(this).attr('data-library-id')}"]`).each(
 							function () {
 								$(this).removeAttr("style");
 							}
 						);
-						$(`.ts-vgallery-aim-icon-item:not( [data-library-id="${$(this).attr('data-library-id')}"] )`).each(
+						$(`.tsvg-aim-icon-item:not( [data-library-id="${$(this).attr('data-library-id')}"] )`).each(
 							function () {
 								$(this).attr("style", "display:none;");
 							}
 						);
-						$('.ts-vgallery-aim-modal--icon-preview-inner').animate(
+						$('.tsvg-aim-modal--icon-preview-inner').animate(
 							{
 								scrollTop: 0
 							},
 							50
 						);
 					}
-					if ($("#ts-vgallery-aim-modal--search_input").val() != "") {
-						$("#ts-vgallery-aim-modal--search_input").trigger('input');
+					if ($("#tsvg-aim-modal--search_input").val() != "") {
+						$("#tsvg-aim-modal--search_input").trigger('input');
 					}
 				}
 			});
-			$(document).on('click', 'div.ts-vgallery-aim-icon-item', function () {
-				if ($(this).hasClass("ts-vgallery-aim-icon-item-aesthetic-selected")) {
-					$(this).removeClass("ts-vgallery-aim-icon-item-aesthetic-selected");
+			$(document).on('click', 'div.tsvg-aim-icon-item', function () {
+				if ($(this).hasClass("tsvg-aim-icon-item-aesthetic-selected")) {
+					$(this).removeClass("tsvg-aim-icon-item-aesthetic-selected");
 				} else {
-					$(".ts-vgallery-aim-icon-item.ts-vgallery-aim-icon-item-aesthetic-selected").each(
+					$(".tsvg-aim-icon-item.tsvg-aim-icon-item-aesthetic-selected").each(
 						function () {
-							$(this).removeClass("ts-vgallery-aim-icon-item-aesthetic-selected");
+							$(this).removeClass("tsvg-aim-icon-item-aesthetic-selected");
 						}
 					);
-					$(this).addClass("ts-vgallery-aim-icon-item-aesthetic-selected");
+					$(this).addClass("tsvg-aim-icon-item-aesthetic-selected");
 				}
 			});
 			$(document).on('click', '.ts-vgallery-icon-picker-wrap > .icon-picker > .ts-vgallery-select-icon', function () {
-				$("#ts-vgallery-aim-modal").attr("style", "display:flex;");
-				$(".ts-vgallery-aim-icon-item.ts-vgallery-aim-icon-item-aesthetic-selected").each(
+				$("#tsvg-aim-modal").attr("style", "display:flex;");
+				$(".tsvg-aim-icon-item.tsvg-aim-icon-item-aesthetic-selected").each(
 					function () {
-						$(this).removeClass("ts-vgallery-aim-icon-item-aesthetic-selected");
+						$(this).removeClass("tsvg-aim-icon-item-aesthetic-selected");
 					}
 				);
 				let tsvg_select_item_for = $(this).attr("id");
-				$("#ts-vgallery-aim-insert-icon-button").attr("data-tsvg-field", tsvg_select_item_for);
+				$("#tsvg-aim-insert-icon-button").attr("data-tsvg-field", tsvg_select_item_for);
 				let tsvg_select_item = $(this);
 				let tsvg_current = $(this).find("i").attr("class");
 				if (tsvg_current == "ts-vgallery ts-vgallery-ban") {
-					$('.ts-vgallery-aim-modal--sidebar-tab-item[data-library-id="all"]').trigger('click');
-					$('.ts-vgallery-aim-modal--icon-preview-inner').animate(
+					$('.tsvg-aim-modal--sidebar-tab-item[data-library-id="all"]').trigger('click');
+					$('.tsvg-aim-modal--icon-preview-inner').animate(
 						{
 							scrollTop: 0
 						},
 						50
 					);
 				} else {
-					$(`.ts-vgallery-aim-icon-item > .ts-vgallery-aim-icon-item-inner > i[class='${tsvg_current}']`).parent().parent().addClass('ts-vgallery-aim-icon-item-aesthetic-selected');
-					let tsvg_selected_library = $(`.ts-vgallery-aim-icon-item > .ts-vgallery-aim-icon-item-inner > i[class='${tsvg_current}']`).parent().parent().attr('data-library-id');
-					$(`.ts-vgallery-aim-modal--sidebar-tab-item[data-library-id="${tsvg_selected_library}"]`).trigger('click');
-					let position = $(`.ts-vgallery-aim-icon-item > .ts-vgallery-aim-icon-item-inner > i[class='${tsvg_current}']`).parent().parent().offset().top -
-						$('.ts-vgallery-aim-modal--icon-preview-inner').offset().top +
-						$('.ts-vgallery-aim-modal--icon-preview-inner').scrollTop() - 10;
-					$('.ts-vgallery-aim-modal--icon-preview-inner').animate(
+					$(`.tsvg-aim-icon-item > .tsvg-aim-icon-item-inner > i[class='${tsvg_current}']`).parent().parent().addClass('tsvg-aim-icon-item-aesthetic-selected');
+					let tsvg_selected_library = $(`.tsvg-aim-icon-item > .tsvg-aim-icon-item-inner > i[class='${tsvg_current}']`).parent().parent().attr('data-library-id');
+					$(`.tsvg-aim-modal--sidebar-tab-item[data-library-id="${tsvg_selected_library}"]`).trigger('click');
+					let position = $(`.tsvg-aim-icon-item > .tsvg-aim-icon-item-inner > i[class='${tsvg_current}']`).parent().parent().offset().top -
+						$('.tsvg-aim-modal--icon-preview-inner').offset().top +
+						$('.tsvg-aim-modal--icon-preview-inner').scrollTop() - 10;
+					$('.tsvg-aim-modal--icon-preview-inner').animate(
 						{
 							scrollTop: position
 						}
@@ -973,7 +1402,7 @@
 				}
 				$(document).mouseup(
 					function (e) {
-						if (!$(".ts-vgallery-aim-modal--content").is(e.target) && $(".ts-vgallery-aim-modal--content").has(e.target).length === 0) {
+						if (!$(".tsvg-aim-modal--content").is(e.target) && $(".tsvg-aim-modal--content").has(e.target).length === 0) {
 							tsvgCloseIconPicker();
 						}
 					}
@@ -1322,229 +1751,285 @@
 			});
 			$(document).on('click', 'div.tsvg_img_change', function (e) {
 				e.preventDefault();
-				let tsvg_wp_media_library;
-				if (tsvg_wp_media_library) {
-					tsvg_wp_media_library.open();
+				if (!tsvgImagePicker) {
+					tsvgImagePicker = wp.media(
+						{
+							frame: 'post',
+							type: 'image',
+							multiple: false,
+							states: [new wp.media.controller.Library(
+								{
+									title: 'Select image',
+									library: wp.media.query(
+										{
+											type: 'image'
+										}
+									),
+									multiple: false,
+									date: false,
+									gallery: false
+								}
+							)]
+						}
+					);
+					tsvgImagePicker.state('embed').on(
+						'select',
+						function () {
+							let state = tsvgImagePicker.state('embed'),
+								type = state.get('type'),
+								embed = state.props.toJSON();
+							if (type == "image") {
+								tsvgSetImage("embed", "", embed.url, embed.width, embed.height);
+							} else {
+								tsvgSetImage("embed", "", tsvg_builder_object.tsvg_no_img, 600, 600);
+								toastr["error"](`Your inserted file type isn't image.`, 'Error', tsvgToastrOptions);
+							}
+						}
+					);
+					tsvgImagePicker.state('library').on(
+						'select',
+						function () {
+							let selection = tsvgImagePicker.state('library').get('selection'),
+								tsvg_selection_id = "";
+							selection.each(
+								function (attachment) {
+									tsvg_selection_id = attachment["id"];
+								}
+							);
+							if (Number.isInteger(tsvg_selection_id)) {
+								let url = wp.media.attachment(tsvg_selection_id).get('url');
+								let width = wp.media.attachment(tsvg_selection_id).get('width');
+								let height = wp.media.attachment(tsvg_selection_id).get('height');
+								tsvgSetImage("library", tsvg_selection_id, url, width, height);
+							}
+						}
+					);
+					tsvgImagePicker.on(
+						'open',
+						function () {
+							$("button#menu-item-video-playlist,button#menu-item-playlist,button#menu-item-gallery,button#menu-item-insert").remove();
+							let tsvg_selected_attachment = jQuery('input#tsvg_video_attachment_id').val();
+							if (Number.isInteger(+tsvg_selected_attachment)) {
+								$("button#menu-item-library").trigger('click');
+								let selection = tsvgImagePicker.state('library').get('selection');
+								let attachment = wp.media.attachment(+tsvg_selected_attachment);
+								attachment.fetch();
+								selection.add(attachment ? [attachment] : []);
+							} else {
+								$("button#menu-item-embed").trigger('click');
+								$("input#embed-url-field").val(tsvg_selected_attachment).trigger("input");
+							}
+						}
+					);
 				}
-				tsvg_wp_media_library = wp.media(
-					{
-						frame: 'post',
-						type: 'image',
-						multiple: false,
-						states: [new wp.media.controller.Library(
-							{
-								title: 'Select image',
-								library: wp.media.query(
-									{
-										type: 'image'
-									}
-								),
-								multiple: false,
-								date: false,
-								gallery: false,
-							}
-						)]
-					}
-				);
-				tsvg_wp_media_library.state('embed').on(
-					'select',
-					function () {
-						let state = tsvg_wp_media_library.state('embed'),
-							type = state.get('type'),
-							embed = state.props.toJSON();
-						if (type == "image") {
-							tsvgSetImage("embed", "", embed.url, embed.width, embed.height);
-						} else {
-							tsvgSetImage("embed", "", tsvg_builder_object.tsvg_no_img, 600, 600);
-							toastr["error"](`Your inserted file type isn't image.`, 'Error', tsvgToastrOptions);
-						}
-					}
-				);
-				tsvg_wp_media_library.state('library').on(
-					'select',
-					function () {
-						let selection = tsvg_wp_media_library.state('library').get('selection'),
-							tsvg_selection_id = "";
-						selection.each(
-							function (attachment) {
-								tsvg_selection_id = attachment["id"];
-							}
-						);
-						if (Number.isInteger(tsvg_selection_id)) {
-							let url = wp.media.attachment(tsvg_selection_id).get('url');
-							let width = wp.media.attachment(tsvg_selection_id).get('width');
-							let height = wp.media.attachment(tsvg_selection_id).get('height');
-							tsvgSetImage("library", tsvg_selection_id, url, width, height);
-						}
-					}
-				);
-				tsvg_wp_media_library.on(
-					'open',
-					function () {
-						$("button#menu-item-video-playlist,button#menu-item-playlist,button#menu-item-gallery,button#menu-item-insert").remove();
-						let tsvg_selected_attachment = jQuery('input#tsvg_video_attachment_id').val();
-						if (Number.isInteger(+tsvg_selected_attachment)) {
-							$("button#menu-item-library").trigger('click');
-							let selection = tsvg_wp_media_library.state('library').get('selection');
-							let attachment = wp.media.attachment(+tsvg_selected_attachment);
-							attachment.fetch();
-							selection.add(attachment ? [attachment] : []);
-						} else {
-							$("button#menu-item-embed").trigger('click');
-							$("input#embed-url-field").val(tsvg_selected_attachment).trigger("input");
-						}
-					}
-				);
-				tsvg_wp_media_library.open();
+				tsvgImagePicker.open();
 			});
 			$(document).on('click', 'div.tsvg_vd_change', function (e) {
 				e.preventDefault();
-				let tsvg_wp_media_library;
-				if (tsvg_wp_media_library) {
-					tsvg_wp_media_library.open();
-				}
-				tsvg_wp_media_library = wp.media(
-					{
-						frame: 'post',
-						type: 'video',
-						multiple: false,
-						states: [new wp.media.controller.Library(
-							{
-								title: 'Select video',
-								library: wp.media.query(
-									{
-										type: 'video'
-									}
-								),
-								multiple: false,
-								date: false,
-								gallery: false,
-							}
-						)]
-					}
-				);
-				tsvg_wp_media_library.state('embed').on(
-					'select',
-					function () {
-						let state = tsvg_wp_media_library.state('embed'),
-							embed = state.props.toJSON(),
-							url = embed.url;
-						let url_split = url.split("&");
-						url = url_split[0];
-						let regexp = /https?:\/\/www\.youtube\.com\/embed\/([^/]+)/;
-						let youTubeEmbedMatch = regexp.exec(url);
-						if (youTubeEmbedMatch) {
-							url = 'https://www.youtube.com/watch?v=' + youTubeEmbedMatch[1];
+				if (!tsvgVideoPicker) {
+					tsvgVideoPicker = wp.media(
+						{
+							frame: 'post',
+							type: 'video',
+							multiple: false,
+							states: [new wp.media.controller.Library(
+								{
+									title: 'Select video',
+									library: wp.media.query(
+										{
+											type: 'video'
+										}
+									),
+									multiple: false,
+									date: false,
+									gallery: false,
+								}
+							)]
 						}
-						wp.apiRequest(
-							{
-								url: wp.media.view.settings.oEmbedProxyUrl,
-								data: {
-									url: url,
-								},
-								beforeSend: function () {
-									$(".tsvg_vd_loading_div").removeAttr("style");
-								},
-								type: 'GET',
-								dataType: 'json',
-								context: this
+					);
+					tsvgVideoPicker.state('embed').on(
+						'select',
+						function () {
+							let state = tsvgVideoPicker.state('embed'),
+								embed = state.props.toJSON(),
+								url = embed.url;
+							let url_split = url.split("&");
+							url = url_split[0];
+							let regexp = /https?:\/\/www\.youtube\.com\/embed\/([^/]+)/;
+							let youTubeEmbedMatch = regexp.exec(url);
+							if (youTubeEmbedMatch) {
+								url = 'https://www.youtube.com/watch?v=' + youTubeEmbedMatch[1];
 							}
-						).done(
-							function (response) {
-								if (response.hasOwnProperty("thumbnail_url")) {
-									let tsvgImgSrc = response.thumbnail_url;
-									let tsvgImgW = response.thumbnail_width;
-									let tsvgImgH = response.thumbnail_height;
-									if (response.provider_name === "YouTube") {
-										if (tsvgImgSrc !== "") {
-											if (!tsvgImgSrc.includes('maxresdefault.jpg')) {
-												if (tsvgImgSrc.includes('hqdefault.jpg')) {
-													tsvgImgSrc = tsvgImgSrc.replace('hqdefault.jpg', 'maxresdefault.jpg');
-													getYTMaxResolution(
-														tsvgImgSrc,
-														(width, height) => {
-															if (width > 130) {
-																tsvgSetImage("embed", "", tsvgImgSrc, width, height);
-															} else {
-																tsvgSetImage("embed", "", tsvgImgSrc.replace('maxresdefault.jpg', 'mqdefault.jpg'), tsvgImgW, tsvgImgH);
+							wp.apiRequest(
+								{
+									url: wp.media.view.settings.oEmbedProxyUrl,
+									data: {
+										url: url,
+									},
+									beforeSend: function () {
+										$(".tsvg_vd_loading_div").removeAttr("style");
+									},
+									type: 'GET',
+									dataType: 'json',
+									context: this
+								}
+							).done(
+								function (response) {
+									if (response.hasOwnProperty("thumbnail_url")) {
+										let tsvgImgSrc = response.thumbnail_url;
+										let tsvgImgW = response.thumbnail_width;
+										let tsvgImgH = response.thumbnail_height;
+										if (response.provider_name === "YouTube") {
+											if (tsvgImgSrc !== "") {
+												if (!tsvgImgSrc.includes('maxresdefault.jpg')) {
+													if (tsvgImgSrc.includes('hqdefault.jpg')) {
+														tsvgImgSrc = tsvgImgSrc.replace('hqdefault.jpg', 'maxresdefault.jpg');
+														getYTMaxResolution(
+															tsvgImgSrc,
+															(width, height) => {
+																if (width > 130) {
+																	tsvgSetImage("embed", "", tsvgImgSrc, width, height);
+																} else {
+																	tsvgSetImage("embed", "", tsvgImgSrc.replace('maxresdefault.jpg', 'mqdefault.jpg'), tsvgImgW, tsvgImgH);
+																}
 															}
-														}
-													);
-												} else if (tsvgImgSrc.includes('mqdefault.jpg')) {
-													tsvgImgSrc = tsvgImgSrc.replace('mqdefault.jpg', 'maxresdefault.jpg');
-													getYTMaxResolution(
-														tsvgImgSrc,
-														(width, height) => {
-															if (width > 130) {
-																tsvgSetImage("embed", "", tsvgImgSrc, width, height);
-															} else {
-																tsvgSetImage("embed", "", tsvgImgSrc.replace('maxresdefault.jpg', 'mqdefault.jpg'), tsvgImgW, tsvgImgH);
+														);
+													} else if (tsvgImgSrc.includes('mqdefault.jpg')) {
+														tsvgImgSrc = tsvgImgSrc.replace('mqdefault.jpg', 'maxresdefault.jpg');
+														getYTMaxResolution(
+															tsvgImgSrc,
+															(width, height) => {
+																if (width > 130) {
+																	tsvgSetImage("embed", "", tsvgImgSrc, width, height);
+																} else {
+																	tsvgSetImage("embed", "", tsvgImgSrc.replace('maxresdefault.jpg', 'mqdefault.jpg'), tsvgImgW, tsvgImgH);
+																}
 															}
-														}
-													);
-												} else {
-													tsvgSetImage("embed", "", tsvgImgSrc, tsvgImgW, tsvgImgH);
+														);
+													} else {
+														tsvgSetImage("embed", "", tsvgImgSrc, tsvgImgW, tsvgImgH);
+													}
+												}
+											}
+										} else {
+											tsvgSetImage("embed", "", tsvgImgSrc, tsvgImgW, tsvgImgH);
+										}
+										toastr["info"](`Your selected video has thumbnail,but you can change it.`, 'Info', tsvgToastrOptions);
+									} else {
+										if (response.provider_name == "Embed Handler") {
+											response.html = ` <video controls="" name="media"><source src="${url}"></video>`;
+										}
+										toastr["warning"](`Your selected video has not thumbnail,but you can add image.`, 'Warning', tsvgToastrOptions);
+									}
+									jQuery('.tsvg_vd_change').children("iframe").remove();
+									jQuery('.tsvg_vd_change').children("video").remove();
+									jQuery('.tsvg_vd_change').children("blockquote").remove();
+									jQuery('.tsvg_img_div_edit').removeAttr("style");
+									jQuery('input#tsvg_video_video_attachment_id').val(url);
+									jQuery('.tsvg_vd_change > img').attr("style", "display:none;");
+									jQuery('.tsvg_vd_change').prepend(response.html);
+									$(".tsvg_vd_loading_div").attr("style", "display:none;");
+									let regExp = /^.*(vimeo\.com\/)((channels\/[A-z]+\/)|(groups\/[A-z]+\/videos\/))?([0-9]+)/;
+									let match = url.match(regExp);
+									if (match) {
+										url = 'https://player.vimeo.com/video/' + match[5];
+									} else {
+										if (response.provider_url === "https://rumble.com/") {
+											let rumblerIframeDiv = document.createElement('div')
+											rumblerIframeDiv.innerHTML = response.html
+											url = rumblerIframeDiv.querySelector('iframe').src;
+											if (url.indexOf('#?secret=') > -1) {
+												url = url.replace('#?secret=', '');
+											}
+										} else {
+											if (response.provider_name === "YouTube") {
+												if (url.indexOf('youtube.com/shorts/') > -1) {
+													url = url.replace("shorts", "embed");
+												}
+												if (url.indexOf('watch?v=') > -1) {
+													let url_ifr = url.split("=");
+													url = 'https://www.youtube.com/embed/' + url_ifr[1];
+												}
+												if (url.indexOf('youtu.be/') > -1) {
+													let url_ifr = url.split("/");
+													url = 'https://www.youtube.com/embed/' + url_ifr[3];
+												}
+												if (url.indexOf('?feature=share') > -1) {
+													url = url.replace('?feature=share', '');
 												}
 											}
 										}
-									} else {
-										tsvgSetImage("embed", "", tsvgImgSrc, tsvgImgW, tsvgImgH);
 									}
-									toastr["info"](`Your selected video has thumbnail,but you can change it.`, 'Info', tsvgToastrOptions);
-								} else {
-									if (response.provider_name == "Embed Handler") {
-										response.html = ` <video controls="" name="media"><source src="${url}"></video>`;
+									tsvgVideos[`${tsvgEditId}`].TS_VG_Options.TotalSoftVGallery_Vid_Vd = url;
+									if (tsvgShortcodeTheme == 'Grid Video Gallery') {
+										$(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}']`).removeClass('tsvg-media-video-container tsvg-media-img-container');
+										$(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}']`).addClass("tsvg-media-iframe-container");
+										$(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}'] .tsvg-video-wrapper`).removeClass("tsvg-video-wrapper").addClass("tsvg-media-wrapper");
+										$(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}'] .tsvg-media-wrapper`).remove();
+										$(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}'] figure`).append(`<div class="tsvg-media-wrapper tsvg-iframe-wrapper" data-creat_src="${url}"><img src="${tsvgImgSrc}" class="tsvg-wrapper-bgc"><img src="${tsvg_builder_object.tsvg_image_load}" class="tsvg-grid-slideshow-loader tsvg-grid-slideshow-loader-hidden"></div>`);
+										$(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}']`).find('.tsvg-iframe-wrapper').attr('data-creat_src', url);
 									}
-									toastr["warning"](`Your selected video has not thumbnail,but you can add image.`, 'Warning', tsvgToastrOptions);
+									if (tsvgShortcodeTheme == 'LightBox Video Gallery') {
+										$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}'] .tsvg-lightbox-block-inner-${tsvgShortcodeId}`).attr("data-tsvg-href", url)
+									}
+									if (tsvgShortcodeTheme == 'Thumbnails Video') {
+										$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}'] a`).attr("href", url)
+									}
+									if (tsvgShortcodeTheme == 'Content Popup') {
+										$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}']`).attr("data-tsvg-href", url)
+									}
+									if (tsvgShortcodeTheme == 'Elastic Gallery') {
+										$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}']`).attr("data-src", url)
+									}
+									if (tsvgShortcodeTheme == 'Fancy Gallery') {
+										$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}' ] figure `).attr("data-href", url);
+										$(`main.tsvg-main-content-${tsvgShortcodeId}`).replaceWith($(`main.tsvg-main-content-${tsvgShortcodeId}`).clone());
+										jQuery(`.tsvg-fancy-blocks-list-${tsvgShortcodeId} > li `).each(
+											function () {
+												jQuery(this).hoverdir({ hoverDelay: 50, inverse: $("#TotalSoft_GV_1_28").val() == "Default" ? false : true });
+											}
+										);
+										tsvgFancyAdmin();
+									}
+									if (tsvgShortcodeTheme == 'Parallax Engine') {
+										$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}' ]`).attr("data-href", url);
+									}
+									if (tsvgShortcodeTheme == 'Classic Gallery') {
+										$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}']`).attr("data-tsvg-src", url)
+									}
+									if (tsvgShortcodeTheme == 'Space Gallery') {
+										let tsvgRumbleCheck = url.indexOf('rumble') > -1 ? 'sandbox=allow-scripts' : '';
+										$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}']`).attr("data-tsvg-src", url);
+										$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}'] .tsvg-video-wrapper `).html(` <iframe src="${url}" ${tsvgRumbleCheck} frameborder = "0" webkitAllowFullScreen > </iframe> `)
+									}
 								}
+							).fail(
+								function () {
+									$(".tsvg_vd_loading_div").attr("style", "display:none;");
+									toastr["error"](`Your inserted link isn't valid.`, 'Error', tsvgToastrOptions)
+								}
+							);
+						}
+					);
+					tsvgVideoPicker.state('library').on(
+						'select',
+						function () {
+							$(".tsvg_vd_loading_div").removeAttr("style");
+							let selection = tsvgVideoPicker.state('library').get('selection'),
+								tsvg_selection_id = "";
+							selection.each(
+								function (attachment) {
+									tsvg_selection_id = attachment["id"];
+								}
+							);
+							if (Number.isInteger(tsvg_selection_id)) {
+								toastr["warning"](`Your selected video has not thumbnail,but you can add image.`, 'Warning', tsvgToastrOptions);
 								jQuery('.tsvg_vd_change').children("iframe").remove();
 								jQuery('.tsvg_vd_change').children("video").remove();
 								jQuery('.tsvg_vd_change').children("blockquote").remove();
 								jQuery('.tsvg_img_div_edit').removeAttr("style");
-								jQuery('input#tsvg_video_video_attachment_id').val(url);
-								jQuery('.tsvg_vd_change > img').attr("style", "display:none;");
-								jQuery('.tsvg_vd_change').prepend(response.html);
-								$(".tsvg_vd_loading_div").attr("style", "display:none;");
-								let regExp = /^.*(vimeo\.com\/)((channels\/[A-z]+\/)|(groups\/[A-z]+\/videos\/))?([0-9]+)/;
-								let match = url.match(regExp);
-								if (match) {
-									url = 'https://player.vimeo.com/video/' + match[5];
-								} else {
-									if (response.provider_url === "https://rumble.com/") {
-										let rumblerIframeDiv = document.createElement('div')
-										rumblerIframeDiv.innerHTML = response.html
-										url = rumblerIframeDiv.querySelector('iframe').src;
-										if (url.indexOf('#?secret=') > -1) {
-											url = url.replace('#?secret=', '');
-										}
-									} else {
-										if (response.provider_name === "YouTube") {
-											if (url.indexOf('youtube.com/shorts/') > -1) {
-												url = url.replace("shorts", "embed");
-											}
-											if (url.indexOf('watch?v=') > -1) {
-												let url_ifr = url.split("=");
-												url = 'https://www.youtube.com/embed/' + url_ifr[1];
-											}
-											if (url.indexOf('youtu.be/') > -1) {
-												let url_ifr = url.split("/");
-												url = 'https://www.youtube.com/embed/' + url_ifr[3];
-											}
-											if (url.indexOf('?feature=share') > -1) {
-												url = url.replace('?feature=share', '');
-											}
-										}
-									}
-								}
+								let url = wp.media.attachment(tsvg_selection_id).get('url');
 								tsvgVideos[`${tsvgEditId}`].TS_VG_Options.TotalSoftVGallery_Vid_Vd = url;
-								if (tsvgShortcodeTheme == 'Grid Video Gallery') {
-									$(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}']`).removeClass('tsvg-media-video-container tsvg-media-img-container');
-									$(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}']`).addClass("tsvg-media-iframe-container");
-									$(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}'] .tsvg-video-wrapper`).removeClass("tsvg-video-wrapper").addClass("tsvg-media-wrapper");
-									$(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}'] .tsvg-media-wrapper`).remove();
-									$(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}'] figure`).append(`<div class="tsvg-media-wrapper tsvg-iframe-wrapper" data-creat_src="${url}"><img src="${tsvgImgSrc}" class="tsvg-wrapper-bgc"><img src="${tsvg_builder_object.tsvg_image_load}" class="tsvg-grid-slideshow-loader tsvg-grid-slideshow-loader-hidden"></div>`);
-									$(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}']`).find('.tsvg-iframe-wrapper').attr('data-creat_src', url);
-								}
 								if (tsvgShortcodeTheme == 'LightBox Video Gallery') {
 									$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}'] .tsvg-lightbox-block-inner-${tsvgShortcodeId}`).attr("data-tsvg-href", url)
 								}
@@ -1558,7 +2043,7 @@
 									$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}']`).attr("data-src", url)
 								}
 								if (tsvgShortcodeTheme == 'Fancy Gallery') {
-									$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}' ] figure `).attr("data-href", url);
+									$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}'] figure`).attr("data-href", url);
 									$(`main.tsvg-main-content-${tsvgShortcodeId}`).replaceWith($(`main.tsvg-main-content-${tsvgShortcodeId}`).clone());
 									jQuery(`.tsvg-fancy-blocks-list-${tsvgShortcodeId} > li `).each(
 										function () {
@@ -1567,116 +2052,56 @@
 									);
 									tsvgFancyAdmin();
 								}
-								if (tsvgShortcodeTheme == 'Parallax Engine') {
-									$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}' ]`).attr("data-href", url);
+								if (tsvgShortcodeTheme == 'Grid Video Gallery') {
+									if ($(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}']`).hasClass("tsvg-media-img-container")) $(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}']`).removeClass("tsvg-media-img-container");
+									if ($(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}']`).hasClass("tsvg-media-iframe-container")) $(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}']`).removeClass("tsvg-media-iframe-container");
+									$(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}']`).addClass("tsvg-media-video-container");
+									$(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}'] .tsvg-media-wrapper`).removeClass("tsvg-media-wrapper").addClass("tsvg-video-wrapper");
+									$(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}'] .tsvg-video-wrapper`).html(` <video controls="" controlslist="nodownload" name="media"><source src="${url}"></video>`);
 								}
 								if (tsvgShortcodeTheme == 'Classic Gallery') {
 									$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}']`).attr("data-tsvg-src", url)
+									$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}'] .tsvg-video-wrapper `).html(` <video controls="" controlslist="nodownload" name="media"><source src="${url}"></video>`)
 								}
 								if (tsvgShortcodeTheme == 'Space Gallery') {
-									let tsvgRumbleCheck = url.indexOf('rumble') > -1 ? 'sandbox=allow-scripts' : '';
 									$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}']`).attr("data-tsvg-src", url);
-									$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}'] .tsvg-video-wrapper `).html(` <iframe src="${url}" ${tsvgRumbleCheck} frameborder = "0" webkitAllowFullScreen > </iframe> `)
+									$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}'] .tsvg-video-wrapper `).html(` <video controls="" controlslist="nodownload" name="media"><source src="${url}"></video>`)
 								}
-							}
-						).fail(
-							function () {
-								$(".tsvg_vd_loading_div").attr("style", "display:none;");
-								toastr["error"](`Your inserted link isn't valid.`, 'Error', tsvgToastrOptions)
-							}
-						);
-					}
-				);
-				tsvg_wp_media_library.state('library').on(
-					'select',
-					function () {
-						$(".tsvg_vd_loading_div").removeAttr("style");
-						let selection = tsvg_wp_media_library.state('library').get('selection'),
-							tsvg_selection_id = "";
-						selection.each(
-							function (attachment) {
-								tsvg_selection_id = attachment["id"];
-							}
-						);
-						if (Number.isInteger(tsvg_selection_id)) {
-							toastr["warning"](`Your selected video has not thumbnail,but you can add image.`, 'Warning', tsvgToastrOptions);
-							jQuery('.tsvg_vd_change').children("iframe").remove();
-							jQuery('.tsvg_vd_change').children("video").remove();
-							jQuery('.tsvg_vd_change').children("blockquote").remove();
-							jQuery('.tsvg_img_div_edit').removeAttr("style");
-							let url = wp.media.attachment(tsvg_selection_id).get('url');
-							tsvgVideos[`${tsvgEditId}`].TS_VG_Options.TotalSoftVGallery_Vid_Vd = url;
-							if (tsvgShortcodeTheme == 'LightBox Video Gallery') {
-								$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}'] .tsvg-lightbox-block-inner-${tsvgShortcodeId}`).attr("data-tsvg-href", url)
-							}
-							if (tsvgShortcodeTheme == 'Thumbnails Video') {
-								$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}'] a`).attr("href", url)
-							}
-							if (tsvgShortcodeTheme == 'Content Popup') {
-								$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}']`).attr("data-tsvg-href", url)
-							}
-							if (tsvgShortcodeTheme == 'Elastic Gallery') {
-								$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}']`).attr("data-src", url)
-							}
-							if (tsvgShortcodeTheme == 'Fancy Gallery') {
-								$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}'] figure`).attr("data-href", url);
-								$(`main.tsvg-main-content-${tsvgShortcodeId}`).replaceWith($(`main.tsvg-main-content-${tsvgShortcodeId}`).clone());
-								jQuery(`.tsvg-fancy-blocks-list-${tsvgShortcodeId} > li `).each(
+								if (tsvgShortcodeTheme == 'Parallax Engine') {
+									$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}' ]`).attr("data-href", url);
+								}
+								jQuery('input#tsvg_video_video_attachment_id').val(tsvg_selection_id);
+								jQuery('.tsvg_vd_change').prepend(`<video controls="" name="media"><source src="${url}" ></video>`);
+								jQuery('.tsvg_vd_change > img').attr("style", "display:none;");
+								setTimeout(
 									function () {
-										jQuery(this).hoverdir({ hoverDelay: 50, inverse: $("#TotalSoft_GV_1_28").val() == "Default" ? false : true });
-									}
+										$(".tsvg_vd_loading_div").attr("style", "display:none;");
+									},
+									200
 								);
-								tsvgFancyAdmin();
 							}
-							if (tsvgShortcodeTheme == 'Grid Video Gallery') {
-								if ($(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}']`).hasClass("tsvg-media-img-container")) $(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}']`).removeClass("tsvg-media-img-container");
-								if ($(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}']`).hasClass("tsvg-media-iframe-container")) $(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}']`).removeClass("tsvg-media-iframe-container");
-								$(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}']`).addClass("tsvg-media-video-container");
-								$(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}'] .tsvg-media-wrapper`).removeClass("tsvg-media-wrapper").addClass("tsvg-video-wrapper");
-								$(`ul.tsvg-grid-slides-${tsvgShortcodeId}  .tsvg-grid-slide[data-tsvg-id='${tsvgEditId}'] .tsvg-video-wrapper`).html(` <video controls="" controlslist="nodownload" name="media"><source src="${url}"></video>`);
-							}
-							if (tsvgShortcodeTheme == 'Classic Gallery') {
-								$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}']`).attr("data-tsvg-src", url)
-								$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}'] .tsvg-video-wrapper `).html(` <video controls="" controlslist="nodownload" name="media"><source src="${url}"></video>`)
-							}
-							if (tsvgShortcodeTheme == 'Space Gallery') {
-								$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}']`).attr("data-tsvg-src", url);
-								$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}'] .tsvg-video-wrapper `).html(` <video controls="" controlslist="nodownload" name="media"><source src="${url}"></video>`)
-							}
-							if (tsvgShortcodeTheme == 'Parallax Engine') {
-								$(`main.tsvg-main-content-${tsvgShortcodeId}  li[data-tsvg-id='${tsvgEditId}' ]`).attr("data-href", url);
-							}
-							jQuery('input#tsvg_video_video_attachment_id').val(tsvg_selection_id);
-							jQuery('.tsvg_vd_change').prepend(`<video controls="" name="media"><source src="${url}" ></video>`);
-							jQuery('.tsvg_vd_change > img').attr("style", "display:none;");
-							setTimeout(
-								function () {
-									$(".tsvg_vd_loading_div").attr("style", "display:none;");
-								},
-								200
-							);
 						}
-					}
-				);
-				tsvg_wp_media_library.on(
-					'open',
-					function () {
-						$("button#menu-item-video-playlist,button#menu-item-playlist,button#menu-item-gallery,button#menu-item-insert").remove();
-						let tsvg_selected_attachment = jQuery('input#tsvg_video_video_attachment_id').val();
-						if (Number.isInteger(+tsvg_selected_attachment)) {
-							$("button#menu-item-library").trigger('click');
-							$("input#embed-url-field").val("");
-							let selection = tsvg_wp_media_library.state('library').get('selection');
-							let attachment = wp.media.attachment(+tsvg_selected_attachment);
-							attachment.fetch();
-							selection.add(attachment ? [attachment] : []);
-						} else {
-							$("button#menu-item-embed").trigger('click');
-							$("input#embed-url-field").val(tsvg_selected_attachment).trigger("input");
+					);
+					tsvgVideoPicker.on(
+						'open',
+						function () {
+							$("button#menu-item-video-playlist,button#menu-item-playlist,button#menu-item-gallery,button#menu-item-insert").remove();
+							let tsvg_selected_attachment = jQuery('input#tsvg_video_video_attachment_id').val();
+							if (Number.isInteger(+tsvg_selected_attachment)) {
+								$("button#menu-item-library").trigger('click');
+								$("input#embed-url-field").val("");
+								let selection = tsvgVideoPicker.state('library').get('selection');
+								let attachment = wp.media.attachment(+tsvg_selected_attachment);
+								attachment.fetch();
+								selection.add(attachment ? [attachment] : []);
+							} else {
+								$("button#menu-item-embed").trigger('click');
+								$("input#embed-url-field").val(tsvg_selected_attachment).trigger("input");
+							}
 						}
-					}
-				);
-				tsvg_wp_media_library.open();
+					);
+				}
+				tsvgVideoPicker.open();
 			});
 			$(document).on('click', '#wp-tsvg_content_area-editor-container .mce-top-part ', function () {
 				$(`main.tsvg-main-content-${tsvgShortcodeId}  .tsvg-grid-layout-item[data-tsvg-id='${tsvgEditId}'] figcaption`).html(tsvgGetTextareaContext('tsvg_content_area'));
@@ -1686,17 +2111,19 @@
 			});
 			$(document).on('input', 'input#tsvg_global_title',
 				function (event) {
-					let inputValue = escapeInput($(this).val());
+					let inputValue = escapeInput($(this).val(), 155);
 					tsvg_builder_object.tsvg_proporties.TS_VG_Title = inputValue;
 					$("#tsvg_TS_VG_Title_e").text(inputValue);
 					$(this).val(inputValue);
+					console.log(inputValue.length);
+
 				}
 			);
-			$(document).on('input', '#ts-vgallery-aim-modal--search_input', function () {
+			$(document).on('input', '#tsvg-aim-modal--search_input', function () {
 				let searchText = $(this).val().toLowerCase();
-				let tsvg_active_sidebar_item = $(".ts-vgallery-aim-modal--sidebar-tab-item.aesthetic-active").attr("data-library-id");
+				let tsvg_active_sidebar_item = $(".tsvg-aim-modal--sidebar-tab-item.aesthetic-active").attr("data-library-id");
 				if (searchText == "") {
-					$(`.ts-vgallery-aim-icon-item[data-library-id="${tsvg_active_sidebar_item}"]`).each(
+					$(`.tsvg-aim-icon-item[data-library-id="${tsvg_active_sidebar_item}"]`).each(
 						function () {
 							$(this).removeAttr("style");
 						}
@@ -1705,24 +2132,24 @@
 					switch (tsvg_active_sidebar_item) {
 						case "ts-vgallery-emoji-regular":
 						case "ts-vgallery-regular":
-							$(`.ts-vgallery-aim-icon-item[data-library-id="${tsvg_active_sidebar_item}"]:not( [data-filter*= "${searchText}"] )`).each(
+							$(`.tsvg-aim-icon-item[data-library-id="${tsvg_active_sidebar_item}"]:not( [data-filter*= "${searchText}"] )`).each(
 								function () {
 									$(this).attr("style", "display:none;");
 								}
 							);
-							$(`.ts-vgallery-aim-icon-item[data-library-id="${tsvg_active_sidebar_item}"][data-filter*= "${searchText}"]`).each(
+							$(`.tsvg-aim-icon-item[data-library-id="${tsvg_active_sidebar_item}"][data-filter*= "${searchText}"]`).each(
 								function () {
 									$(this).removeAttr("style");
 								}
 							);
 							break;
 						default:
-							$(`.ts-vgallery-aim-icon-item:not( [data-filter*= "${searchText}"] )`).each(
+							$(`.tsvg-aim-icon-item:not( [data-filter*= "${searchText}"] )`).each(
 								function () {
 									$(this).attr("style", "display:none;");
 								}
 							);
-							$(`.ts-vgallery-aim-icon-item[data-filter*= "${searchText}"]`).each(
+							$(`.tsvg-aim-icon-item[data-filter*= "${searchText}"]`).each(
 								function () {
 									$(this).removeAttr("style");
 								}
@@ -1759,7 +2186,7 @@
 				}
 			});
 			$(document).on('input', 'input#tsvg_TS_VG_SetName[type="text"]', function () {
-				let inputValue = escapeInput($(this).val());
+				let inputValue = escapeInput($(this).val(), 255);
 				if (tsvgVideos[`${tsvgEditId}`].hasOwnProperty(`TS_VG_SetName`)) {
 					tsvgVideos[`${tsvgEditId}`].TS_VG_SetName = inputValue;
 				}

@@ -19,7 +19,7 @@
 		--tsvg_lo_background_color_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_style_options->TotalSoft_GV_1_23 ) ); ?>;
 		--tsvg_lo_color_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_style_options->TotalSoft_GV_1_24 ) ); ?>;
 		--tsvg_lo_font_size_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo filter_var( esc_html( $tsvg_style_options->TotalSoft_GV_1_25 ), FILTER_VALIDATE_INT ); ?>px;
-		--tsvg_lo_ff_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_style_options->TotalSoft_GV_2_26 ) ); ?>;
+		--tsvg_lo_ff_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_style_options->TotalSoft_GV_1_26 ) ); ?>;
 		--tsvg_lo_hover_background_color_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_style_options->TotalSoft_GV_1_27 ) ); ?>;
 		--tsvg_lo_hover_color_<?php echo esc_attr( $tsvg_shortcode_id ); ?>:<?php echo esc_html( htmlspecialchars( $tsvg_style_options->TotalSoft_GV_1_28 ) ); ?>;
 	}
@@ -178,14 +178,14 @@
 	foreach ( $tsvg_videos_data as $key => $value ) {
 		$tsvg_cp_block_index++;
 		$tsvg_videos_data_object = json_decode( $tsvg_videos_data[ $key ]->TS_VG_Options );
-		$tsvg_media_url_target             = $tsvg_videos_data_object->TotalSoftVGallery_Vid_vont == 'true' ? '_blank' : '_self';
-		$tsvg_block_video_url                  = $tsvg_videos_data_object->TotalSoftVGallery_Vid_Vd == '' ? $tsvg_default_video : $tsvg_videos_data_object->TotalSoftVGallery_Vid_Vd;
-		$tsvg_block_link_url                  = $tsvg_videos_data_object->TotalSoftVGallery_Vid_link;
-		$tsvg_block_desc                   = $tsvg_videos_data_object->TotalSoftVGallery_Vid_desc;
-		$tsvg_block_img_url                  = $tsvg_videos_data_object->TotalSoftVGallery_Vid_Im == '' ? esc_url( plugins_url( 'img/tsvg_no_video.png', __DIR__ ) ) : esc_url( $tsvg_videos_data_object->TotalSoftVGallery_Vid_Im );
+		$tsvg_media_url_target = $tsvg_videos_data_object->TotalSoftVGallery_Vid_vont == 'true' ? '_blank' : '_self';
+		$tsvg_block_video_url = $tsvg_videos_data_object->TotalSoftVGallery_Vid_Vd == '' ? $tsvg_default_video : $tsvg_videos_data_object->TotalSoftVGallery_Vid_Vd;
+		$tsvg_block_link_url = $tsvg_videos_data_object->TotalSoftVGallery_Vid_link;
+		$tsvg_block_desc = $tsvg_videos_data_object->TotalSoftVGallery_Vid_desc;
+		$tsvg_block_img_url = $tsvg_videos_data_object->TotalSoftVGallery_Vid_Im == '' ? esc_url( plugins_url( 'img/tsvg_no_video.png', __DIR__ ) ) : esc_url( $tsvg_videos_data_object->TotalSoftVGallery_Vid_Im );
 		$tsvg_videos_data_html .= sprintf(
 			'
-			<li class="tsvg-content-popup-block-%1$s tsvg-cp-block-view tsvg-cp-block-view-%1$s tsvg-cp-block-view-%2$s " data-tsvg-target="%3$s"  data-tsvg-link="%4$s"  data-tsvg-href="%5$s"   data-tsvg-id="%6$s" style="-moz-animation-delay:  %7$ss;-webkit-animation-delay:  %7$ss;animation-delay:  %7$ss;" data-tsvg-shadow="%8$s">
+			<li class="tsvg-li-content tsvg-content-popup-block-%1$s tsvg-cp-block-view tsvg-cp-block-view-%1$s tsvg-cp-block-view-%2$s " data-tsvg-target="%3$s"  data-tsvg-link="%4$s"  data-tsvg-href="%5$s"   data-tsvg-id="%6$s" style="-moz-animation-delay:  %7$ss;-webkit-animation-delay:  %7$ss;animation-delay:  %7$ss;" data-tsvg-shadow="%8$s">
 				<figure class="tsvg-block-inner">
 					<img  width="" height="" src="%9$s" alt="%10$s"  title="%10$s" >
 					<div class="mask">
@@ -221,8 +221,8 @@
 	echo sprintf(
 		'
 		<main class="tsvg-main-content-%1$s tsvg-main-content-parent-%1$s"  data-item-open="%2$s"  data-item-number="%3$s" data-pagination="%4$s" data-p-lm="%5$s">
-			<figure  class="tsvg-cp-blocks-container tsvg-cp-blocks-container-%1$s">
-				<ul class="tsvg-cp-blocks-list">
+			<figure class="tsvg-figure-content tsvg-cp-blocks-container tsvg-cp-blocks-container-%1$s">
+				<ul class="tsvg-ul-content tsvg-cp-blocks-list">
 					%6$s  
 				</ul>
 			</figure>
@@ -233,46 +233,49 @@
 		esc_attr( $tsvg_setting_options->TotalSoft_VGallery_Set_02 ),
 		esc_attr( $tsvg_setting_options->TotalSoft_VGallery_Set_01 ),
 		esc_attr(  $tsvg_style_options->TotalSoft_GV_2_33 ),
-		wp_kses( $tsvg_videos_data_html, array(
-			'li' => array(
-				'class'  => array(),
-				'data-tsvg-target'  => array(),
-				'data-tsvg-link'  => array(),
-				'data-tsvg-href'  => array(),
-				'data-tsvg-id'  => array(),
-				'style'  => array(),
-				'data-tsvg-shadow'  => array(),
-			),
-			'figure' => array(
-				'class'  => array(),
-			),
-			'img' => array(
-				'width'  => array(),
-				'height'  => array(),
-				'src'  => array(),
-				'alt'  => array(),
-				'title'  => array(),
-			),
-			'div' => array(
-				'class'  => array(),
-				'data-tsvg-show'  => array(),
-			),
-			'figcaption' => array(),
-			'h2' => array(
-				'class'  => array(),
-				'data-tsvg-show'  => array(),
-			),
-			'p' => array(),
-			'span' => array(
-				'style'  => array(),
-			),
-			'em' => array(),
-			'a' => array(
-				'class'  => array(),
-				'href'  => array(),
-				'target'  => array(),
-				'data-tsvg-show'  => array(),
-			),
-		) )
+		wp_kses(
+			$tsvg_videos_data_html,
+			array(
+				'li' => array(
+					'class'  => array(),
+					'data-tsvg-target'  => array(),
+					'data-tsvg-link'  => array(),
+					'data-tsvg-href'  => array(),
+					'data-tsvg-id'  => array(),
+					'style'  => array(),
+					'data-tsvg-shadow'  => array()
+				),
+				'figure' => array(
+					'class'  => array()
+				),
+				'img' => array(
+					'width'  => array(),
+					'height'  => array(),
+					'src'  => array(),
+					'alt'  => array(),
+					'title'  => array()
+				),
+				'div' => array(
+					'class'  => array(),
+					'data-tsvg-show'  => array()
+				),
+				'figcaption' => array(),
+				'h2' => array(
+					'class'  => array(),
+					'data-tsvg-show'  => array()
+				),
+				'p' => array(),
+				'span' => array(
+					'style'  => array()
+				),
+				'em' => array(),
+				'a' => array(
+					'class'  => array(),
+					'href'  => array(),
+					'target'  => array(),
+					'data-tsvg-show'  => array()
+				)
+			) 
+		)
 	);
 ?>
